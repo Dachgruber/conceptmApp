@@ -27,6 +27,7 @@
         <script type="text/javascript">
           // create an array with nodes
           var nodes = new vis.DataSet([
+            { id: -1, label: "Wenig Katzen"},
             { id: 0, label: "Tolle Karten"},
             { id: 1, label: "Node 1" },
             { id: 2, label: "Node 2" },
@@ -40,6 +41,7 @@
     
           // create an array with edges
           var edges = new vis.DataSet([
+            {from: 0, to: 3},
             { from: 1, to: 3 },
             { from: 1, to: 2 },
             { from: 2, to: 4 },
@@ -60,7 +62,7 @@
     <body style="background-color:beige  ;height:100%;"> 
 
         <h2 style="text-align: center">
-            <span style="color: blueviolet; text-align: center;" >Ultra coole Katzenapp</span>
+            <span style="color: blueviolet; text-align: center;" >Ultra tolle coole Katzenapp</span>
         </h2>
 
         <img id="animalImage" src="../resources/img/kitty.png">
