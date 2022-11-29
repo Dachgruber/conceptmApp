@@ -1,0 +1,17 @@
+#first, ignore everything
+*.*
+# especially we do not want these directories
+node_modules/
+platforms/
+plugins/
+# but upload the git files
+!.gitattributes
+!.gitignore
+!.gitkeep
+#and the readme
+!readme.md
+#last, we only want to sync js, html and the www directory
+!*.js
+!*.html
+!resources/**
+!www/
