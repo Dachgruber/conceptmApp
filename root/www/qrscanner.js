@@ -5,22 +5,23 @@
 class QRScanner {
     
     // script for the qrcode scanner 
-    #scanQR() {
+    static #scanQR(returnFunction) {
     // we use an cordova.plugins.barcodescanner object
-    // that has one methode: scan(result,failure) where result and failure
-    // are methods that are called individually
+    // that has one method: scan(result,failure) where result and failure
+    // are callback methods that are called individually
     cordova.plugins.barcodeScanner.scan(
         function (result) {
             if(!result.cancelled){
                     // In this case we only want to process QR Codes
                     if(result.format == "QR_CODE"){
                         var value = result.text; // This is the retrieved content of the qr code
-                        //console.log(value);
-                        //alert(value);
-    
-                        return value;
+                        //call returnFunction with the value
+                        returnFunction(value);
                     }else{
-                        alert("Sorry, only qr codes this time ;)");
+                        //every other type (barcode). No cancel at this time as browsers
+                        //only support barcode value input.
+                        //alert("Sorry, only qr codes this time ;)");
+                        returnFunction(result.text);
                     }
             }else{
                 alert("The user has dismissed the scan");
@@ -33,9 +34,11 @@ class QRScanner {
     }
     
     //script for the QR generator
-    #makeQR(content){
+    static #makeQR(content){
         //default value for debug purposes
-        //content = "Tolle katzenbilder";
+        if (!content){
+            content = "Tolle katzenbilder";
+        }
         cordova.plugins.barcodeScanner.encode(cordova.plugins.barcodeScanner.Encode.TEXT_TYPE, content,
             function(success){
                 alert ("encode success: " + success);
@@ -46,18 +49,17 @@ class QRScanner {
     }
     
     /**
-     * starts the QRscanner and retrieves the encoded dada
-     * @return encoded Data
+     * starts the QRscanner, basically just a wrapper
+     * @param returnFunction function object which handles the scanned data
      */
-    importDataFromQR(){
-        importData = scanQR();
-        //here could be some validating of the data
+    static importDataFromQR(returnFunction){
+        this.#scanQR(returnFunction);
     }
     
     /**
      * takes the input content and encodes it into a working QR code
      */
-    sendDataToQR(content){
-        makeQR(content)
+    static sendDataToQR(content){
+        this.#makeQR(content)
     }
 }
