@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <!-- //Header mit Metadaten-->
+    <head> 
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <title>Network</title>
+
+       <!-- //Download the necessary resources from unpkg  nicer comment-->
+        <script
+          type="text/javascript"
+          src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"
+        ></script>
+      </head>
+
+      <body>
+    <!-- background style  -->
+    <body style="background-color:black  ;height:100%;">
+      
+        
+      <script type='text/javascript' src = "qrscanner.js">//implementation des QR-Code Scanners</script> 
+      
+        <h2 style="text-align: center">
+            <span style="color: orange; text-align: center;" >Ultra cooles QR-Example</span>
+        </h2>
+
+        <div style = "text-align: center;">
+          <input type = "button" style = "color: orange; font-size: 30px" value="QR-Scanne" id="scanCode"/>
+        </div>
+
+        <script>
+        
+        //simple callback function for displaying the scanned content
+        function displayFunc(content){
+          document.getElementById("scanOutput").setAttribute("value", content)
+        }
+
+        //add the event listener with one anonymous function, that calls the qrscanner function.
+        document.getElementById("scanCode").addEventListener("click", function(){
+          QRScanner.importDataFromQR(displayFunc); //displayFunc is the function the scanner should call with the scanned content
+        }) 
+        </script>
+
+
+        <div>
+            <label for= "scanOutput"> Output vom Scanner</label>
+            <input type="text" id="scanOutput" name ="scanOutput" placeholder="Such empty"> <br> <br>
+        </div>
+
+        <div>
+          <label for= "generatorInput"> Input für den Generator</label>
+          <input type="text" id="generatorInput" name ="generatorInput" placeholder="Enter qr content"> <br> <br>
+        </div>
+
+        <div style = "text-align: center;">
+          <button style = "color: orange; font-size: 30px" id="makeCode" onclick = QRScanner.sendDataToQR(generatorInput.value)> QR Generator</button>
+        </div>
+
+        <script source = "jquery-3.6.1.min.js"></script>
+
+        </script>
+        <!-- black magic, very important, such danger -->
+        <script type="text/javascript" src="cordova.js"></script>
+    </body>
+</html>
