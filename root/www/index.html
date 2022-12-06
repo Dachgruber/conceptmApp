@@ -15,7 +15,7 @@
         <!-- //create a new canvas -->
         <style type="text/css">
           #mynetwork {
-            width: 600px;
+            width: 400px;
             height: 400px;
             border: 1px solid lightgray;
           }
@@ -27,6 +27,7 @@
         <script type="text/javascript">
           // create an array with nodes
           var nodes = new vis.DataSet([
+            { id: -1, label: "Wenig Katzen"},
             { id: 0, label: "Tolle Karten"},
             { id: 1, label: "Node 1" },
             { id: 2, label: "Node 2" },
@@ -63,7 +64,7 @@
             <span style="color: blueviolet; text-align: center;" >Ultra coole Katzenapp</span>
         </h2>
 
-        <img id="animalImage" src="../resources/img/kitty.png">
+        <img style = "text-align: center;" id="animalImage" src="../resources/img/kitty.png">
 
         <audio id="animalSound">
             <source src="../resources/sound/miau.mp3">
@@ -106,6 +107,6 @@
 
 
         <!-- black magic, very important, such danger -->
-        <script type="text/javascript" src="root\platforms\android\platform_www\cordova.js"></script>
+        <script type="text/javascript" src="cordova.js"></script>
     </body>
 </html>
