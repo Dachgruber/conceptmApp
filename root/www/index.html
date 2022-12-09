@@ -2,109 +2,25 @@
 <html>
     <!-- //Header mit Metadaten-->
     <head> 
-        <meta charset="utf-8">
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width" />
+
+        <!-- auto redirect to the example page, only used for debugging purposes! -->
+        <meta http-equiv="refresh" content ="0; qrcode_example.html" />
+
         <title>Network</title>
-
-       <!-- //Download the necessary resources from unpkg  nicer comment-->
-        <script
-          type="text/javascript"
-          src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"
-        ></script>
-
-        <!-- //create a new canvas -->
-        <style type="text/css">
-          #mynetwork {
-            width: 400px;
-            height: 400px;
-            border: 1px solid lightgray;
-          }
-        </style>
       </head>
 
       <body>
-        <div id="mynetwork"></div> <!--get the network created in the header-->
-        <script type="text/javascript">
-          // create an array with nodes
-          var nodes = new vis.DataSet([
-            { id: -1, label: "Wenig Katzen"},
-            { id: 0, label: "Tolle Karten"},
-            { id: 1, label: "Node 1" },
-            { id: 2, label: "Node 2" },
-            { id: 3, label: "Node 3" },
-            { id: 4, label: "Node 4" },
-            { id: 5, label: "Node 5" },
-          ]);
-
-
-          // ["Node1","Node2","Node3","Node4","Node5"] [13,12,24,25,33]
-    
-          // create an array with edges
-          var edges = new vis.DataSet([
-            { from: 1, to: 3 },
-            { from: 1, to: 2 },
-            { from: 2, to: 4 },
-            { from: 2, to: 5 },
-            { from: 3, to: 3 },
-          ]);
-    
-          // create a network
-          var container = document.getElementById("mynetwork");
-          var data = {
-            nodes: nodes,
-            edges: edges,
-          };
-          var options = {};
-          var network = new vis.Network(container, data, options);
-        </script>
     <!-- background style  -->
-    <body style="background-color:beige  ;height:100%;"> 
+    <body style="background-color:beige  ;height:100%;">
 
-        <h2 style="text-align: center">
-            <span style="color: blueviolet; text-align: center;" >Ultra coole Katzenapp</span>
-        </h2>
-
-        <img style = "text-align: center;" id="animalImage" src="../resources/img/kitty.png">
-
-        <audio id="animalSound">
-            <source src="../resources/sound/miau.mp3">
-        </audio>
-
-        <div style = "text-align: center;">
-            <button style = "font-size: 30px" onclick = change_img()> Gebell Gebell</button>
-        </div>
-
-        <div>
-            <label for= "catInput"> Katze gefällig?</label>
-            <input type="text" id="catinput" name ="catInput" placeholder="Enter cat attribute"> <br> <br>
-        </div>
+        <!-- hyperlink to the example page in case of auto redirect fail -->
+        <a href = "qrcode_example.html"> QRCode Example</a>
 
 
+        <!-- jquery import -->
         <script source = "jquery-3.6.1.min.js"></script>
-
-        <script>
-            //two arrays with the resources. Each index maps the sound to the corrsponding animal
-            let img_array = ["../resources/img/kitty.png","../resources/img/dog.png"] //all images used
-            let sound_array = ["../resources/sound/miau.mp3","../resources/sound/wau.mp3"] //all sounds used
-            let index = 0
-            function change_img(){
-                index = (index+1) % img_array.length //inc the index in a way so we dont run out of bounds
-                //console.log(index)
-                let img1 = document.getElementById("animalImage") //get the image object 
-                img1.src = img_array[index] //and change the content
-
-                let snd = document.getElementById("animalSound") //get the sound object
-                snd.src = sound_array[index] //and change the content
-                snd.play() //sounds need to get played
-            }
-            function select_the_cat(){
-                var txt = document.getElementById("catInput").value;
-                console.log(txt)
-
-            }
-
-        </script>
-
 
         <!-- black magic, very important, such danger -->
         <script type="text/javascript" src="cordova.js"></script>
