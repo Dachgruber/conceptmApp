@@ -57,8 +57,12 @@
           var options = {};
           var network = new vis.Network(container, data, options);
         </script>
+
     <!-- background style  -->
     <body style="background-color:beige  ;height:100%;"> 
+
+      <script source = "jquery-3.6.1.min.js"></script>
+      <script type='text/javascript' src = "visnetwork.js"> //implementation des Networks </script>
 
         <h2 style="text-align: center">
             <span style="color: blueviolet; text-align: center;" >Ultra coole Katzenapp</span>
@@ -78,10 +82,6 @@
             <label for= "catInput"> Katze gefällig?</label>
             <input type="text" id="catinput" name ="catInput" placeholder="Enter cat attribute"> <br> <br>
         </div>
-
-
-        <script source = "jquery-3.6.1.min.js"></script>
-        <script type='text/javascript' src = "visnetwork.js"> //implementation des Networks </script>
 
         <script>
             //two arrays with the resources. Each index maps the sound to the corrsponding animal
@@ -109,5 +109,6 @@
 
         <!-- black magic, very important, such danger -->
         <script type="text/javascript" src="cordova.js"></script>
+
     </body>
 </html>
