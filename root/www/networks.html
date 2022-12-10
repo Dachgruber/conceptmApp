@@ -71,24 +71,26 @@
       <script type="text/javascript">
 
         // create an array with nodes
+        // nodes have positive unique ids (excluding 0)
         var nodes = new vis.DataSet([
-          { id: -1, label: "Wenig Katzen"},
-          { id: 0, label: "Tolle Karten"},
-          { id: 1, label: "Node 1" },
-          { id: 2, label: "Node 2" },
-          { id: 3, label: "Node 3" },
-          { id: 4, label: "Node 4" },
-          { id: 5, label: "Node 5" },
+          { id: 1, label: "Wenig Katzen"},
+          { id: 2, label: "Tolle Karten"},
+          { id: 3, label: "Node 1" },
+          { id: 4, label: "Node 2" },
+          { id: 5, label: "Node 3" },
+          { id: 6, label: "Node 4" },
+          { id: 7, label: "Node 5" },
         ]);
   
         // create an array with edges
+        // edges have negative unique ids (excluding 0)
         var edges = new vis.DataSet([
-          { from: 1, to: 3, label: "Edge 1", arrows:'to,from' },
-          { from: 1, to: 2, label: "Edge 2", arrows:'to,from' },
-          { from: 2, to: 4, label: "Edge 3" },
-          { from: 4, to: 2, label: "Edge 4" },
-          { from: 2, to: 5, label: "Edge 5" },
-          { from: 3, to: 3, label: "Edge 6" },
+          { id: -1, from: 1, to: 3, label: "Edge 1", arrows:'to,from' },
+          { id: -2, from: 1, to: 2, label: "Edge 2", arrows:'to,from' },
+          { id: -3, from: 2, to: 4, label: "Edge 3" },
+          { id: -4, from: 4, to: 2, label: "Edge 4" },
+          { id: -5, from: 2, to: 5, label: "Edge 5" },
+          { id: -6, from: 3, to: 3, label: "Edge 6" },
         ]);
 
         // example of storage for nodes and edges:
@@ -127,11 +129,44 @@
           //two arrays with the resources. Each index maps the sound to the corrsponding animal
           let array_1 = ["a", "b"] 
           let array_2 = ["c", "d"] 
-          let index = 0
+          let nextNodeID = 1
+          let nextEdgeID = -1
 
-          function change_element(){
+
+          /**
+           * adds a node to the network
+           * @param {name} String - The name for the node
+           */
+          function AddNode(name){
               let element_1 = document.getElementById("element_1") //get the object 
           }
+
+          /**
+           * deletes a node from the network
+           * @param {name} String - The name of the node
+           * @param {nodeID} int - ID of the node to be deleted
+           */
+          function DeleteNode(name, nodeID){
+            let element_1 = document.getElementById("element_1") //get the object 
+          }
+          
+          /**
+           * adds an edge to the network
+           * @param {name} String - The name for the edge
+           */
+           function AddEdge(name){
+              let element_1 = document.getElementById("element_1") //get the object 
+          }
+
+          /**
+           * deletes an edge from the network
+           * @param {name} String - The name of the edge
+           * @param {nodeID} int - ID of the edge to be deleted
+           */
+           function DeleteEdge(name, edgeID){
+            let element_1 = document.getElementById("element_1") //get the object 
+          }
+
 
           function get_the_text(){
               var txt = document.getElementById("textInput").value;
