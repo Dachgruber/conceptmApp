@@ -32,12 +32,18 @@
 
           #button {
             text-align: center;
-            font-size: 30px;
+            font-size: 20px;
+            margin-right: 0.1em;
+          }
+
+          #buttonContainer {
+            text-align: center;
+            margin-top: 1em;
+            margin-bottom: 1em;
           }
 
           #textfield {
             text-align: center;
-            margin-top: 2.5em;
             margin-bottom: 1.0em;
           }
 
@@ -52,19 +58,44 @@
       <!-- get the network created in the header -->
       <div id="mynetwork"></div>
       
-      <div id="textfield">
-          <label for= "textInput"> Text field</label>
-          <input type="text" id="textInput" name ="textInput" placeholder="text ..."> 
-      </div> 
+      <!-- <div id="textfield">
+          <label for= "elementName"> Element name </label>
+          <input type="text" id="elementName" name ="elementName" placeholder="Name"> 
+      </div>  -->
 
-      <div style="text-align: center;">
-        <button id="button" onclick = change_element()> This is a button. </button> <br><br>
-        <button id="button" onclick = change_element()> This is also a button. </button>
+      <!-- <div id="textfield">
+        <label for= "fromNode"> Edge connection </label>
+        <input type="text" id="fromNode" name ="fromNode" placeholder="From">
+        <input type="text" id="toNode" name ="toNode" placeholder="To"> 
+      </div>  -->
+
+      <fieldset style="text-align: center;">
+        <legend>Inputs</legend>
+        
+        <label for= "elementName"> Element name </label>
+        <input type="text" id="elementName" placeholder="Name"/> <br>
+        
+        <label for= "fromNode"> Edge from </label>
+        <input type="text" id="fromNode" placeholder="From"/> <br>
+      
+        <label for="toNode"> Edge to </label>
+        <input type="text" id="toNode" placeholder="To"/> <br>
+
+      </fieldset>
+
+      <div id="buttonContainer">
+        <button id="button" onclick = createNode()> Create Node </button>
+        <button id="button" onclick = deleteNode()> Delete Node </button>
+      </div>
+
+      <div id="buttonContainer">
+        <button id="button" onclick = createEdge()> Create Edge </button>
+        <button id="button" onclick = deleteEdge()> Delete Edge </button>
       </div>
 
 
       <script source = "jquery-3.6.1.min.js"></script>
-      <script type='text/javascript' src = "visnetwork.js"> //implementation des Networks </script>
+      <script type='text/javascript' src = "vis_network.js"> //implementation des Networks </script>
 
 
       <!-- the script creating the network starts here -->
@@ -73,13 +104,13 @@
         // create an array with nodes
         // nodes have positive unique ids (excluding 0)
         var nodes = new vis.DataSet([
-          { id: 1, label: "Wenig Katzen"},
-          { id: 2, label: "Tolle Karten"},
-          { id: 3, label: "Node 1" },
-          { id: 4, label: "Node 2" },
-          { id: 5, label: "Node 3" },
-          { id: 6, label: "Node 4" },
-          { id: 7, label: "Node 5" },
+          { id: 1, label: "Node 1" },
+          { id: 2, label: "Node 2" },
+          { id: 3, label: "Node 3" },
+          { id: 4, label: "Node 4" },
+          { id: 5, label: "Node 5" },
+          { id: 6, label: "Wenig Katzen"},
+          { id: 7, label: "Tolle Karten"},
         ]);
   
         // create an array with edges
@@ -103,10 +134,13 @@
         var options = {
           edges: {              // options set for all edges
             //arrows: 'to',     // arrows on the "to" end of the edge
+            physics: false,
+            smooth: false,
           },
           nodes: {
             shape: "box",
-            fixed: true,
+            fixed: false,
+            physics: false,
           }
         };
 
@@ -124,18 +158,60 @@
       </script>
 
 
-      <!-- currently the script part with the functions, this is going to be outsourced to visnetwork.js -->
+      <!-- currently the script part with the functions, this is going to be outsourced to vis_network.js -->
       <script>
           //two arrays with the resources. Each index maps the sound to the corrsponding animal
           let array_1 = ["a", "b"] 
           let array_2 = ["c", "d"] 
-          let nextNodeID = 1
-          let nextEdgeID = -1
+          let nextNodeID = 8
+          let nextEdgeID = -7
 
-          function get_the_text(){
-              var txt = document.getElementById("textInput").value;
-              console.log(txt)
+          // function to extract parameters for new node and call vis_network functions
+          function createNode() {
+            var name = getName()
+            data.nodes.add({ id: nextNodeID, label: name})
+
           }
+
+          // function to extract parameters for the node to delete and call vis_network functions
+          function deleteNode(){
+            var name = getName()
+            var possibleNodes = data.nodes.get({
+              filter: function (item) {
+                return (item.label == name);
+              }
+            })
+            data.nodes.remove(possibleNodes[0])
+            
+          }
+
+          // function to extract parameters for new edge and call vis_network functions
+          function createEdge(){
+            var name = getName()
+            var [fromNode, toNode] = getConnection()
+
+
+          }
+
+          // function to extract parameters for the edge to delete and call vis_network functions
+          function deleteEdge(){
+            var name = getName()
+          }
+
+          // function to return the name out of the text input
+          function getName(){
+            var name = document.getElementById("elementName").value;
+            return name
+          }
+
+          // function to return the connecting nodes for the edge
+          function getConnection(){
+            var fromNode = document.getElementById("fromNode").value;
+            var toNode = document.getElementById("toNode").value;
+            return [fromNode, toNode]
+          }
+
+
 
       </script>
 
