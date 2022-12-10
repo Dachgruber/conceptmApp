@@ -85,12 +85,12 @@
 
       <div id="buttonContainer">
         <button id="button" onclick = createNode()> Create Node </button>
-        <button id="button" onclick = deleteNode()> Delete Node </button>
+        <button id="button" onclick = removeNode()> Delete Node </button>
       </div>
 
       <div id="buttonContainer">
         <button id="button" onclick = createEdge()> Create Edge </button>
-        <button id="button" onclick = deleteEdge()> Delete Edge </button>
+        <button id="button" onclick = removeEdge()> Delete Edge </button>
       </div>
 
 
@@ -116,8 +116,8 @@
         // create an array with edges
         // edges have negative unique ids (excluding 0)
         var edges = new vis.DataSet([
-          { id: -1, from: 1, to: 3, label: "Edge 1", arrows:'to,from' },
-          { id: -2, from: 1, to: 2, label: "Edge 2", arrows:'to,from' },
+          { id: -1, from: 1, to: 3, label: "Edge 1" },      // , arrows:'to,from' possible individually
+          { id: -2, from: 1, to: 2, label: "Edge 2" },
           { id: -3, from: 2, to: 4, label: "Edge 3" },
           { id: -4, from: 4, to: 2, label: "Edge 4" },
           { id: -5, from: 2, to: 5, label: "Edge 5" },
@@ -132,10 +132,13 @@
 
 
         var options = {
+          layout: {
+            hierarchical: false,  // this makes two edges on same way visible, but lessens visibility
+          },
           edges: {              // options set for all edges
-            //arrows: 'to',     // arrows on the "to" end of the edge
+            arrows: 'to',     // arrows on the "to" end of the edge
             physics: false,
-            smooth: false,
+            smooth: true,
           },
           nodes: {
             shape: "box",
@@ -160,42 +163,57 @@
 
       <!-- currently the script part with the functions, this is going to be outsourced to vis_network.js -->
       <script>
-          //two arrays with the resources. Each index maps the sound to the corrsponding animal
-          let array_1 = ["a", "b"] 
-          let array_2 = ["c", "d"] 
+          //two counters for the IDs to ensure unique IDs
           let nextNodeID = 8
           let nextEdgeID = -7
 
           // function to extract parameters for new node and call vis_network functions
           function createNode() {
             var name = getName()
-            data.nodes.add({ id: nextNodeID, label: name})
-
+            try {
+              AddNode(name)
+            }
+            catch(err) {
+              alert("Error creating the Node")
+            }
           }
 
           // function to extract parameters for the node to delete and call vis_network functions
-          function deleteNode(){
-            var name = getName()
-            var possibleNodes = data.nodes.get({
-              filter: function (item) {
-                return (item.label == name);
-              }
-            })
-            data.nodes.remove(possibleNodes[0])
+          function removeNode(){
+            try {
+              var name = getName()
+              DeleteNode(name)
+            }
+            catch(err) {
+              alert("Error removing the Node")
+            }
             
           }
 
           // function to extract parameters for new edge and call vis_network functions
           function createEdge(){
-            var name = getName()
-            var [fromNode, toNode] = getConnection()
-
-
+            try {
+              var name = getName()
+              var [fromNode, toNode] = getConnection()
+              AddEdge(name, fromNode, toNode)
+            }
+            catch(err) {
+              alert("Error creating the Edge")
+            }
+            
           }
 
           // function to extract parameters for the edge to delete and call vis_network functions
-          function deleteEdge(){
-            var name = getName()
+          function removeEdge(){
+            try {
+              var name = getName()
+              var [fromNode, toNode] = getConnection()
+              DeleteEdge(name, fromNode, toNode)
+            }
+            catch(err) {
+              alert("Error deleting the Edge")
+            }
+            
           }
 
           // function to return the name out of the text input
