@@ -57,18 +57,8 @@
 
       <!-- get the network created in the header -->
       <div id="mynetwork"></div>
-      
-      <!-- <div id="textfield">
-          <label for= "elementName"> Element name </label>
-          <input type="text" id="elementName" name ="elementName" placeholder="Name"> 
-      </div>  -->
 
-      <!-- <div id="textfield">
-        <label for= "fromNode"> Edge connection </label>
-        <input type="text" id="fromNode" name ="fromNode" placeholder="From">
-        <input type="text" id="toNode" name ="toNode" placeholder="To"> 
-      </div>  -->
-
+      <!-- input text field for values -->
       <fieldset style="text-align: center;">
         <legend>Inputs</legend>
         
@@ -83,19 +73,27 @@
 
       </fieldset>
 
+      <!-- Node buttons -->
       <div id="buttonContainer">
         <button id="button" onclick = createNode()> Create Node </button>
         <button id="button" onclick = removeNode()> Delete Node </button>
       </div>
 
+      <!-- Edge buttons -->
       <div id="buttonContainer">
         <button id="button" onclick = createEdge()> Create Edge </button>
         <button id="button" onclick = removeEdge()> Delete Edge </button>
       </div>
 
+      <!-- Import/Export buttons -->
       <div id="buttonContainer">
         <button id="button" onclick = ImportMap()> Import Map </button>
         <button id="button" onclick = ExportMap()> Export Map </button>
+      </div>
+
+      <!-- Info Button, for debugging purposes -->
+      <div id="buttonContainer">
+        <button id="button" onclick = showInfo()> Info </button>
       </div>
 
 
@@ -234,7 +232,13 @@
             return [fromNode, toNode]
           }
 
-
+          // function logging info for debugging purposes
+          function showInfo(){
+            console.log("Next Node ID: ", nextNodeID)
+            console.log("Next Edge ID: ", nextEdgeID)
+            // console.log(data.nodes)
+            // console.log(data.edges)
+          }
 
       </script>
 

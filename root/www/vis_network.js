@@ -89,10 +89,7 @@ function ImportMap(){
   var jsonFileObject = localStorage.getItem("jsonFile")
 
   var jsonFile = JSON.parse(jsonFileObject)
-  console.log("loading ", jsonFile)
-
-  console.log(jsonFile.nodes)
-  console.log(jsonFile.edges)
+  console.log("loading: ", jsonFile)
 
   // clear the current data
   data.nodes.clear()
@@ -101,7 +98,7 @@ function ImportMap(){
   // set the data from the provided JSON file
   data.nodes.add(jsonFile.nodes[0])
   data.edges.add(jsonFile.edges[0])
-
+  // set the IDs to the new IDs
   nextNodeID = jsonFile.nextNodeID
   nextEdgeID = jsonFile.nextEdgeID
 }
@@ -124,5 +121,5 @@ function ExportMap(){
 
   // store the JSON file in the localStorage
   localStorage.setItem("jsonFile", JSON.stringify(jsonFile));
-  console.log("saving", jsonFile)
+  console.log("saving: ", jsonFile)
 }
