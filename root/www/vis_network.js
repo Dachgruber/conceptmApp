@@ -83,12 +83,46 @@ function DeleteEdge(name, fromNode, toNode){
  * imports a json file to create a new network
  */
 function ImportMap(jsonPath){
+  // var jsonFile = loadJSON(jsonPath)
 
+  // load the JSON file from the storage
+  var jsonFileObject = localStorage.getItem("jsonFile")
+
+  var jsonFile = JSON.parse(jsonFileObject)
+  console.log("loading ", jsonFile)
+
+  console.log(jsonFile.nodes)
+  console.log(jsonFile.edges)
+
+  // clear the current data
+  data.nodes.clear()
+  data.edges.clear()
+
+  // set the data from the provided JSON file
+  data.nodes.add(jsonFile.nodes[0])
+  data.edges.add(jsonFile.edges[0])
+
+  nextNodeID = jsonFile.nextNodeID
+  nextEdgeID = jsonFile.nextEdgeID
 }
 
 /**
  * exports the current network to a json file
  */
 function ExportMap(){
-  return jsonFile
+  // copy the data from the vis network DataSet
+  var nodesCopy = data.nodes.get()
+  var edgesCopy = data.edges.get()
+
+  // store the data in a JSON file
+  var jsonFile = {
+    "nodes": [nodesCopy],
+    "edges": [edgesCopy],
+    "nextNodeID": nextNodeID,
+    "nextEdgeID": nextEdgeID,
+  }
+
+  // store the JSON file in the localStorage
+  localStorage.setItem("jsonFile", JSON.stringify(jsonFile));
+  console.log("saving", jsonFile)
 }

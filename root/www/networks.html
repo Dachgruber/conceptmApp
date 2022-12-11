@@ -4,7 +4,7 @@
     <head> 
         <meta charset="utf-8">
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-        <title>Network</title>
+        <title>Concept Map</title>
 
        <!-- //Download the necessary resources from unpkg  nicer comment-->
         <script
@@ -93,6 +93,11 @@
         <button id="button" onclick = removeEdge()> Delete Edge </button>
       </div>
 
+      <div id="buttonContainer">
+        <button id="button" onclick = ImportMap()> Import Map </button>
+        <button id="button" onclick = ExportMap()> Export Map </button>
+      </div>
+
 
       <script source = "jquery-3.6.1.min.js"></script>
       <script type='text/javascript' src = "vis_network.js"> //implementation des Networks </script>
@@ -118,7 +123,7 @@
         var edges = new vis.DataSet([
           { id: -1, from: 1, to: 3, label: "Edge 1" },      // , arrows:'to,from' possible individually
           { id: -2, from: 1, to: 2, label: "Edge 2" },
-          { id: -3, from: 2, to: 4, label: "Edge 3" },
+          { id: -3, from: 2, to: 7, label: "Edge 3" },
           { id: -4, from: 4, to: 2, label: "Edge 4" },
           { id: -5, from: 2, to: 5, label: "Edge 5" },
           { id: -6, from: 3, to: 3, label: "Edge 6" },
