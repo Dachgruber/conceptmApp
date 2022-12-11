@@ -80,9 +80,9 @@ function DeleteEdge(name, fromNode, toNode){
 } 
 
 /**
- * imports a json file to create a new network
+ * imports a json file from local storage to create a new network
  */
-function ImportMap(jsonPath){
+function ImportMap(){
   // var jsonFile = loadJSON(jsonPath)
 
   // load the JSON file from the storage
@@ -107,7 +107,7 @@ function ImportMap(jsonPath){
 }
 
 /**
- * exports the current network to a json file
+ * exports the current network to a json file in the local storage
  */
 function ExportMap(){
   // copy the data from the vis network DataSet
