@@ -80,9 +80,9 @@ function DeleteEdge(name, fromNode, toNode){
 } 
 
 /**
- * imports a json file from local storage to create a new network
+ * loads a json file from local storage to create a new network
  */
-function ImportMap(){
+function LoadMap(){
   // var jsonFile = loadJSON(jsonPath)
 
   // load the JSON file from the storage
@@ -104,9 +104,9 @@ function ImportMap(){
 }
 
 /**
- * exports the current network to a json file in the local storage
+ * save the current network to a json file in the local storage
  */
-function ExportMap(){
+function SaveMap(){
   // copy the data from the vis network DataSet
   var nodesCopy = data.nodes.get()
   var edgesCopy = data.edges.get()
@@ -122,4 +122,55 @@ function ExportMap(){
   // store the JSON file in the localStorage
   localStorage.setItem("jsonFile", JSON.stringify(jsonFile));
   console.log("saving: ", jsonFile)
+}
+
+/**
+ * imports a json file from local storage to create a new network
+ */
+function ImportMap(){
+  // var jsonFile = loadJSON(jsonPath)
+
+  // import from QR code
+  // using a callback function to stop flow
+  importDataFromQR(processImport)
+}
+
+/**
+ * helper function for import function to stop programm flow
+ */
+function processImport(jsonFileString){
+  var jsonFileObject = JSON.parse(jsonFileString)
+  console.log("importing: ", jsonFileObject)
+
+  // clear the current data
+  data.nodes.clear()
+  data.edges.clear()
+
+  // set the data from the provided JSON file
+  data.nodes.add(jsonFileObject.nodes[0])
+  data.edges.add(jsonFileObject.edges[0])
+  // set the IDs to the new IDs
+  nextNodeID = jsonFileObject.nextNodeID
+  nextEdgeID = jsonFileObject.nextEdgeID
+}
+
+/**
+ * exports the current network to a json file in the local storage
+ */
+function ExportMap(){
+  // copy the data from the vis network DataSet
+  var nodesCopy = data.nodes.get()
+  var edgesCopy = data.edges.get()
+
+  // store the data in a JSON file
+  var jsonFile = {
+    "nodes": [nodesCopy],
+    "edges": [edgesCopy],
+    "nextNodeID": nextNodeID,
+    "nextEdgeID": nextEdgeID,
+  }
+
+  var jsonString = JSON.stringify(jsonFile )
+  console.log("exporting: ", jsonFile)
+  QRScanner.sendDataToQR(jsonString)
 }
