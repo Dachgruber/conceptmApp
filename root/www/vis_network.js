@@ -109,6 +109,8 @@ function LoadMap(){
  * save the current network to a json file in the local storage
  */
 function SaveMap(){
+  // store the current positions in the nodes
+  storePositions()
   // copy the data from the vis network DataSet
   var nodesCopy = data.nodes.get()
   var edgesCopy = data.edges.get()
@@ -119,7 +121,6 @@ function SaveMap(){
     "edges": [edgesCopy],
     "nextNodeID": nextNodeID,
     "nextEdgeID": nextEdgeID,
-    "randomSeed": getSeed(),
   }
 
   // store the JSON file in the localStorage
@@ -163,6 +164,8 @@ function processImport(jsonFileString){
  * exports the current network to a json file in the local storage
  */
 function ExportMap(){
+  // store the current positions in the nodes
+  storePositions()
   // copy the data from the vis network DataSet
   var nodesCopy = data.nodes.get()
   var edgesCopy = data.edges.get()
