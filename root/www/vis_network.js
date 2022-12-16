@@ -101,6 +101,8 @@ function LoadMap(){
   // set the IDs to the new IDs
   nextNodeID = jsonFile.nextNodeID
   nextEdgeID = jsonFile.nextEdgeID
+  // set the seed to the supplied seed
+  layout.randomSeed = jsonFile.randomSeed
 }
 
 /**
@@ -117,6 +119,7 @@ function SaveMap(){
     "edges": [edgesCopy],
     "nextNodeID": nextNodeID,
     "nextEdgeID": nextEdgeID,
+    "randomSeed": getSeed(),
   }
 
   // store the JSON file in the localStorage
@@ -152,6 +155,8 @@ function processImport(jsonFileString){
   // set the IDs to the new IDs
   nextNodeID = jsonFileObject.nextNodeID
   nextEdgeID = jsonFileObject.nextEdgeID
+  // set the seed to the supplied seed
+  layout.randomSeed = jsonFileObject.randomSeed
 }
 
 /**
@@ -168,6 +173,7 @@ function ExportMap(){
     "edges": [edgesCopy],
     "nextNodeID": nextNodeID,
     "nextEdgeID": nextEdgeID,
+    "randomSeed": getSeed(),
   }
 
   var jsonString = JSON.stringify(jsonFile )
