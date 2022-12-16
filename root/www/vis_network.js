@@ -132,7 +132,7 @@ function ImportMap(){
 
   // import from QR code
   // using a callback function to stop flow
-  importDataFromQR(processImport)
+  QRScanner.importDataFromQR(processImport)
 }
 
 /**
