@@ -110,7 +110,7 @@ function LoadMap(){
  */
 function SaveMap(){
   // store the current positions in the nodes
-  storePositions()
+  // storePositions()
   // copy the data from the vis network DataSet
   var nodesCopy = data.nodes.get()
   var edgesCopy = data.edges.get()
@@ -156,8 +156,6 @@ function processImport(jsonFileString){
   // set the IDs to the new IDs
   nextNodeID = jsonFileObject.nextNodeID
   nextEdgeID = jsonFileObject.nextEdgeID
-  // set the seed to the supplied seed
-  layout.randomSeed = jsonFileObject.randomSeed
 }
 
 /**
@@ -165,7 +163,7 @@ function processImport(jsonFileString){
  */
 function ExportMap(){
   // store the current positions in the nodes
-  storePositions()
+  // storePositions()
   // copy the data from the vis network DataSet
   var nodesCopy = data.nodes.get()
   var edgesCopy = data.edges.get()
@@ -176,10 +174,9 @@ function ExportMap(){
     "edges": [edgesCopy],
     "nextNodeID": nextNodeID,
     "nextEdgeID": nextEdgeID,
-    "randomSeed": getSeed(),
   }
 
-  var jsonString = JSON.stringify(jsonFile )
+  var jsonString = JSON.stringify(jsonFile)
   console.log("exporting: ", jsonFile)
   QRScanner.sendDataToQR(jsonString)
 }
