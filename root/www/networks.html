@@ -161,6 +161,10 @@
         // build the network together
         var network = new vis.Network(container, data, options);
 
+        //two counters for the IDs to ensure unique IDs
+        let nextNodeID = 8
+        let nextEdgeID = -7
+
         // save the map to local storage
         SaveMap()
 
@@ -169,9 +173,6 @@
 
       <!-- currently the script part with the functions, this is going to be outsourced to vis_network.js -->
       <script>
-          //two counters for the IDs to ensure unique IDs
-          let nextNodeID = 8
-          let nextEdgeID = -7
 
           // function to extract parameters for new node and call vis_network functions
           function createNode() {
