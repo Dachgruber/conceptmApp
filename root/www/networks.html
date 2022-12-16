@@ -133,19 +133,12 @@
           { id: -6, from: 3, to: 3, label: "Edge 6" },
         ]);
 
-        // example of storage for nodes and edges:
-        // here: node names                          here: edge names
-        // ["Node1","Node2","Node3","Node4","Node5"] [13,12,24,25,33]
-  
-        // create the network elements
-
-
         var options = {
           layout: {
             hierarchical: false,  // this makes two edges on same way visible, but lessens visibility
           },
-          edges: {              // options set for all edges
-            arrows: 'to',     // arrows on the "to" end of the edge
+          edges: {                // options set for all edges
+            arrows: 'to',         // arrows on the "to" end of the edge
             physics: false,
             smooth: true,
           },
@@ -166,6 +159,9 @@
 
         // build the network together
         var network = new vis.Network(container, data, options);
+
+        // save the map to local storage
+        SaveMap()
 
       </script>
 
