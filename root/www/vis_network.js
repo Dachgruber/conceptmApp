@@ -104,7 +104,6 @@ function SaveMap(){
   console.log("saving: ", jsonFile)
 }
 
-
 /**
  * imports a json file from local storage to create a new network
 */
