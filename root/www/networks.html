@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+    <!-- //Header mit Metadaten-->
+    <head> 
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <title>Concept Map</title>
+
+       <!-- //Download the necessary resources from unpkg  nicer comment-->
+        <script
+          type="text/javascript"
+          src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"
+        ></script>
+
+        <!-- //create a new canvas -->
+        <style type="text/css">
+
+          #title{
+            text-align: center;
+            color: blueviolet;
+          }
+
+          #mynetwork {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 2.5em;
+            width: 95%;
+            height: 400px;
+            border: 1px solid lightgray;
+          }
+
+          #button {
+            text-align: center;
+            font-size: 20px;
+            margin-right: 0.1em;
+          }
+
+          #buttonContainer {
+            text-align: center;
+            margin-top: 1em;
+            margin-bottom: 1em;
+          }
+
+          #textfield {
+            text-align: center;
+            margin-bottom: 1.0em;
+          }
+
+        </style>
+
+    </head>
+
+    <body style="background-color:whitesmoke; height:100%;">
+      
+      <h2 id="title"> Network Container </h2>
+
+      <!-- get the network created in the header -->
+      <div id="mynetwork"></div>
+
+      <!-- input text field for values -->
+      <fieldset style="text-align: center;">
+        <legend>Inputs</legend>
+        
+        <label for= "elementName"> Element name </label>
+        <input type="text" id="elementName" placeholder="Name"/> <br>
+        
+        <label for= "fromNode"> Edge from </label>
+        <input type="text" id="fromNode" placeholder="From"/> <br>
+      
+        <label for="toNode"> Edge to </label>
+        <input type="text" id="toNode" placeholder="To"/> <br>
+
+      </fieldset>
+
+      <!-- Node buttons -->
+      <div id="buttonContainer">
+        <button id="button" onclick = createNode()> Create Node </button>
+        <button id="button" onclick = removeNode()> Delete Node </button>
+      </div>
+
+      <!-- Edge buttons -->
+      <div id="buttonContainer">
+        <button id="button" onclick = createEdge()> Create Edge </button>
+        <button id="button" onclick = removeEdge()> Delete Edge </button>
+      </div>
+
+      <!-- Import/Export buttons -->
+      <div id="buttonContainer">
+        <button id="button" onclick = LoadMap()> Load Map </button>
+        <button id="button" onclick = SaveMap()> Save Map </button>
+      </div>
+
+      <!-- Import/Export buttons -->
+      <div id="buttonContainer">
+        <button id="button" onclick = ImportMap()> Import Map </button>
+        <button id="button" onclick = ExportMap()> Export Map </button>
+      </div>
+
+      <!-- Info Button, for debugging purposes -->
+      <div id="buttonContainer">
+        <button id="button" onclick = showInfo()> Info </button>
+      </div>
+
+
+      <script source = "jquery-3.6.1.min.js"></script>
+      <script type='text/javascript' src = "vis_network.js"> //implementation des Networks </script>
+
+
+      <!-- the script creating the network starts here -->
+      <script type="text/javascript">
+
+        // create an array with nodes
+        // nodes have positive unique ids (excluding 0)
+        var nodes = new vis.DataSet([
+          { id: 1, label: "Node 1" },
+          { id: 2, label: "Node 2" },
+          { id: 3, label: "Node 3" },
+          { id: 4, label: "Node 4" },
+          { id: 5, label: "Node 5" },
+          { id: 6, label: "Wenig Katzen"},
+          { id: 7, label: "Tolle Karten"},
+        ]);
+  
+        // create an array with edges
+        // edges have negative unique ids (excluding 0)
+        var edges = new vis.DataSet([
+          { id: -1, from: 1, to: 3, label: "Edge 1" },      // , arrows:'to,from' possible individually
+          { id: -2, from: 1, to: 2, label: "Edge 2" },
+          { id: -3, from: 2, to: 7, label: "Edge 3" },
+          { id: -4, from: 4, to: 2, label: "Edge 4" },
+          { id: -5, from: 2, to: 5, label: "Edge 5" },
+          { id: -6, from: 3, to: 3, label: "Edge 6" },
+        ]);
+
+        // example of storage for nodes and edges:
+        // here: node names                          here: edge names
+        // ["Node1","Node2","Node3","Node4","Node5"] [13,12,24,25,33]
+  
+        // create the network elements
+
+
+        var options = {
+          layout: {
+            hierarchical: false,  // this makes two edges on same way visible, but lessens visibility
+          },
+          edges: {              // options set for all edges
+            arrows: 'to',     // arrows on the "to" end of the edge
+            physics: false,
+            smooth: true,
+          },
+          nodes: {
+            shape: "box",
+            fixed: false,
+            physics: false,
+          }
+        };
+
+        var container = document.getElementById("mynetwork");
+
+        var data = {
+          nodes: nodes,
+          edges: edges,
+        };
+
+
+        // build the network together
+        var network = new vis.Network(container, data, options);
+
+      </script>
+
+
+      <!-- currently the script part with the functions, this is going to be outsourced to vis_network.js -->
+      <script>
+          //two counters for the IDs to ensure unique IDs
+          let nextNodeID = 8
+          let nextEdgeID = -7
+
+          // function to extract parameters for new node and call vis_network functions
+          function createNode() {
+            var name = getName()
+            try {
+              AddNode(name)
+            }
+            catch(err) {
+              alert("Error creating the Node")
+            }
+          }
+
+          // function to extract parameters for the node to delete and call vis_network functions
+          function removeNode(){
+            try {
+              var name = getName()
+              DeleteNode(name)
+            }
+            catch(err) {
+              alert("Error removing the Node")
+            }
+            
+          }
+
+          // function to extract parameters for new edge and call vis_network functions
+          function createEdge(){
+            try {
+              var name = getName()
+              var [fromNode, toNode] = getConnection()
+              AddEdge(name, fromNode, toNode)
+            }
+            catch(err) {
+              alert("Error creating the Edge")
+            }
+            
+          }
+
+          // function to extract parameters for the edge to delete and call vis_network functions
+          function removeEdge(){
+            try {
+              var name = getName()
+              var [fromNode, toNode] = getConnection()
+              DeleteEdge(name, fromNode, toNode)
+            }
+            catch(err) {
+              alert("Error deleting the Edge")
+            }
+            
+          }
+
+          // function to return the name out of the text input
+          function getName(){
+            var name = document.getElementById("elementName").value;
+            return name
+          }
+
+          // function to return the connecting nodes for the edge
+          function getConnection(){
+            var fromNode = document.getElementById("fromNode").value;
+            var toNode = document.getElementById("toNode").value;
+            return [fromNode, toNode]
+          }
+
+          // function logging info for debugging purposes
+          function showInfo(){
+            console.log("Next Node ID: ", nextNodeID)
+            console.log("Next Edge ID: ", nextEdgeID)
+            // console.log(data.nodes)
+            // console.log(data.edges)
+          }
+
+      </script>
+
+
+      <!-- black magic, very important, such danger -->
+      <script type="text/javascript" src="cordova.js"></script>
+
+    </body>
+</html>
