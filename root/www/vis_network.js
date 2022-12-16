@@ -83,14 +83,89 @@ function DeleteEdge(name, fromNode, toNode){
  * loads a json file from local storage to create a new network
  */
 function LoadMap(){
-  // var jsonFile = loadJSON(jsonPath)
-
   // load the JSON file from the storage
   var jsonFileObject = localStorage.getItem("jsonFile")
 
   var jsonFile = JSON.parse(jsonFileObject)
   console.log("loading: ", jsonFile)
+  // set the data to the contents of the json file
+  SetData(jsonFile)
+}
 
+/**
+ * save the current network to a json file in the local storage
+ */
+function SaveMap(){
+  // create a json file with network contents
+  var jsonFile = CreateData()
+
+  // store the JSON file in the localStorage
+  localStorage.setItem("jsonFile", JSON.stringify(jsonFile));
+  console.log("saving: ", jsonFile)
+}
+
+
+/**
+ * imports a json file from local storage to create a new network
+*/
+function ImportMap(){
+  // import from QR code
+  // using a callback function to stop flow
+  QRScanner.importDataFromQR(processImport)
+}
+
+/**
+ * helper function for import function to stop programm flow
+ * @param {jsonFileString} String version of the json file to be used as data 
+*/
+function processImport(jsonFileString){
+  var jsonFile = JSON.parse(jsonFileString)
+  console.log("importing: ", jsonFile)
+  
+  // set the network data to the contents of the json file
+  SetData(jsonFile)
+}
+
+/**
+ * exports the current network to a json file in the local storage
+*/
+function ExportMap(){
+  // create a json file with network contents
+  var jsonFile = CreateData()
+  
+  var jsonString = JSON.stringify(jsonFile)
+  console.log("exporting: ", jsonFile)
+  // create the data as an QR code
+  QRScanner.sendDataToQR(jsonString)
+}
+
+/**
+ * creates the network data as jsonFile
+ * @return the json file containing network data 
+ */
+function CreateData(){
+  // store the current positions in the nodes
+  network.storePositions()
+  // copy the data from the vis network DataSet
+  var nodesCopy = data.nodes.get()
+  var edgesCopy = data.edges.get()
+
+  // store the data in a JSON file
+  var jsonFile = {
+    "nodes": [nodesCopy],
+    "edges": [edgesCopy],
+    "nextNodeID": nextNodeID,
+    "nextEdgeID": nextEdgeID,
+  }
+
+  return jsonFile
+}
+
+/**
+ * sets the current network data to the contents of the jsonFile
+ * @param {jsonFile} jsonFile 
+ */
+function SetData(jsonFile){
   // clear the current data
   data.nodes.clear()
   data.edges.clear()
@@ -101,82 +176,4 @@ function LoadMap(){
   // set the IDs to the new IDs
   nextNodeID = jsonFile.nextNodeID
   nextEdgeID = jsonFile.nextEdgeID
-  // set the seed to the supplied seed
-  layout.randomSeed = jsonFile.randomSeed
-}
-
-/**
- * save the current network to a json file in the local storage
- */
-function SaveMap(){
-  // store the current positions in the nodes
-  // storePositions()
-  // copy the data from the vis network DataSet
-  var nodesCopy = data.nodes.get()
-  var edgesCopy = data.edges.get()
-
-  // store the data in a JSON file
-  var jsonFile = {
-    "nodes": [nodesCopy],
-    "edges": [edgesCopy],
-    "nextNodeID": nextNodeID,
-    "nextEdgeID": nextEdgeID,
-  }
-
-  // store the JSON file in the localStorage
-  localStorage.setItem("jsonFile", JSON.stringify(jsonFile));
-  console.log("saving: ", jsonFile)
-}
-
-/**
- * imports a json file from local storage to create a new network
- */
-function ImportMap(){
-  // var jsonFile = loadJSON(jsonPath)
-
-  // import from QR code
-  // using a callback function to stop flow
-  QRScanner.importDataFromQR(processImport)
-}
-
-/**
- * helper function for import function to stop programm flow
- */
-function processImport(jsonFileString){
-  var jsonFileObject = JSON.parse(jsonFileString)
-  console.log("importing: ", jsonFileObject)
-
-  // clear the current data
-  data.nodes.clear()
-  data.edges.clear()
-
-  // set the data from the provided JSON file
-  data.nodes.add(jsonFileObject.nodes[0])
-  data.edges.add(jsonFileObject.edges[0])
-  // set the IDs to the new IDs
-  nextNodeID = jsonFileObject.nextNodeID
-  nextEdgeID = jsonFileObject.nextEdgeID
-}
-
-/**
- * exports the current network to a json file in the local storage
- */
-function ExportMap(){
-  // store the current positions in the nodes
-  // storePositions()
-  // copy the data from the vis network DataSet
-  var nodesCopy = data.nodes.get()
-  var edgesCopy = data.edges.get()
-
-  // store the data in a JSON file
-  var jsonFile = {
-    "nodes": [nodesCopy],
-    "edges": [edgesCopy],
-    "nextNodeID": nextNodeID,
-    "nextEdgeID": nextEdgeID,
-  }
-
-  var jsonString = JSON.stringify(jsonFile)
-  console.log("exporting: ", jsonFile)
-  QRScanner.sendDataToQR(jsonString)
 }
