@@ -183,16 +183,19 @@
       <!-- currently the script part with the functions, this is going to be outsourced to vis_network.js -->
       <script>
 
+
           // function to extract parameters for new node and call vis_network functions
           function createNode() {
-            var name = getName()
-            try {
-              AddNode(name)
-            }
-            catch(err) {
-              alert("Error creating the Node")
-            }
-          }
+            
+             editEdgeMode()
+          //   var name = getName()
+          //   try {
+          //     AddNode(name)
+          //   }
+          //   catch(err) {
+          //     alert("Error creating the Node")
+          //   }
+          // }
 
           // function to extract parameters for the node to delete and call vis_network functions
           function removeNode(){
