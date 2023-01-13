@@ -10,7 +10,7 @@ plugins/
 !.gitkeep
 #and the readme
 !readme.md
-#last, we only want to sync js, html and the www directory
+#last, we only want to sync js, css, html and everything inside the www directory
 !*.js
 !*.html
 !*.css
