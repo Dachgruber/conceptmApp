@@ -13,5 +13,6 @@ plugins/
 #last, we only want to sync js, html and the www directory
 !*.js
 !*.html
+!*.css
 !resources/**
-!www/
+!www/**
