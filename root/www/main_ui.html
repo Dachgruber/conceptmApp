@@ -21,19 +21,29 @@
         <!-- <a href = "networks.html"> Network Example</a> -->
 
         <div id="content">Results will go here
-            <div id="London" class="tabcontent">
+            <div id="tab1" class="tabcontent">
                 <h3>London</h3>
                 <p>London is the capital city of England.</p>
             </div>
             
-            <div id="Paris" class="tabcontent">
+            <div id="tab2" class="tabcontent">
                 <h3>Paris</h3>
                 <p>Paris is the capital of France.</p>
             </div>
             
-            <div id="Tokyo" class="tabcontent">
+            <div id="tab3" class="tabcontent">
                 <h3>Tokyo</h3>
                 <p>Tokyo is the capital of Japan.</p>
+            </div>
+            
+            <div id="tab4" class="tabcontent">
+                <h3>Hamburg</h3>
+                <p>Hamburg is not the capital of Germany</p>
+            </div>
+            
+            <div id="tab5" class="tabcontent">
+                <h3>Kiel</h3>
+                <p>Not enough cats in these streets</p>
             </div>
         </div>
         
@@ -143,9 +153,33 @@
 
             offsetMenuBorder(activeItem, menuBorder);
 
+            /**
+            * changes the displayed content of the tabbar
+            */
+            function changeContent(item, index){
+                let tabnames = ['tab1','tab2','tab3','tab4','tab5'];
+                let currentTab = tabnames[index];
+                // Declare all variables
+                const tabcontent = document.getElementsByClassName("tabcontent");
+                const tablinks = document.getElementsByClassName("menu__item");
+
+                // Get all elements with class="tabcontent" and hide them
+                for (let i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                // Show the current tab
+                document.getElementById(currentTab).style.display = "block";
+            } 
+
+
+            function clickWrapper(item, index){
+                clickItem(item, index); //every button gets the clickItem function, that handles the pretty stuff
+                changeContent(item, index); //but we also need to change the displayed content
+            }
+
             menuItems.forEach((item, index) => {
 
-                item.addEventListener("click", () => clickItem(item, index));
+                item.addEventListener("click", () => clickWrapper(item, index));
                 
             })
 

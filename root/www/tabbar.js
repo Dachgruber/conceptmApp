@@ -40,21 +40,24 @@ function offsetMenuBorder(element, menuBorder) {
 
 offsetMenuBorder(activeItem, menuBorder);
 
+/**
+ * changes the displayed content of the tabbar
+*/
 function changeContent(item, index){
-    cityNames = ['Lodon','Paris','Tokyo'];
+    alert("changeFunction called");
+    cityNames = ['London','Paris','Tokyo'];
     cityName = cityNames[index];
     // Declare all variables
-    var i, tabcontent, tablinks;
+    const tabcontent = document.getElementsByClassName("tabcontent");
+    const tablinks = document.getElementsByClassName("menu__item");
 
     // Get all elements with class="tabcontent" and hide them
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
+    for (let i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
       }
 
   // Get all elements with class="menu__item" and remove the class "active"
-    tablinks = document.getElementsByClassName("menu__item");
-    for (i = 0; i < tablinks.length; i++) {
+    for (let i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
 
@@ -65,8 +68,8 @@ function changeContent(item, index){
 
 
 function clickWrapper(item, index){
-    clickItem(item, index); //every button gets the clickItem function, that handles the pretty stuff
     changeContent(item, index); //but we also need to change the displayed content
+    clickItem(item, index); //every button gets the clickItem function, that handles the pretty stuff
 }
 
 menuItems.forEach((item, index) => {

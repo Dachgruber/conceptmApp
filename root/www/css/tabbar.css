@@ -140,7 +140,7 @@ body{
 }
 
 
-@media screen and (max-width: 50em) {
+@media screen and (max-width: 480px) {
     .menu{
         font-size: .8em;
     }
@@ -152,7 +152,7 @@ body{
  }
 
 #content {
-    height: 1200px; /* Changed this height */
+    height: 667px; /* Changed this height */
     padding-bottom:60px;
 }
 
