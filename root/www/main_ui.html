@@ -20,10 +20,8 @@
         <!-- hyperlink to the example page in case of auto redirect fail -->
         <!-- <a href = "networks.html"> Network Example</a> -->
 
-        <div id="content">Results will go here
+        <div id="content">
             <div id="tab1" class="tabcontent">
-                <h3>London</h3>
-                <p>London is the capital city of England.</p>
             </div>
             
             <div id="tab2" class="tabcontent">
@@ -109,86 +107,8 @@
     <!-- </div> -->
         <link rel="stylesheet" href="css/tabbar.css" media="screen" /> <!--import for css stylesheet-->
         
-        <!-- <script type = "text/javascript" src =/tabbar.js"></script> import for js functionality -->
-        <script>
-            // Designed by:  Mauricio Bucardo
-            // Original image:
-            // https://dribbble.com/shots/5619509-Animated-Tab-Bar
-
-            "use strict"; 
-
-            const body = document.body;
-            const bgColorsBody = ["#ffb457", "#ff96bd", "#9999fb", "#ffe797", "#cffff1"];
-            const menu = body.querySelector(".menu");
-            const menuItems = menu.querySelectorAll(".menu__item");
-            const menuBorder = menu.querySelector(".menu__border");
-            let activeItem = menu.querySelector(".active");
-
-            function clickItem(item, index) {
-
-                menu.style.removeProperty("--timeOut");
-                
-                if (activeItem == item) return;
-                
-                if (activeItem) {
-                    activeItem.classList.remove("active");
-                }
-
-                
-                item.classList.add("active");
-                body.style.backgroundColor = bgColorsBody[index];
-                activeItem = item;
-                offsetMenuBorder(activeItem, menuBorder);
-                
-                
-            }
-
-            function offsetMenuBorder(element, menuBorder) {
-
-                const offsetActiveItem = element.getBoundingClientRect();
-                const left = Math.floor(offsetActiveItem.left - menu.offsetLeft - (menuBorder.offsetWidth  - offsetActiveItem.width) / 2) +  "px";
-                menuBorder.style.transform = `translate3d(${left}, 0 , 0)`;
-
-            }
-
-            offsetMenuBorder(activeItem, menuBorder);
-
-            /**
-            * changes the displayed content of the tabbar
-            */
-            function changeContent(item, index){
-                let tabnames = ['tab1','tab2','tab3','tab4','tab5'];
-                let currentTab = tabnames[index];
-                // Declare all variables
-                const tabcontent = document.getElementsByClassName("tabcontent");
-                const tablinks = document.getElementsByClassName("menu__item");
-
-                // Get all elements with class="tabcontent" and hide them
-                for (let i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
-                }
-                // Show the current tab
-                document.getElementById(currentTab).style.display = "block";
-            } 
-
-
-            function clickWrapper(item, index){
-                clickItem(item, index); //every button gets the clickItem function, that handles the pretty stuff
-                changeContent(item, index); //but we also need to change the displayed content
-            }
-
-            menuItems.forEach((item, index) => {
-
-                item.addEventListener("click", () => clickWrapper(item, index));
-                
-            })
-
-            window.addEventListener("resize", () => {
-                offsetMenuBorder(activeItem, menuBorder);
-                menu.style.setProperty("--timeOut", "none");
-            });
-
-        </script>
+        <script type = "text/javascript" src ="tabbar.js"></script> <!--import for js functionality-->
+        
         <!-- jquery import -->
         <script source = "jquery-3.6.1.min.js"></script>
 
