@@ -15,11 +15,12 @@ let activeItem = menu.querySelector(".active");
 
 //we use this to load the HTML pages from the other pages
 function load_tabs() {
-    document.getElementById("tab1").innerHTML='<object type="text/html" data="networks.html" ></object>';
-    document.getElementById("tab2").innerHTML='<object type="text/html" data="qrcode_example.html" ></object>';
-    document.getElementById("tab3").innerHTML='<object type="text/html" data="home.html" ></object>';
-    document.getElementById("tab4").innerHTML='<object type="text/html" data="home.html" ></object>';
-    document.getElementById("tab5").innerHTML='<object type="text/html" data="home.html" ></object>';
+    document.getElementById("tab0").innerHTML='<iframe src="networks.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
+    document.getElementById("tab1").innerHTML='<iframe src="qrcode_example.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
+    document.getElementById("tab2").innerHTML='<iframe src="home.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
+    document.getElementById("tab3").innerHTML='<iframe src="home.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
+    document.getElementById("tab4").innerHTML='<iframe src="home.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
+    
 }
 
 function clickItem(item, index) {
@@ -54,8 +55,8 @@ offsetMenuBorder(activeItem, menuBorder);
 /**
 * changes the displayed content of the tabbar
 */
-function changeContent(item, index) {
-    let tabnames = ['tab1', 'tab2', 'tab3', 'tab4', 'tab5'];
+function changeContent(index) {
+    let tabnames = ['tab0', 'tab1', 'tab2', 'tab3', 'tab4'];
     let currentTab = tabnames[index];
     //clear the canvas
     cleartabs();
@@ -78,7 +79,7 @@ function cleartabs(){
 
 function clickWrapper(item, index) {
     clickItem(item, index); //every button gets the clickItem function, that handles the pretty stuff
-    changeContent(item, index); //but we also need to change the displayed content
+    changeContent(index); //but we also need to change the displayed content
 }
 
 menuItems.forEach((item, index) => {
@@ -95,3 +96,5 @@ window.addEventListener("resize", () => {
 //on startup, we clear all tabs out and initiate the content
 load_tabs();
 cleartabs();
+//also, load the first page
+changeContent(0)
