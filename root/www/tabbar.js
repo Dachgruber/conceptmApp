@@ -6,7 +6,7 @@
 "use strict";
 
 const body = document.body;
-const bgColorsBody = ["#ffb457", "#ff96bd", "#9999fb", "#ffe797", "#cffff1"];
+const bgColorsBody = ["#003049", "#ff96bd", "#9999fb", "#ffe797", "#cffff1"];
 const menu = body.querySelector(".menu");
 const menuItems = menu.querySelectorAll(".menu__item");
 const menuBorder = menu.querySelector(".menu__border");
@@ -52,17 +52,36 @@ function offsetMenuBorder(element, menuBorder) {
 
 offsetMenuBorder(activeItem, menuBorder);
 
+let oldTabInt = 0; //we start off with the first tab
 /**
-* changes the displayed content of the tabbar
+* changes the displayed content of the tabbar with short fade animation
 */
 function changeContent(index) {
     let tabnames = ['tab0', 'tab1', 'tab2', 'tab3', 'tab4'];
-    let currentTab = tabnames[index];
-    //clear the canvas
-    cleartabs();
+    let newTab = document.getElementById(tabnames[index]);
+    let oldTab = document.getElementById(tabnames[oldTabInt]);
 
-    // Show the current tab
-    document.getElementById(currentTab).style.display = "block";
+    //first, lay both tabs on top of each other
+    oldTab.style.display = "block";
+    newTab.style.display = "block";
+    
+    //then play the animation
+    newTab.classList.remove("fadeIn");
+    newTab.classList.remove("fadeOut");
+    newTab.classList.add("fadeIn");
+    oldTab.classList.remove("fadeIn");
+    oldTab.classList.remove("fadeOut");
+    oldTab.classList.add("fadeOut");   
+
+    //last, edit the z coordinate to correctly manage foreground/background
+    newTab.style.zIndex = "2";
+    oldTab.style.zIndex = "1";
+
+    //we hide the old tab...
+    oldTab.style.display = "none";
+    //... and save the current displayed tab to act as the next oldTab
+    oldTabInt = index;
+    
 }
 /**
  * puts all tabs on invisible
@@ -96,5 +115,7 @@ window.addEventListener("resize", () => {
 //on startup, we clear all tabs out and initiate the content
 load_tabs();
 cleartabs();
-//also, load the first page
-changeContent(0)
+//also, load the first page defined at the top
+document.getElementById('tab0').style.display = "block";
+
+//changeContent(oldTabInt)

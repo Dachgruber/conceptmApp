@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Crimson+Text&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Work+Sans&display=swap");
 body {
-  background: #28305a;
   height: 100vh;
   margin: 0 20px;
 }
@@ -60,7 +59,7 @@ body {
   top: 300px;
   width: 46px;
 }
-.edgeIcon {
+.cameraIcon {
   left: 288px;
   position: absolute;
   top: 258px;
@@ -146,3 +145,33 @@ body {
 .active .hamburger path:nth-child(5) {
   transform: rotate(-45deg);
 }
+
+/* stylisation of the network below */
+
+#mynetwork {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2.5em;
+  width: 100%;
+  height: 40em;
+  border: none;
+}
+
+#button {
+  text-align: center;
+  font-size: 20px;
+  margin-right: 0.1em;
+}
+
+#buttonContainer {
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+#textfield {
+  text-align: center;
+  margin-bottom: 1.0em;
+}
+

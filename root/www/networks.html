@@ -99,19 +99,29 @@
       <!-- the script creating the network starts here -->
       <script type="text/javascript">
 
+        /**
+         * assign a random Colour from the colour palette
+        */
+        function assignRandomColour() {
+          const colours = ['rgba(214, 40, 40,1)','rgba(247, 127, 0,1)','rgba(252, 191, 73,1)'];
+          let random = Math.floor(Math.random() * (colours.length)); 
+          console.log(random);
+          return colours[random];
+        }
+
         // create an array with nodes
         // nodes have positive unique ids (excluding 0)
         var nodes = new vis.DataSet([
-          { id: 1, label: "saure Lösung", x: -354, y: 1 },
-          { id: 2, label: "Oxonium-Ionen", x: -215, y: 147 },
-          { id: 3, label: "Säure", x: -159, y: 55 },
-          { id: 4, label: "Protonendonator", x: -187, y: -37 },
-          { id: 5, label: "Säure-Base-Paar", x: -8, y: 144 },
-          { id: 6, label: "Säure-Base-Reaktion", x: 14, y: -40},
-          { id: 7, label: "Base", x: 153, y: 64},
-          { id: 8, label: "Protonenakzeptor", x: 215, y: -65},
-          { id: 9, label: "basische Lösung", x: 390, y: -13},
-          { id: 10, label: "Hydroxid-Ionen", x: 256, y: 152},
+          { id: 1, label: "saure Lösung", x: -354, y: 1, color: assignRandomColour()},
+          { id: 2, label: "Oxonium-Ionen", x: -215, y: 147, color: assignRandomColour()},
+          { id: 3, label: "Säure", x: -159, y: 55, color: assignRandomColour()},
+          { id: 4, label: "Protonendonator", x: -187, y: -37 , color: assignRandomColour()},
+          { id: 5, label: "Säure-Base-Paar", x: -8, y: 144 , color: assignRandomColour()},
+          { id: 6, label: "Säure-Base-Reaktion", x: 14, y: -40, color: assignRandomColour()},
+          { id: 7, label: "Base", x: 153, y: 64, color: assignRandomColour()},
+          { id: 8, label: "Protonenakzeptor", x: 215, y: -65, color: assignRandomColour()},
+          { id: 9, label: "basische Lösung", x: 390, y: -13, color: assignRandomColour()},
+          { id: 10, label: "Hydroxid-Ionen", x: 256, y: 152, color: assignRandomColour()},
         ]);
   
         // create an array with edges

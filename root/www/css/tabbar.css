@@ -162,4 +162,31 @@ body{
     bottom:0;
     width:100%;
     height:60px;
- }
+}
+
+@keyframes in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes out {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+.fadeIn {
+    animation: in 0.5s;
+  }
+  
+.fadeOut {
+    animation: out 0.5s;
+    animation-fill-mode: forwards;
+  }
