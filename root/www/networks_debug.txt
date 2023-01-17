@@ -1,0 +1,43 @@
+<!-- input text field for values -->
+      <fieldset style="text-align: center;">
+        <legend>Inputs</legend>
+        
+        <label for= "elementName"> Element name </label>
+        <input type="text" id="elementName" placeholder="Name"/> <br>
+        
+        <label for= "fromNode"> Edge from </label>
+        <input type="text" id="fromNode" placeholder="From"/> <br>
+      
+        <label for="toNode"> Edge to </label>
+        <input type="text" id="toNode" placeholder="To"/> <br>
+
+      </fieldset>
+
+      <!-- Node buttons -->
+      <div id="buttonContainer">
+        <button id="button" onclick = createNode()> Create Node </button>
+        <button id="button" onclick = removeNode()> Delete Node </button>
+      </div>
+
+      <!-- Edge buttons -->
+      <div id="buttonContainer">
+        <button id="button" onclick = createEdge()> Create Edge </button>
+        <button id="button" onclick = removeEdge()> Delete Edge </button>
+      </div>
+
+      <!-- Import/Export buttons -->
+      <div id="buttonContainer">
+        <button id="button" onclick = LoadMap()> Load Map </button>
+        <button id="button" onclick = SaveMap()> Save Map </button>
+      </div>
+
+      <!-- Import/Export buttons -->
+      <div id="buttonContainer">
+        <button id="button" onclick = ImportMap()> Import Map </button>
+        <button id="button" onclick = ExportMap()> Export Map </button>
+      </div>
+
+      <!-- Info Button, for debugging purposes -->
+      <div id="buttonContainer">
+        <button id="button" onclick = showInfo()> Info </button>
+      </div>
