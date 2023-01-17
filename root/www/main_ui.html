@@ -13,12 +13,12 @@
         <title>Network</title>
     </head>
 
-    <!-- background style  -->
+    <!-- background style, later modified by the tabbar -->
     <body style="background-color:beige  ;height:100%;">
-    <!-- <div id = "con"> -->
-
-        <!-- hyperlink to the example page in case of auto redirect fail -->
-        <!-- <a href = "networks.html"> Network Example</a> -->
+        <!-- Instructions for the tabbar to add a new tab:
+                -add a new tab-div inside the content div below
+                -add a new button in the menubar div and edit the icon 
+                -head to the tabbar.js and add a new tab inside the loadtabs() and change_content() functions-->
 
         <!-- every tab gets its own div -->
         <div id="content">
@@ -29,59 +29,55 @@
             <div id="tab4" class="tabcontent"></div>
         </div>
         
-        <!-- everything for the menubar stylisation -->
+        <!-- everything for the menubar stylisation. For more tabs on the tabbar: duplicate one button tag and edit the icon -->
         <div id="menubar">
             <menu class="menu">
         
                 <button class="menu__item active" style="--bgColorItem: #ff8c00;" >
-                <!-- <svg class="icon" viewBox="0 0 24 24">
-                    <path d="M3.8,6.6h16.4"/>
-                    <path d="M20.2,12.1H3.8"/>
-                    <path d="M3.8,17.5h16.4"/>
-                    
-                </svg> -->
-                <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-4.5a1 1 0 1 1 0-2H20V6H4v3a1 1 0 1 1-2 0V6z" fill="#000"/><path fill-rule="evenodd" clip-rule="evenodd" d="M13.555 12.168a1 1 0 0 1 .277 1.387l-3 4.5a1 1 0 0 1-1.538.153l-.007-.006a6.155 6.155 0 0 0-.78-.62C7.996 17.24 7.45 17 7 17c-1.027 0-1.611.296-2.01.735-.442.486-.771 1.271-1.01 2.461a1 1 0 1 1-1.96-.392c.262-1.31.682-2.525 1.49-3.414C4.361 15.454 5.528 15 7 15c1.05 0 2.005.51 2.617.918l.162.11 2.389-3.583a1 1 0 0 1 1.387-.277zM9 12a2 2 0 1 0-4 0 2 2 0 0 0 4 0z" fill="#000"/></svg>
+                    <!-- teacher icon -->
+                <svg class="icon" viewBox="0 0 24 24" >
+                    <path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-4.5a1 1 0 1 1 0-2H20V6H4v3a1 1 0 1 1-2 0V6z"/>
+                    <path d="M13.555 12.168a1 1 0 0 1 .277 1.387l-3 4.5a1 1 0 0 1-1.538.153l-.007-.006a6.155 
+                    6.155 0 0 0-.78-.62C7.996 17.24 7.45 17 7 17c-1.027 0-1.611.296-2.01.735-.442.486-.771 1.271-1.01 2.461a1 
+                    1 0 1 1-1.96-.392c.262-1.31.682-2.525 1.49-3.414C4.361 15.454 5.528 15 7 15c1.05 0 2.005.51 
+                    2.617.918l.162.11 2.389-3.583a1 1 0 0 1 1.387-.277zM9 12a2 2 0 1 0-4 0 2 2 0 0 0 4 0z"/>
+                </svg>
+                
                 </button>
             
                 <button class="menu__item" style="--bgColorItem: #f54888;">
-                <!-- <svg class="icon" viewBox="0 0 24 24">
-                    <path  d="M6.7,4.8h10.7c0.3,0,0.6,0.2,0.7,0.5l2.8,7.3c0,0.1,0,0.2,0,0.3v5.6c0,0.4-0.4,0.8-0.8,0.8H3.8
-                    C3.4,19.3,3,19,3,18.5v-5.6c0-0.1,0-0.2,0.1-0.3L6,5.3C6.1,5,6.4,4.8,6.7,4.8z"/>
-                    <path  d="M3.4,12.9H8l1.6,2.8h4.9l1.5-2.8h4.6"/>
-                </svg> -->
-                <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 12.5c1-1 2.5-2.5 6-2.5s4.5 1 6 2.5" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="6" r="3" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 21v-4l-8-2v4M12 21v-4l8-2v4" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <!-- student icon -->
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M6 12.5c1-1 2.5-2.5 6-2.5s4.5 1 6 2.5"/>
+                    <circle cx="12" cy="6" r="3"/>
+                    <path d="M12 21v-4l-8-2v4M12 21v-4l8-2v4"/>
+                </svg>
                 </button>
             
                 <button class="menu__item" style="--bgColorItem: #4343f5;" >
-                <!-- <svg class="icon" viewBox="0 0 24 24">
-                <path  d="M3.4,11.9l8.8,4.4l8.4-4.4"/>
-                <path  d="M3.4,16.2l8.8,4.5l8.4-4.5"/>
-                <path  d="M3.7,7.8l8.6-4.5l8,4.5l-8,4.3L3.7,7.8z"/> -->
-                <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 14.5V21l4-2 4 2v-6.5" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="12" cy="9" rx="7" ry="6" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 11h-4s.995-.213 2-1c.679-.531 1.5-1.597 1.5-2 0-1-1-1.5-1.5-1.5s-1.5 0-2 1" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <!-- medal icon -->
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M8 14.5V21l4-2 4 2v-6.5" />
+                    <ellipse cx="12" cy="9" rx="7" ry="6" />
+                    <path d="M14 11h-4s.995-.213 2-1c.679-.531 1.5-1.597 1.5-2 0-1-1-1.5-1.5-1.5s-1.5 0-2 1" />
+                </svg>
                 </button>
             
                 <button class="menu__item" style="--bgColorItem: #e0b115;" > 
+                    <!-- chart icon -->
                 <svg class="icon" viewBox="0 0 24 24" >
                     <path  d="M5.1,3.9h13.9c0.6,0,1.2,0.5,1.2,1.2v13.9c0,0.6-0.5,1.2-1.2,1.2H5.1c-0.6,0-1.2-0.5-1.2-1.2V5.1
                     C3.9,4.4,4.4,3.9,5.1,3.9z"/>
                     <path  d="M4.2,9.3h15.6"/>
                     <path  d="M9.1,9.5v10.3"/>
-                </button>
-            
-                <button class="menu__item" style="--bgColorItem:#65ddb7;">
-                <!-- <svg class="icon" viewBox="0 0 24 24" >
-                    <path  d="M5.1,3.9h13.9c0.6,0,1.2,0.5,1.2,1.2v13.9c0,0.6-0.5,1.2-1.2,1.2H5.1c-0.6,0-1.2-0.5-1.2-1.2V5.1
-                    C3.9,4.4,4.4,3.9,5.1,3.9z"/>
-                    <path  d="M5.5,20l9.9-9.9l4.7,4.7"/>
-                    <path  d="M10.4,8.8c0,0.9-0.7,1.6-1.6,1.6c-0.9,0-1.6-0.7-1.6-1.6C7.3,8,8,7.3,8.9,7.3C9.7,7.3,10.4,8,10.4,8.8z"/>
-                </svg> -->
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.137 11.631a.908.908 0 0 1-.17.038A3.016 3.016 0 0 1 8 12a2.962 2.962 0 0 1-.033.328.949.949 0 0 1 .173.042l8.76 4.115a.991.991 0 0 1 .242.18A2.969 2.969 0 0 1 19 16a3.037 3.037 0 1 1-2.911 2.306c-.014-.006-.029 0-.044-.01l-8.756-4.115a.953.953 0 0 1-.134-.1 3 3 0 1 1 0-4.162 1 1 0 0 1 .133-.1L16.045 5.7c.014-.007.029 0 .044-.011A2.93 2.93 0 0 1 16 5a3 3 0 1 1 3 3 2.969 2.969 0 0 1-1.862-.665 1.03 1.03 0 0 1-.242.18z"/></svg>
+                </svg>
                 </button>
             
                 <div class="menu__border"></div>
             
             </menu>
             
+            <!-- black container surrounding the tab icons. Dont edit this! -->
             <div class="svg-container">
                 <svg viewBox="0 0 202.9 45.5" >
                 <clipPath id="menu" clipPathUnits="objectBoundingBox" transform="scale(0.0049285362247413 0.021978021978022)">
@@ -90,9 +86,9 @@
                     c9.2,3.6,17.6,4.2,23.3,4H6.7z"/>
                 </clipPath>
                 </svg>
-            </div> <!--svg-->
+            </div> 
 
-        </div> <!--menubar-->
+        </div> 
 
         <!--import for css stylesheet-->
         <link rel="stylesheet" href="css/tabbar.css" media="screen" /> 
