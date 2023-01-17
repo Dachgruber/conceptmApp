@@ -1,8 +1,8 @@
 @import url("https://fonts.googleapis.com/css?family=Crimson+Text&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Work+Sans&display=swap");
-body {
-  height: 100vh;
-  margin: 0 20px;
+html,body {
+  height: 100%;
+  /* margin: 0 20px; */
 }
 .pie {
   -webkit-tap-highlight-color: transparent;
@@ -149,13 +149,10 @@ body {
 /* stylisation of the network below */
 
 #mynetwork {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 2.5em;
   width: 100%;
-  height: 40em;
-  border: none;
+  height: 100% /*40em*/;
+  min-height: 100%;
+  border: 1 white;
 }
 
 #button {
