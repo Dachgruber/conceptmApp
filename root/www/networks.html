@@ -104,7 +104,7 @@
         */
         function assignRandomColour() {
           const colours = ['rgba(214, 40, 40,1)','rgba(247, 127, 0,1)','rgba(252, 191, 73,1)'];
-          let random = Math.floor(Math.random() * (colours.length)); 
+          let random = Math.floor(Math.random() * (colours.length)) + 1; 
           console.log(random);
           return colours[random];
         }

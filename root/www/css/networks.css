@@ -58,18 +58,21 @@ html,body {
   position: absolute;
   top: 300px;
   width: 46px;
+  animation: strok 1.5s reverse;
 }
 .cameraIcon {
   left: 288px;
   position: absolute;
   top: 258px;
   width: 46px;
+  animation: strok 1.5s reverse;
 }
 .deleteIcon {
   left: 324px;
   position: absolute;
   top: 188px;
   width: 46px;
+  animation: strok 1.5s reverse;
 }
 .menu {
   -webkit-tap-highlight-color: transparent;
@@ -146,6 +149,11 @@ html,body {
   transform: rotate(-45deg);
 }
 
+@keyframes strok {
+  100% {
+      stroke-dashoffset: 400;
+  }
+}
 /* stylisation of the network below */
 
 #mynetwork {
