@@ -118,4 +118,3 @@ cleartabs();
 //also, load the first page defined at the top
 document.getElementById('tab0').style.display = "block";
 
-//changeContent(oldTabInt)

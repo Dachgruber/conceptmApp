@@ -73,7 +73,7 @@ body {
 }
 .menu {
   -webkit-tap-highlight-color: transparent;
-  background: #000; /* changed the colour to match the tabbar*/
+  background: #1d1d27 ; /* changed the colour to match the tabbar*/
   border-radius: 50%;
   box-shadow: 0 0 4px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
