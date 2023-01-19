@@ -44,6 +44,7 @@ body{
     align-items: center;
     justify-content: center;
     background-color: var(--bgColorMenu);
+    box-shadow: 0 0 4px 5px rgba(0, 0, 0, 0.2);
     
 }
 
