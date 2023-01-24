@@ -52,7 +52,7 @@ body{
     
     all: unset;
     flex-grow: 1;
-    z-index: 100;
+    z-index: 50;
     display: flex;
     cursor: pointer;
     position: relative;
