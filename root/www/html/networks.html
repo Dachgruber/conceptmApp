@@ -289,8 +289,12 @@
           console.log("DoubleClicked on NodeID: " + this.getNodeAt(params.pointer.DOM) + "\n" + 
                       + "DoubleClicked on EdgeID: " + this.getEdgeAt(params.pointer.DOM));
                       //nodes.get( this.getNodeAt(params.pointer.DOM) )
+                      
                       network.editNode();
-                      network.editEdgeMode();
+                      
+                      if (!this.getNodeAt(params.pointer.DOM)) { //only edit the edges if we do not select a node!!
+                        network.editEdgeMode();
+                      }
                     })
       </script>
 
