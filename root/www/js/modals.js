@@ -29,9 +29,10 @@ inputspan.onclick = closeinputModal;
 
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == addmodal || event.target == inputmodal) {
-    addmodal.style.display = "none";
-    inputmodal.style.display = "none";
-  }
-} 
+//currently not in use as it breaks the double-tap feature
+// window.onclick = function(event) {
+//   if (event.target == addmodal || event.target == inputmodal) {
+//     addmodal.style.display = "none";
+//     inputmodal.style.display = "none";
+//   }
+// } 
