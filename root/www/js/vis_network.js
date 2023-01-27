@@ -124,7 +124,7 @@ function SaveMap(){
 /**
  * imports a json file from local storage to create a new network
 */
-function ImportMap(){
+function ImportMap(){ //why the fuck is this uppercase
   // import from QR code
   // using a callback function to stop flow
   QRScanner.importDataFromQR(processImport)
