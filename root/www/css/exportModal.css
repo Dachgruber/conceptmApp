@@ -1,5 +1,5 @@
 /* Modal Content/Box */
-.addModal-content {
+.exportModal-content {
   background-color: #1d1d27;
   color:white;
   margin: 15% auto; /* 15% from the top and centered */
@@ -11,7 +11,7 @@
 }
 
 /* edge/node icons */
-.addEdge-float{
+.exportIcon-float{
   padding:0;
   width: 80%;
   margin: 0 auto;
@@ -19,7 +19,7 @@
   animation: strok 1.5s reverse;
 }
 
-.addNode-float{
+.importIcon-float{
   padding:0;
   width: 80%;
   margin: 0 auto;
