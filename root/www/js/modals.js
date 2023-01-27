@@ -1,11 +1,12 @@
 // Get the modal
 var addmodal = document.getElementById("addModal");
 var inputmodal = document.getElementById("inputModal")
+var exportmodal = document.getElementById("exportModal")
 
 // Get the <span> element that closes the modal
 var addspan = document.getElementsByClassName("addclose")[0];
-
 var inputspan = document.getElementsByClassName("inputclose")[0];
+var exportspan = document.getElementsByClassName("exportclose")[0];
 
 // When the user clicks on the button, open the modal
 function openAddModal() {
@@ -13,8 +14,12 @@ function openAddModal() {
     addmodal.style.display = "block";
 }
 function openInputModal() {
-  console.log("[MODALS] inputModalopen fired");
-  inputmodal.style.display = "block";
+    console.log("[MODALS] inputModalopen fired");
+    inputmodal.style.display = "block";
+}
+function openExportModal() {
+    console.log("[MODALS] exportModalopen fired");
+    exportmodal.style.display = "block";
 }
 
 function closeAddModal() {
@@ -23,9 +28,13 @@ function closeAddModal() {
 function closeinputModal() {
  inputmodal.style.display = "none";
 }
+function closeExportModal() {
+ exportmodal.style.display = "none";
+}
 // When the user clicks on <span> (x), close the modal
 addspan.onclick = closeAddModal;
 inputspan.onclick = closeinputModal;
+exportspan.onclick = closeExportModal;
 
 
 // When the user clicks anywhere outside of the modal, close it
