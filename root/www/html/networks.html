@@ -242,6 +242,10 @@
             editNode: editMyNode,  //we define an js-function that should handle the editNode action
             editEdge: editMyNode,  //same story for the edges, the function works for both edges and nodes
             addEdge: editMyNode    //this gets called everytime a new edge gets added
+
+          },
+          interaction: {
+            selectConnectedEdges: false //disables the edges getting selected when clicking on node
           },
           layout: {
             hierarchical: false,  // this makes two edges on same way visible, but lessens visibility
@@ -291,11 +295,8 @@
                       //nodes.get( this.getNodeAt(params.pointer.DOM) )
                       
                       network.editNode();
-                      
-                      if (!this.getNodeAt(params.pointer.DOM)) { //only edit the edges if we do not select a node!!
-                        network.editEdgeMode();
-                      }
-                    })
+                      network.editEdgeMode();
+            })
       </script>
 
 
