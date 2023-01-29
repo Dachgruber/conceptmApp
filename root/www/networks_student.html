@@ -61,8 +61,8 @@
       <!-- Import/Export buttons -->
       <!-- use string "student" to identify correct save and load positions -->
       <div id="buttonContainer">
-        <button id="button" onclick = LoadMap(student)> Load Map </button>
-        <button id="button" onclick = SaveMap(student)> Save Map </button>
+        <button id="button" onclick = "LoadMap('student');"> Load Map </button>
+        <button id="button" onclick = "SaveMap('student');"> Save Map </button>
       </div>
 
       <!-- Import/Export buttons -->
@@ -136,7 +136,7 @@
         var network = new vis.Network(container, data, options);
 
         // save the map to local storage
-        SaveMap()
+        SaveMap("student")
 
       </script>
 
