@@ -70,6 +70,12 @@
         <select name="edge-labels" id="edge-labels"></select>
         </div>
 
+      <!-- Node buttons -->
+      <div id="buttonContainer">
+        <button id="button" onclick = StudentCreateNode()> Create Node </button>
+        <button id="button" onclick = StudentRemoveNode()> Delete Node </button>
+      </div>
+
       <!-- Import/Export buttons -->
       <!-- use string "student" to identify correct save and load positions -->
       <div id="buttonContainer">
@@ -233,9 +239,12 @@
       <script>
 
           // function to extract parameters for new node and call vis_network functions
-          function createNode() {
+          function StudentCreateNode() {
             
-            var name = getName()
+            var e = document.getElementById("node-labels")
+            var value = e.value
+            var name = value
+
             try {
               AddNode(name)
             }
@@ -244,10 +253,15 @@
             }
            }
 
+           
           // function to extract parameters for the node to delete and call vis_network functions
-          function removeNode(){
+          function StudentRemoveNode(){
+
             try {
-              var name = getName()
+              var e = document.getElementById("node-labels")
+              var value = e.value
+              var name = value
+
               DeleteNode(name)
             }
             catch(err) {
