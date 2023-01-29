@@ -71,6 +71,11 @@
         <button id="button" onclick = ExportMap()> Export Map </button>
       </div>
 
+      <!-- Extract button to load in all possible labels for edges and nodes -->
+      <div id="buttonContainer">
+        <button id="button" onclick = ExtractLabels()> Extract </button>
+      </div>
+
       <!-- Info Button, for debugging purposes -->
       <div id="buttonContainer">
         <button id="button" onclick = showInfo()> Info </button>
@@ -84,6 +89,76 @@
 
       <!-- the script creating the network starts here -->
       <script type="text/javascript">
+
+        // ################################ CREATING SAMPLE BACKGROUND TEACHER MAP #################################################
+
+        // create an array with nodes
+        // nodes have positive unique ids (excluding 0)
+        var nodes = new vis.DataSet([
+          { id: 1, label: "saure Lösung", x: -354, y: 1 },
+          { id: 2, label: "Oxonium-Ionen", x: -215, y: 147 },
+          { id: 3, label: "Säure", x: -159, y: 55 },
+          { id: 4, label: "Protonendonator", x: -187, y: -37 },
+          { id: 5, label: "Säure-Base-Paar", x: -8, y: 144 },
+          { id: 6, label: "Säure-Base-Reaktion", x: 14, y: -40},
+          { id: 7, label: "Base", x: 153, y: 64},
+          { id: 8, label: "Protonenakzeptor", x: 215, y: -65},
+          { id: 9, label: "basische Lösung", x: 390, y: -13},
+          { id: 10, label: "Hydroxid-Ionen", x: 256, y: 152},
+        ]);
+  
+        // create an array with edges
+        // edges have negative unique ids (excluding 0)
+        var edges = new vis.DataSet([
+          { id: -1, from: 1, to: 2, label: "enthält" },      // , arrows:'to,from' possible individually
+          { id: -2, from: 3, to: 1, label: "bildet mit Wasser" },
+          { id: -3, from: 3, to: 4, label: "ist definiert als" },
+          { id: -4, from: 3, to: 5, label: "ist Teil eines" },
+          { id: -5, from: 5, to: 6, label: "ist Teil der" },
+          { id: -6, from: 7, to: 5, label: "ist Teil eines" },
+          { id: -7, from: 7, to: 8, label: "ist definiert als" },
+          { id: -8, from: 7, to: 9, label: "bildet mit Wasser" },
+          { id: -9, from: 9, to: 10, label: "enthält" },
+        ]);
+
+        //two counters for the IDs to ensure unique IDs
+        var nextNodeID = 11
+        var nextEdgeID = -10
+
+        var options = {
+          manipulation: {
+            enabled: true,        // add an edit button
+          },
+          layout: {
+            hierarchical: false,  // this makes two edges on same way visible, but lessens visibility
+          },
+          edges: {                // options set for all edges
+            arrows: 'to',         // arrows on the "to" end of the edge
+            physics: false,
+            smooth: true,
+          },
+          nodes: {
+            shape: "box",
+            fixed: false,
+            physics: false,
+          }
+        };
+
+        var container = document.getElementById("mynetwork");
+
+        var data = {
+          nodes: nodes,
+          edges: edges,
+        };
+
+        // build the network together
+        var network = new vis.Network(container, data, options);
+
+        // save the map to local storage
+        SaveMap("teacher")
+         
+        // ########################## FINISHED CREATING SAMPLE MAP AND SAVED IT UNDER TEACHER MAP ##############################################
+      
 
         // create an array with nodes
         // nodes have positive unique ids (excluding 0)
@@ -102,8 +177,8 @@
         ]);
 
         //two counters for the IDs to ensure unique IDs
-        let nextNodeID = 1
-        let nextEdgeID = -1
+        var nextNodeID = 1
+        var nextEdgeID = -1
 
         var options = {
           manipulation: {
