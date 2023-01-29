@@ -232,35 +232,6 @@
       <!-- currently the script part with the functions, this is going to be outsourced to vis_network.js -->
       <script>
 
-          function PopulateLabels() {
-            var [nodeNames, edgeNames] = ExtractLabels()
-            console.log(nodeNames)
-            var nodeSelect = document.getElementById("node-labels")
-            var edgeSelect = document.getElementById("edge-labels")
-
-            // iterating over nodes and adding them to the dropdown menu
-            for (var i = 0; i < nodeNames.length; i++) {
-              var opt = nodeNames[i]
-              console.log(opt)
-              var el = document.createElement("option")
-              el.text = opt
-              el.value = opt
-              nodeSelect.add(el)
-            }
-            
-            // iterating over edges and adding them to the dropdown menu
-            for (var i = 0; i < edgeNames.length; i++) {
-              var opt = edgeNames[i]
-
-              var el = document.createElement("option")
-              el.text = opt
-              el.value = opt
-              edgeSelect.add(el)
-            }
-
-          }
-
-
           // function to extract parameters for new node and call vis_network functions
           function createNode() {
             

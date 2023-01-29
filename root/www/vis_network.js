@@ -178,6 +178,34 @@ function SetData(jsonFile){
   nextEdgeID = jsonFile.nextEdgeID
 }
 
+function PopulateLabels() {
+  var [nodeNames, edgeNames] = ExtractLabels()
+  console.log(nodeNames)
+  var nodeSelect = document.getElementById("node-labels")
+  var edgeSelect = document.getElementById("edge-labels")
+
+  // iterating over nodes and adding them to the dropdown menu
+  for (var i = 0; i < nodeNames.length; i++) {
+    var opt = nodeNames[i]
+    console.log(opt)
+    var el = document.createElement("option")
+    el.text = opt
+    el.value = opt
+    nodeSelect.add(el)
+  }
+  
+  // iterating over edges and adding them to the dropdown menu
+  for (var i = 0; i < edgeNames.length; i++) {
+    var opt = edgeNames[i]
+
+    var el = document.createElement("option")
+    el.text = opt
+    el.value = opt
+    edgeSelect.add(el)
+  }
+
+}
+
 /**
  * Use the loaded/imported teacher map to find out all possible node labels
  * @returns an array with all node labels from saved teacher map in localStorage
