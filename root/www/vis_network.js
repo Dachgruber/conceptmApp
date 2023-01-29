@@ -36,7 +36,6 @@ function AddEdge(name, fromNode, toNode){
       return (item.label == fromNode)
     }
   })
-
   // find the id of the target node
   var toNodeData = data.nodes.get({
     filter: function (item) {
@@ -80,28 +79,30 @@ function DeleteEdge(name, fromNode, toNode){
 } 
 
 /**
- * loads a json file from local storage to create a new network
+ * loads a json file from local storage to create a new network for the correct user
+ * @param user string of the user to identify
  */
-function LoadMap(){
+function LoadMap(user){
   // load the JSON file from the storage
-  var jsonFileObject = localStorage.getItem("jsonFile")
-
+  var storePosition = user + "jsonFile"
+  var jsonFileObject = localStorage.getItem(storePosition)
   var jsonFile = JSON.parse(jsonFileObject)
-  console.log("loading: ", jsonFile)
+  console.log("loading: ", jsonFile, "from: ", storePosition)
   // set the data to the contents of the json file
   SetData(jsonFile)
 }
 
 /**
- * save the current network to a json file in the local storage
+ * save the current network to a json file in the local storage under the correct user
+ * @param string of the user to identify
  */
-function SaveMap(){
+function SaveMap(user){
   // create a json file with network contents
   var jsonFile = CreateData()
-
+  var storePosition = user + "jsonFile"
   // store the JSON file in the localStorage
-  localStorage.setItem("jsonFile", JSON.stringify(jsonFile));
-  console.log("saving: ", jsonFile)
+  localStorage.setItem(storePosition, JSON.stringify(jsonFile));
+  console.log("saving: ", jsonFile, "at: ", storePosition)
 }
 
 /**
