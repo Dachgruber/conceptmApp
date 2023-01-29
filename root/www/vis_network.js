@@ -177,3 +177,21 @@ function SetData(jsonFile){
   nextNodeID = jsonFile.nextNodeID
   nextEdgeID = jsonFile.nextEdgeID
 }
+
+/**
+ * Use the loaded/imported teacher map to find out all possible node labels
+ * @returns an array with all node labels from saved teacher map in localStorage
+ */
+function ExtractLabels(){
+  var jsonFileObject = localStorage.getItem("teacherjsonFile")
+  var jsonFile = JSON.parse(jsonFileObject)
+  var nodeNames = []
+  var labelNames = []
+  for (let i=0; i < jsonFile.nodes.lenght; i++) {
+    nodeNames += [jsonFile.nodes[i][1]]
+  }
+  for (let i=0; i < jsonFile.edges.lenght; i++) {
+    labelNames += [jsonFile.edges[i][4]]
+  }
+  return nodeNames, labelNames
+}
