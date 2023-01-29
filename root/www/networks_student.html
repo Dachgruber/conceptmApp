@@ -58,6 +58,18 @@
       <!-- get the network created in the header -->
       <div id="mynetwork"></div>
 
+      <!-- Drop down menu for selecting possible nodes -->
+      <div id="textfield">
+      <label for="node-labels"> Possible Nodes:</label>
+      <select name="node-labels" id="node-labels"></select>
+      </div>
+
+      <!-- Drop down menu for selecting possible edges -->
+      <div id="textfield">
+        <label for="edge-labels"> Possible Edges:</label>
+        <select name="edge-labels" id="edge-labels"></select>
+        </div>
+
       <!-- Import/Export buttons -->
       <!-- use string "student" to identify correct save and load positions -->
       <div id="buttonContainer">
@@ -73,14 +85,15 @@
 
       <!-- Extract button to load in all possible labels for edges and nodes -->
       <div id="buttonContainer">
-        <button id="button" onclick = ExtractLabels()> Extract </button>
+        <button id="button" onclick = PopulateLabels()> Extract </button>
       </div>
 
       <!-- Info Button, for debugging purposes -->
       <div id="buttonContainer">
         <button id="button" onclick = showInfo()> Info </button>
       </div>
-
+      
+      
 
       <script source = "jquery-3.6.1.min.js"></script>
       <script type='text/javascript' src = "vis_network.js">  // network implementation </script>
@@ -159,7 +172,7 @@
          
         // ########################## FINISHED CREATING SAMPLE MAP AND SAVED IT UNDER TEACHER MAP ##############################################
       
-
+        // ########################## NOW CREATING BLANK FOR STUDENT MAP #######################################################################
         // create an array with nodes
         // nodes have positive unique ids (excluding 0)
         var nodes = new vis.DataSet([
@@ -218,6 +231,34 @@
 
       <!-- currently the script part with the functions, this is going to be outsourced to vis_network.js -->
       <script>
+
+          function PopulateLabels() {
+            var [nodeNames, edgeNames] = ExtractLabels()
+            console.log(nodeNames)
+            var nodeSelect = document.getElementById("node-labels")
+            var edgeSelect = document.getElementById("edge-labels")
+
+            // iterating over nodes and adding them to the dropdown menu
+            for (var i = 0; i < nodeNames.length; i++) {
+              var opt = nodeNames[i]
+              console.log(opt)
+              var el = document.createElement("option")
+              el.text = opt
+              el.value = opt
+              nodeSelect.add(el)
+            }
+            
+            // iterating over edges and adding them to the dropdown menu
+            for (var i = 0; i < edgeNames.length; i++) {
+              var opt = edgeNames[i]
+
+              var el = document.createElement("option")
+              el.text = opt
+              el.value = opt
+              edgeSelect.add(el)
+            }
+
+          }
 
 
           // function to extract parameters for new node and call vis_network functions

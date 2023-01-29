@@ -187,11 +187,12 @@ function ExtractLabels(){
   var jsonFile = JSON.parse(jsonFileObject)
   var nodeNames = []
   var labelNames = []
-  for (let i=0; i < jsonFile.nodes.lenght; i++) {
-    nodeNames += [jsonFile.nodes[i][1]]
+  for (let i=0; i < jsonFile.nodes[0].length; i++) {
+    nodeNames.push(jsonFile.nodes[0][i].label)
   }
-  for (let i=0; i < jsonFile.edges.lenght; i++) {
-    labelNames += [jsonFile.edges[i][4]]
+  for (let i=0; i < jsonFile.edges[0].length; i++) {
+    labelNames.push(jsonFile.edges[0][i].label)
   }
-  return nodeNames, labelNames
+  console.log("Extracted: ", "Nodes: ", nodeNames, "Edges: ", labelNames)
+  return [nodeNames, labelNames]
 }
