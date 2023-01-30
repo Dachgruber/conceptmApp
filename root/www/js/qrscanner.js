@@ -11,6 +11,10 @@ class QRScanner {
     // are callback methods that are called individually
     cordova.plugins.barcodeScanner.scan(
         function (result) {
+            alert("We got a barcode\n" +
+                "Result: " + result.text + "\n" +
+                "Format: " + result.format + "\n" +
+                "Cancelled: " + result.cancelled);
             if(!result.cancelled){
                     // In this case we only want to process QR Codes
                     if(result.format == "QR_CODE"){

@@ -18,7 +18,7 @@ function load_tabs() {
     document.getElementById("tab0").innerHTML='<iframe src="networks_teacher_ui.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
     document.getElementById("tab1").innerHTML='<iframe src="networks_student_ui.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
     document.getElementById("tab2").innerHTML='<iframe src="qrcode_example.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
-    document.getElementById("tab3").innerHTML='<iframe src="cat_example.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
+    document.getElementById("tab3").innerHTML='<button style = "color: orange; font-size: 30px" id="makeCode" onclick = QRScanner.sendDataToQR("katzenbilder")> QR Generator</button>';
     document.getElementById("tab4").innerHTML='<iframe src="cat_example.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
     
 }
