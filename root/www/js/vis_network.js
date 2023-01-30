@@ -150,7 +150,7 @@ function ExportMap(){
   var jsonFile = CreateData()
   
   var jsonString = JSON.stringify(jsonFile)
-  console.log("exporting: ", jsonFile)
+  console.log("[NETWORK] exporting: ", jsonFile)
   // create the data as an QR code
   QRScanner.sendDataToQR(jsonString)
 }

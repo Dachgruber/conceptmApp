@@ -11,10 +11,6 @@ class QRScanner {
     // are callback methods that are called individually
     cordova.plugins.barcodeScanner.scan(
         function (result) {
-            alert("We got a barcode\n" +
-                "Result: " + result.text + "\n" +
-                "Format: " + result.format + "\n" +
-                "Cancelled: " + result.cancelled);
             if(!result.cancelled){
                     // In this case we only want to process QR Codes
                     if(result.format == "QR_CODE"){
@@ -55,14 +51,17 @@ class QRScanner {
     
     //script for the QR generator
     static #makeQR(content){
+        console.log("[QRSCAN] encoding: ",content, " to QR-Code");
         //default value for debug purposes
         if (!content){
             content = "Tolle katzenbilder";
         }
         cordova.plugins.barcodeScanner.encode(cordova.plugins.barcodeScanner.Encode.TEXT_TYPE, content,
             function(success){
-                alert ("encode success: " + success);
+                console.log("[QRSCAN] [ENCODE] sucess!")
+                alert("encode success: " + success);
             }, function(fail) {
+                console.log("[QRSCAN] [ENCODE] failure!")
                 alert("encoding failed: " + fail);
             }
         );
@@ -80,6 +79,7 @@ class QRScanner {
      * takes the input content and encodes it into a working QR code
      */
     static sendDataToQR(content){
+        console.log("[QRSCAN] sending data to scanner");
         this.#makeQR(content)
     }
 }
