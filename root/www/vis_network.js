@@ -1,4 +1,3 @@
-
 /**
  * adds a node to the network
  * @param {name} String - The name for the node
@@ -8,59 +7,22 @@ function AddNode(name){
   nextNodeID++       
 }
 
-// custom edit function that opens a modal popup and waits for the user to finish entering
-// used in the network manipulation options 
-var _input;  /* resolve-function reference */
-
-async function editMyNode(node, callback) {
-  let inputresult;
-  openInputModal(); //opens the user prompt
-  var promise = new Promise((resolve) => {_input = resolve }); //generates promise to wait for user input
-  
-  //await the user input
-  await promise.then(
-    (result) => {   //if promise fullfilled (no error), save the result
-        inputresult = result 
-      }, 
-    (result) => {   //if promise rejected, (error), handle it and log it 
-      console.log("[ERROR] while promising: "+ result)
-    });
-
-  console.log("[EDIT] edit node: " + node.label + " with new: " + inputresult) ; 
-  //overwrite the label of the node and callback it to the network
-  node.label = inputresult;
-  
-  console.log("[EDIT] edited node: " + node.label + " with new: " + inputresult) ; 
-  callback(node);
-  
-
-}
-
 /**
  * deletes a node from the network
  * @param {name} String - The name of the node
  * @param {nodeID} int - ID of the node to be deleted
  */
-function DeleteNode(nodeID){
+function DeleteNode(name){
 
-  //#########OLD CODE#############
-  // // find the node based on the name
-  // var possibleNodes = data.nodes.get({
-  //   filter: function (item) {
-  //     return (item.label == name);
-  //   }
-  // })
+  // find the node based on the name
+  var possibleNodes = data.nodes.get({
+    filter: function (item) {
+      return (item.label == name);
+    }
+  })
 
   // remove the found node from the DataSet
-  //data.nodes.remove(possibleNodes[0])
-
-  try {
-    data.nodes.remove(nodeID);
-  }
-  catch (err) {
-    console.log(err);
-  }
-
+  data.nodes.remove(possibleNodes[0])
 }
 
 /**
@@ -87,13 +49,34 @@ function AddEdge(name, fromNode, toNode){
   nextEdgeID--     
 }
 
-
 /**
  * deletes an edge from the network
+ * @param {name} String - The name of the edge
  * @param {edgeID} int - ID of the edge to be deleted
  */
-function DeleteEdge(edgeID){
-  data.edges.remove(edgeID);
+function DeleteEdge(name, fromNode, toNode){
+  
+  // find the nodes from the given names
+  var fromNodeData = data.nodes.get({
+    filter: function(item) {
+      return (item.label == fromNode)
+    }
+  })
+  var toNodeData = data.nodes.get({
+    filter: function(item) {
+      return (item.label == toNode)
+    }
+  })
+
+  // find the edge with the node ids and the given name
+  var edgeData = data.edges.get({
+    filter: function (item) {
+      return (item.label == name && item.from == fromNodeData[0].id && item.to == toNodeData[0].id)
+    }
+  })
+
+  // remove the edge from the DataSet
+  data.edges.remove(edgeData[0])
 } 
 
 /**
@@ -124,7 +107,7 @@ function SaveMap(){
 /**
  * imports a json file from local storage to create a new network
 */
-function ImportMap(){ //why the fuck is this uppercase
+function ImportMap(){
   // import from QR code
   // using a callback function to stop flow
   QRScanner.importDataFromQR(processImport)
@@ -147,12 +130,12 @@ function processImport(jsonFileString){
 */
 function ExportMap(){
   // create a json file with network contents
-  var jsonFile = CreateData();
+  var jsonFile = CreateData()
   
-  var jsonString = JSON.stringify(jsonFile);
-  jsonString = "toller Beispielstring";
-  console.log("[NETWORK] exporting: ", jsonFile);
-  console.log("[NETWORK] exporting (as String): ", jsonString);
+  var jsonString = JSON.stringify(jsonFile)
+  console.log("exporting: ", jsonFile)
+
+  jsonString = "toller Beispielstring"; 
   // create the data as an QR code
   QRScanner.sendDataToQR(jsonString)
 }
@@ -195,4 +178,3 @@ function SetData(jsonFile){
   nextNodeID = jsonFile.nextNodeID
   nextEdgeID = jsonFile.nextEdgeID
 }
-

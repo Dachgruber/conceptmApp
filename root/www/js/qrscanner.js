@@ -56,15 +56,21 @@ class QRScanner {
         if (!content){
             content = "Tolle katzenbilder";
         }
-        cordova.plugins.barcodeScanner.encode(cordova.plugins.barcodeScanner.Encode.TEXT_TYPE, content,
-            function(success){
-                console.log("[QRSCAN] [ENCODE] sucess!")
-                alert("encode success: " + success);
-            }, function(fail) {
-                console.log("[QRSCAN] [ENCODE] failure!")
-                alert("encoding failed: " + fail);
-            }
-        );
+        cordova.plugins.barcodeScanner.encode(cordova.plugins.barcodeScanner.Encode.TEXT_TYPE, content, (success) => alert ("success!"))
+        // try {
+        // cordova.plugins.barcodeScanner.encode(cordova.plugins.barcodeScanner.Encode.TEXT_TYPE, content,
+        //     function(success){
+        //         console.log("[QRSCAN] [ENCODE] sucess!")
+        //         alert("encode success: " + success);
+        //     }, function(fail) {
+        //         console.log("[QRSCAN] [ENCODE] failure!")
+        //         alert("encoding failed: " + fail);
+        //     }
+        // );
+        // }
+        // catch(e) {
+        //     console.log(e);
+        // }
     }
     
     /**
