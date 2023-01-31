@@ -178,6 +178,9 @@ function SetData(jsonFile){
   nextEdgeID = jsonFile.nextEdgeID
 }
 
+/**
+ * function to fill the labels for the dropdowns for student editor
+ */
 function PopulateLabels() {
   var [nodeNames, edgeNames] = ExtractLabels()
   console.log(nodeNames)
