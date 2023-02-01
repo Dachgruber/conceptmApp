@@ -206,7 +206,7 @@ function PopulateLabels() {
   // iterating over nodes and adding them to the dropdown menu
   for (var i = 0; i < nodeNames.length; i++) {
     var opt = nodeNames[i]
-    console.log(opt)
+    //console.log(opt)
     var el = document.createElement("option")
     el.text = opt
     el.value = opt
