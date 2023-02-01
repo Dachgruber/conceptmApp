@@ -200,6 +200,9 @@ function PopulateLabels() {
   var nodeSelect = document.getElementById("node-labels")
   var edgeSelect = document.getElementById("edge-labels")
 
+  nodeSelect.innerHTML = "";
+  edgeSelect.innerHTML = "";
+
   // iterating over nodes and adding them to the dropdown menu
   for (var i = 0; i < nodeNames.length; i++) {
     var opt = nodeNames[i]
