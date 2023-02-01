@@ -214,7 +214,12 @@ function PopulateLabels() {
  * @returns an array with all node labels from saved teacher map in localStorage
  */
 function ExtractLabels(){
-  var jsonFileObject = localStorage.getItem("teacherjsonFile")
+
+  // import from QR code
+  // using a callback function to stop flow
+  QRScanner.importDataFromQR(SaveTask)
+
+  var jsonFileObject = localStorage.getItem("taskjsonFile")
   var jsonFile = JSON.parse(jsonFileObject)
   var nodeNames = []
   var labelNames = []
@@ -226,4 +231,14 @@ function ExtractLabels(){
   }
   console.log("Extracted: ", "Nodes: ", nodeNames, "Edges: ", labelNames)
   return [nodeNames, labelNames]
+}
+
+/**
+ * helper function to complete import of task map from teacher for the student
+ * @param {String} jsonFileString containing the vis network map data
+ */
+function SaveTask(jsonFileString){
+  var jsonFile = JSON.parse(jsonFileString)
+  localStorage.setItem("taskjsonFile", JSON.stringify(jsonFile));
+  console.log("imported and saved map to taskjsonFile")
 }
