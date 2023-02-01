@@ -148,6 +148,31 @@
         var options = {
           manipulation: {
             enabled: true,        // add an edit button
+            addNode: function(nodeData,callback) {
+              nodeData.label = prompt("Please enter node name", "");
+              callback(nodeData);
+            },
+            editNode: function(nodeData,callback) {
+              nodeData.label = prompt("Please enter node name", ""); 
+              callback(nodeData); 
+            },
+            addEdge: function(edgeData,callback) {
+              if (edgeData.from === edgeData.to) {
+                var r = confirm("Do you want to connect the node to itself?");
+                if (r === true) {
+                  edgeData.label = prompt("Please enter edge name", "");
+                  callback(edgeData);
+                }
+              }
+              else {
+                edgeData.label = prompt("Please enter edge name", "");
+                callback(edgeData);
+              }
+            },
+            editEdge: function(nodeData,callback) {
+              nodeData.label = prompt("Please enter edge name", ""); 
+              callback(nodeData); 
+            },
           },
           layout: {
             hierarchical: false,  // this makes two edges on same way visible, but lessens visibility
@@ -187,7 +212,7 @@
 
           // function to extract parameters for new node and call vis_network functions
           function createNode() {
-            
+
             var name = getName()
             try {
               AddNode(name)
