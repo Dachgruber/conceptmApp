@@ -179,6 +179,16 @@ function SetData(jsonFile){
 }
 
 /**
+ * function to import a map that can be used to work on tasks 
+ */
+function ImportTask(){
+  // import from QR code
+  // using a callback function to stop flow
+  QRScanner.importDataFromQR(SaveTask)
+  PopulateLabels()
+}
+
+/**
  * function to fill the labels for the dropdowns for student editor
  */
 function PopulateLabels() {
@@ -210,14 +220,10 @@ function PopulateLabels() {
 }
 
 /**
- * Use the loaded/imported teacher map to find out all possible node labels
+ * Use the loaded teacher map to find out all possible node labels
  * @returns an array with all node labels from saved teacher map in localStorage
  */
 function ExtractLabels(){
-
-  // import from QR code
-  // using a callback function to stop flow
-  QRScanner.importDataFromQR(SaveTask)
 
   var jsonFileObject = localStorage.getItem("taskjsonFile")
   var jsonFile = JSON.parse(jsonFileObject)
