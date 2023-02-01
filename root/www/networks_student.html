@@ -4,7 +4,7 @@
     <head> 
         <meta charset="utf-8">
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-        <title>Concept Map</title>
+        <title>Concept Map Student</title>
 
        <!-- //Download the necessary resources from unpkg  nicer comment-->
         <script
@@ -53,43 +53,34 @@
 
     <body style="background-color:whitesmoke; height:100%;">
       
-      <h2 id="title"> Network Container </h2>
+      <h2 id="title"> Network Container Student </h2>
 
       <!-- get the network created in the header -->
       <div id="mynetwork"></div>
 
-      <!-- input text field for values -->
-      <fieldset style="text-align: center;">
-        <legend>Inputs</legend>
-        
-        <label for= "elementName"> Element name </label>
-        <input type="text" id="elementName" placeholder="Name"/> <br>
-        
-        <label for= "fromNode"> Edge from </label>
-        <input type="text" id="fromNode" placeholder="From"/> <br>
-      
-        <label for="toNode"> Edge to </label>
-        <input type="text" id="toNode" placeholder="To"/> <br>
+      <!-- Drop down menu for selecting possible nodes -->
+      <div id="textfield">
+      <label for="node-labels"> Possible Nodes:</label>
+      <select name="node-labels" id="node-labels"></select>
+      </div>
 
-      </fieldset>
+      <!-- Drop down menu for selecting possible edges -->
+      <div id="textfield">
+        <label for="edge-labels"> Possible Edges:</label>
+        <select name="edge-labels" id="edge-labels"></select>
+        </div>
 
       <!-- Node buttons -->
       <div id="buttonContainer">
-        <button id="button" onclick = createNode()> Create Node </button>
-        <button id="button" onclick = removeNode()> Delete Node </button>
-      </div>
-
-      <!-- Edge buttons -->
-      <div id="buttonContainer">
-        <button id="button" onclick = createEdge()> Create Edge </button>
-        <button id="button" onclick = removeEdge()> Delete Edge </button>
+        <button id="button" onclick = StudentCreateNode()> Create Node </button>
+        <button id="button" onclick = StudentRemoveNode()> Delete Node </button>
       </div>
 
       <!-- Import/Export buttons -->
       <!-- use string "student" to identify correct save and load positions -->
       <div id="buttonContainer">
-        <button id="button" onclick = "LoadMap('teacher');"> Load Map </button>
-        <button id="button" onclick = "SaveMap('teacher');"> Save Map </button>
+        <button id="button" onclick = "LoadMap('student');"> Load Map </button>
+        <button id="button" onclick = "SaveMap('student');"> Save Map </button>
       </div>
 
       <!-- Import/Export buttons -->
@@ -98,11 +89,18 @@
         <button id="button" onclick = ExportMap()> Export Map </button>
       </div>
 
+      <!-- Extract button to load in all possible labels for edges and nodes -->
+      <div id="buttonContainer">
+        <button id="button" onclick = PopulateLabels()> Extract </button>
+        <button id="button" onclick = ImportTask()> Import Task </button>
+      </div>
+
       <!-- Info Button, for debugging purposes -->
       <div id="buttonContainer">
         <button id="button" onclick = showInfo()> Info </button>
       </div>
-
+      
+      
 
       <script source = "jquery-3.6.1.min.js"></script>
       <script type='text/javascript' src = "vis_network.js">  // network implementation </script>
@@ -111,6 +109,8 @@
 
       <!-- the script creating the network starts here -->
       <script type="text/javascript">
+
+        // ################################ CREATING SAMPLE BACKGROUND TEACHER MAP #################################################
 
         // create an array with nodes
         // nodes have positive unique ids (excluding 0)
@@ -142,37 +142,67 @@
         ]);
 
         //two counters for the IDs to ensure unique IDs
-        let nextNodeID = 11
-        let nextEdgeID = -10
+        var nextNodeID = 11
+        var nextEdgeID = -10
 
         var options = {
           manipulation: {
             enabled: true,        // add an edit button
-            addNode: function(nodeData,callback) {
-              nodeData.label = prompt("Please enter node name", "");
-              callback(nodeData);
-            },
-            editNode: function(nodeData,callback) {
-              nodeData.label = prompt("Please enter node name", ""); 
-              callback(nodeData); 
-            },
-            addEdge: function(edgeData,callback) {
-              if (edgeData.from === edgeData.to) {
-                var r = confirm("Do you want to connect the node to itself?");
-                if (r === true) {
-                  edgeData.label = prompt("Please enter edge name", "");
-                  callback(edgeData);
-                }
-              }
-              else {
-                edgeData.label = prompt("Please enter edge name", "");
-                callback(edgeData);
-              }
-            },
-            editEdge: function(nodeData,callback) {
-              nodeData.label = prompt("Please enter edge name", ""); 
-              callback(nodeData); 
-            },
+          },
+          layout: {
+            hierarchical: false,  // this makes two edges on same way visible, but lessens visibility
+          },
+          edges: {                // options set for all edges
+            arrows: 'to',         // arrows on the "to" end of the edge
+            physics: false,
+            smooth: true,
+          },
+          nodes: {
+            shape: "box",
+            fixed: false,
+            physics: false,
+          }
+        };
+
+        var container = document.getElementById("mynetwork");
+
+        var data = {
+          nodes: nodes,
+          edges: edges,
+        };
+
+        // build the network together
+        var network = new vis.Network(container, data, options);
+
+        // save the map to local storage
+        SaveMap("task")
+         
+        // ########################## FINISHED CREATING SAMPLE MAP AND SAVED IT UNDER TEACHER MAP ##############################################
+      
+        // ########################## NOW CREATING BLANK FOR STUDENT MAP #######################################################################
+        // create an array with nodes
+        // nodes have positive unique ids (excluding 0)
+        var nodes = new vis.DataSet([
+
+          // TODO: import the nodes
+
+        ]);
+  
+        // create an array with edges
+        // edges have negative unique ids (excluding 0)
+        var edges = new vis.DataSet([
+
+          // TODO: import the edges
+
+        ]);
+
+        //two counters for the IDs to ensure unique IDs
+        var nextNodeID = 1
+        var nextEdgeID = -1
+
+        var options = {
+          manipulation: {
+            enabled: false,        // add an edit button
           },
           layout: {
             hierarchical: false,  // this makes two edges on same way visible, but lessens visibility
@@ -201,7 +231,7 @@
         var network = new vis.Network(container, data, options);
 
         // save the map to local storage
-        SaveMap("teacher")
+        SaveMap("student")
 
       </script>
 
@@ -209,11 +239,13 @@
       <!-- currently the script part with the functions, this is going to be outsourced to vis_network.js -->
       <script>
 
-
           // function to extract parameters for new node and call vis_network functions
-          function createNode() {
+          function StudentCreateNode() {
+            
+            var e = document.getElementById("node-labels")
+            var value = e.value
+            var name = value
 
-            var name = getName()
             try {
               AddNode(name)
             }
@@ -222,10 +254,15 @@
             }
            }
 
+           
           // function to extract parameters for the node to delete and call vis_network functions
-          function removeNode(){
+          function StudentRemoveNode(){
+
             try {
-              var name = getName()
+              var e = document.getElementById("node-labels")
+              var value = e.value
+              var name = value
+
               DeleteNode(name)
             }
             catch(err) {
@@ -282,10 +319,6 @@
           }
 
       </script>
-
-
-      <!-- black magic, very important, such danger -->
-      <!-- <script type="text/javascript" src="cordova.js"></script> -->
 
     </body>
 </html>

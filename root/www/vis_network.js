@@ -36,7 +36,6 @@ function AddEdge(name, fromNode, toNode){
       return (item.label == fromNode)
     }
   })
-
   // find the id of the target node
   var toNodeData = data.nodes.get({
     filter: function (item) {
@@ -80,28 +79,30 @@ function DeleteEdge(name, fromNode, toNode){
 } 
 
 /**
- * loads a json file from local storage to create a new network
+ * loads a json file from local storage to create a new network for the correct user
+ * @param user string of the user to identify
  */
-function LoadMap(){
+function LoadMap(user){
   // load the JSON file from the storage
-  var jsonFileObject = localStorage.getItem("jsonFile")
-
+  var storePosition = user + "jsonFile"
+  var jsonFileObject = localStorage.getItem(storePosition)
   var jsonFile = JSON.parse(jsonFileObject)
-  console.log("loading: ", jsonFile)
+  console.log("loading: ", jsonFile, "from: ", storePosition)
   // set the data to the contents of the json file
   SetData(jsonFile)
 }
 
 /**
- * save the current network to a json file in the local storage
+ * save the current network to a json file in the local storage under the correct user
+ * @param string of the user to identify
  */
-function SaveMap(){
+function SaveMap(user){
   // create a json file with network contents
   var jsonFile = CreateData()
-
+  var storePosition = user + "jsonFile"
   // store the JSON file in the localStorage
-  localStorage.setItem("jsonFile", JSON.stringify(jsonFile));
-  console.log("saving: ", jsonFile)
+  localStorage.setItem(storePosition, JSON.stringify(jsonFile));
+  console.log("saving: ", jsonFile, "at: ", storePosition)
 }
 
 /**
@@ -175,4 +176,75 @@ function SetData(jsonFile){
   // set the IDs to the new IDs
   nextNodeID = jsonFile.nextNodeID
   nextEdgeID = jsonFile.nextEdgeID
+}
+
+/**
+ * function to import a map that can be used to work on tasks 
+ */
+function ImportTask(){
+  // import from QR code
+  // using a callback function to stop flow
+  QRScanner.importDataFromQR(SaveTask)
+  PopulateLabels()
+}
+
+/**
+ * function to fill the labels for the dropdowns for student editor
+ */
+function PopulateLabels() {
+  var [nodeNames, edgeNames] = ExtractLabels()
+  console.log(nodeNames)
+  var nodeSelect = document.getElementById("node-labels")
+  var edgeSelect = document.getElementById("edge-labels")
+
+  // iterating over nodes and adding them to the dropdown menu
+  for (var i = 0; i < nodeNames.length; i++) {
+    var opt = nodeNames[i]
+    console.log(opt)
+    var el = document.createElement("option")
+    el.text = opt
+    el.value = opt
+    nodeSelect.add(el)
+  }
+  
+  // iterating over edges and adding them to the dropdown menu
+  for (var i = 0; i < edgeNames.length; i++) {
+    var opt = edgeNames[i]
+
+    var el = document.createElement("option")
+    el.text = opt
+    el.value = opt
+    edgeSelect.add(el)
+  }
+
+}
+
+/**
+ * Use the loaded teacher map to find out all possible node labels
+ * @returns an array with all node labels from saved teacher map in localStorage
+ */
+function ExtractLabels(){
+
+  var jsonFileObject = localStorage.getItem("taskjsonFile")
+  var jsonFile = JSON.parse(jsonFileObject)
+  var nodeNames = []
+  var labelNames = []
+  for (let i=0; i < jsonFile.nodes[0].length; i++) {
+    nodeNames.push(jsonFile.nodes[0][i].label)
+  }
+  for (let i=0; i < jsonFile.edges[0].length; i++) {
+    labelNames.push(jsonFile.edges[0][i].label)
+  }
+  console.log("Extracted: ", "Nodes: ", nodeNames, "Edges: ", labelNames)
+  return [nodeNames, labelNames]
+}
+
+/**
+ * helper function to complete import of task map from teacher for the student
+ * @param {String} jsonFileString containing the vis network map data
+ */
+function SaveTask(jsonFileString){
+  var jsonFile = JSON.parse(jsonFileString)
+  localStorage.setItem("taskjsonFile", JSON.stringify(jsonFile));
+  console.log("imported and saved map to taskjsonFile")
 }
