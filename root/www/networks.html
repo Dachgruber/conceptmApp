@@ -217,6 +217,16 @@
                       selectedEdge = this.getEdgeAt(params.pointer.DOM);
             })
 
+          
+        //we define double click as an prompt to add a edge
+        network.on("doubleClick",function(params) {
+          console.log("DoubleClicked on NodeID: " + this.getNodeAt(params.pointer.DOM) + "\n" + 
+                      + "DoubleClicked on EdgeID: " + this.getEdgeAt(params.pointer.DOM));
+                      //nodes.get( this.getNodeAt(params.pointer.DOM) )
+                      
+                      network.editNode();
+                      network.editEdgeMode();
+            })
         // save the map to local storage
         SaveMap("teacher")
 
