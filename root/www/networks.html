@@ -154,7 +154,7 @@
 
         var options = {
           manipulation: {
-            enabled: true,        // add an edit button
+            enabled: false,        // hide the edit button
             addNode: function(nodeData,callback) {
               nodeData.label = prompt("Please enter node name", "");
               callback(nodeData);
