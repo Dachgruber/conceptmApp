@@ -212,8 +212,8 @@ function ImportTask(){
   QRScanner.importDataFromQR(ImportTaskHelper)
 }
 
-function ImportTaskHelper() {
-  SaveTask();
+function ImportTaskHelper(qrdata) {
+  SaveTask(qrdata);
   PopulateLabels();
 }
 
