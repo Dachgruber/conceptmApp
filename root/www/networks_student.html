@@ -76,6 +76,12 @@
         <button id="button" onclick = StudentRemoveNode()> Delete Node </button>
       </div>
 
+      <!-- Edge buttons -->
+      <div id="buttonContainer">
+        <button id="button" onclick = studentCreateEdge()> Create Edge </button>
+        <!-- <button id="button" onclick = studentRemoveEdge()> Delete Edge </button> -->
+      </div>
+
       <!-- Import/Export buttons -->
       <!-- use string "student" to identify correct save and load positions -->
       <div id="buttonContainer">
@@ -207,7 +213,25 @@
 
         var options = {
           manipulation: {
-            enabled: false,        // add an edit button
+            enabled: false,        // remove the edit button
+            addEdge: function(edgeData,callback) {
+              
+                var e = document.getElementById("edge-labels")
+                var value = e.value
+                var name = value
+
+              if (edgeData.from === edgeData.to) {
+                var r = confirm("Do you want to connect the node to itself?");
+                if (r === true) {
+                  edgeData.label = name;
+                  callback(edgeData);
+                }
+              }
+              else {
+                edgeData.label = name;
+                callback(edgeData);
+              }
+            },
           },
           layout: {
             hierarchical: false,  // this makes two edges on same way visible, but lessens visibility
@@ -299,6 +323,10 @@
               alert("Error creating the Edge")
             }
             
+          }
+
+          function studentCreateEdge(){
+            network.addEdgeMode();
           }
 
           // function to extract parameters for the edge to delete and call vis_network functions
