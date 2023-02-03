@@ -226,8 +226,8 @@
                       + "DoubleClicked on EdgeID: " + this.getEdgeAt(params.pointer.DOM));
                       //nodes.get( this.getNodeAt(params.pointer.DOM) )
                       
-                      network.editNode();
-                      network.editEdgeMode();
+                      if (selectedNode) {network.editNode(); }
+                      if (selectedEdge) {network.editEdgeMode();}
             })
 
         // save the map to local storage
@@ -293,6 +293,7 @@
           function createBlankEdge(){
             network.addEdgeMode();
           }
+          
           // function to return the name out of the text input
           function getName(){
             var name = document.getElementById("elementName").value;
