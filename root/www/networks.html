@@ -76,12 +76,14 @@
       <!-- Node buttons -->
       <div id="buttonContainer">
         <button id="button" onclick = createNode()> Create Node </button>
+        <button id="button" onclick = createBlankNode()> Create Blank Node </button>
         <button id="button" onclick = removeNodeByName()> Delete Node </button>
       </div>
 
       <!-- Edge buttons -->
       <div id="buttonContainer">
         <button id="button" onclick = createEdge()> Create Edge </button>
+        <button id="button" onclick = createBlankEdge()> Create Blank Edge </button>
         <button id="button" onclick = removeEdgeByName()> Delete Edge </button>
       </div>
 
@@ -227,6 +229,7 @@
                       network.editNode();
                       network.editEdgeMode();
             })
+
         // save the map to local storage
         SaveMap("teacher")
 
@@ -272,6 +275,28 @@
               alert("Error creating the Edge")
             }
             
+          }
+
+          
+          function createBlankNode(){
+            var updatedIds = nodes.add([{
+              label:'new',
+              //changed so that the node starts in the middle
+              x:0,//x:params.pointer.canvas.x,
+              y:0//y:params.pointer.canvas.y
+            }]);
+            network.selectNodes([updatedIds[0]]);
+            network.editNode();
+            
+          }
+
+          function createBlankEdge(){
+            network.addEdgeMode();
+          }
+          // function to return the name out of the text input
+          function getName(){
+            var name = document.getElementById("elementName").value;
+            return name
           }
 
           // function to extract parameters for the edge to delete and call vis_network functions
