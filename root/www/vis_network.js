@@ -12,7 +12,7 @@ function AddNode(name){
  * @param {name} String - The name of the node
  * @param {nodeID} int - ID of the node to be deleted
  */
-function DeleteNode(name){
+function DeleteNodeByName(name){
 
   // find the node based on the name
   var possibleNodes = data.nodes.get({
@@ -53,7 +53,7 @@ function AddEdge(name, fromNode, toNode){
  * @param {name} String - The name of the edge
  * @param {edgeID} int - ID of the edge to be deleted
  */
-function DeleteEdge(name, fromNode, toNode){
+function DeleteEdgeByName(name, fromNode, toNode){
   
   // find the nodes from the given names
   var fromNodeData = data.nodes.get({
@@ -77,6 +77,31 @@ function DeleteEdge(name, fromNode, toNode){
   // remove the edge from the DataSet
   data.edges.remove(edgeData[0])
 } 
+
+/**
+ * deletes an edge from the network
+ * @param {edgeID} int - ID of the edge to be deleted
+ */
+function DeleteEdgeById(edgeID){
+  data.edges.remove(edgeID);
+} 
+
+/**
+ * deletes a node from the network
+ * @param {name} String - The name of the node
+ * @param {nodeID} int - ID of the node to be deleted
+ */
+function DeleteNodeById(nodeID){
+
+  try {
+    data.nodes.remove(nodeID);
+  }
+  catch (err) {
+    console.log(err);
+  }
+
+}
+
 
 /**
  * loads a json file from local storage to create a new network for the correct user

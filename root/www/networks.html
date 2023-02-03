@@ -76,13 +76,13 @@
       <!-- Node buttons -->
       <div id="buttonContainer">
         <button id="button" onclick = createNode()> Create Node </button>
-        <button id="button" onclick = removeNode()> Delete Node </button>
+        <button id="button" onclick = removeNodeByName()> Delete Node </button>
       </div>
 
       <!-- Edge buttons -->
       <div id="buttonContainer">
         <button id="button" onclick = createEdge()> Create Edge </button>
-        <button id="button" onclick = removeEdge()> Delete Edge </button>
+        <button id="button" onclick = removeEdgeByName()> Delete Edge </button>
       </div>
 
       <!-- Import/Export buttons -->
@@ -98,9 +98,10 @@
         <button id="button" onclick = ExportMap()> Export Map </button>
       </div>
 
-      <!-- Info Button, for debugging purposes -->
+      <!-- Info Button, for debugging purposes and the new deleteSelected -->
       <div id="buttonContainer">
         <button id="button" onclick = showInfo()> Info </button>
+        <button id="button" onclick = deleteSelectedObj()> DeleteSelected </button>
       </div>
 
       <div id="buttonContainer">
@@ -239,7 +240,7 @@
            }
 
           // function to extract parameters for the node to delete and call vis_network functions
-          function removeNode(){
+          function removeNodeByName(){
             try {
               var name = getName()
               DeleteNode(name)
@@ -264,7 +265,7 @@
           }
 
           // function to extract parameters for the edge to delete and call vis_network functions
-          function removeEdge(){
+          function removeEdgeByName(){
             try {
               var name = getName()
               var [fromNode, toNode] = getConnection()
@@ -275,6 +276,40 @@
             }
             
           }
+
+          // function to delete the selected object (node or edge) without the GUI
+          function deleteSelectedObj(){
+            //console.log("deleteFunc fired"); //Debug log
+            if(selectedNode) { //check if selected Object is undefined. If not, remove
+              removeNodeById(selectedNode);
+            }
+            if(selectedEdge){
+              removeEdgeById(selectedEdge);
+            }
+          } 
+          // function to extract parameters for the node to delete and call vis_network functions
+          function removeNodeById(nodeID){
+            try {
+              console.log("[NETWORK] removing Node: " + nodeID);
+              DeleteNodeById(nodeID)
+            }
+            catch(err) {
+              alert("Error removing the Node")
+            }
+            
+          }
+          // function to extract parameters for the edge to delete and call vis_network functions
+          function removeEdgeById(edgeID){
+            try {
+              console.log("[NETWORK] removing Edge: " + edgeID);
+              DeleteEdgeById(edgeID)
+            }
+            catch(err) {
+              alert("Error deleting the Edge")
+            }
+            
+          }
+
 
           // function to return the name out of the text input
           function getName(){
