@@ -204,6 +204,18 @@
         // build the network together
         var network = new vis.Network(container, data, options);
 
+        //add the required event listeners
+
+        //this updates the current selected node and edges for easier manipulation
+        let selectedNode;
+        let selectedEdge;
+        network.on("click", function(params) {
+            console.log("Selected NodeID: " + this.getNodeAt(params.pointer.DOM) + "\n" + 
+                      + "Selected EdgeID: " + this.getEdgeAt(params.pointer.DOM));
+                      selectedNode = this.getNodeAt(params.pointer.DOM);
+                      selectedEdge = this.getEdgeAt(params.pointer.DOM);
+            })
+
         // save the map to local storage
         SaveMap("teacher")
 
