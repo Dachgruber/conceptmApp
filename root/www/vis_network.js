@@ -209,11 +209,12 @@ function SetData(jsonFile){
 function ImportTask(){
   // import from QR code
   // using a callback function to stop flow
-  QRScanner.importDataFromQR(SaveTask)
-  
-  // ############# move PopulateLabels() back to this spot after implementing promises!!!
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // PopulateLabels()
+  QRScanner.importDataFromQR(ImportTaskHelper)
+}
+
+function ImportTaskHelper() {
+  SaveTask();
+  PopulateLabels();
 }
 
 /**
@@ -278,9 +279,4 @@ function SaveTask(jsonFileString){
   var jsonFile = JSON.parse(jsonFileString)
   localStorage.setItem("taskjsonFile", JSON.stringify(jsonFile));
   console.log("imported and saved map to taskjsonFile")
-
-  // temporary use of PopulateLabels() here for synchronization
-  // !!!!
-  PopulateLabels()
-
 }
