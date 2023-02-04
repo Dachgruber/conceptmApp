@@ -112,8 +112,8 @@
 
 
       <script source = "jquery-3.6.1.min.js"></script>
-      <script type='text/javascript' src = "vis_network.js">  // network implementation </script>
-      <script type='text/javascript' src = "qrscanner.js">    // qr code implementation </script>
+      <script type='text/javascript' src = "..\js\vis_network.js">  // network implementation </script>
+      <script type='text/javascript' src = "..\js\qrscanner.js">    // qr code implementation </script>
 
 
       <!-- the script creating the network starts here -->
@@ -256,7 +256,7 @@
           function removeNodeByName(){
             try {
               var name = getName()
-              DeleteNode(name)
+              DeleteNodeByName(name)
             }
             catch(err) {
               alert("Error removing the Node")
@@ -305,7 +305,7 @@
             try {
               var name = getName()
               var [fromNode, toNode] = getConnection()
-              DeleteEdge(name, fromNode, toNode)
+              DeleteEdgeByName(name, fromNode, toNode)
             }
             catch(err) {
               alert("Error deleting the Edge")
