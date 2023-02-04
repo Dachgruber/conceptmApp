@@ -51,7 +51,6 @@ function AddEdge(name, fromNode, toNode){
 /**
  * deletes an edge from the network
  * @param {name} String - The name of the edge
- * @param {edgeID} int - ID of the edge to be deleted
  */
 function DeleteEdgeByName(name, fromNode, toNode){
   

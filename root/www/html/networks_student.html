@@ -312,36 +312,9 @@
             
           }
 
-          // function to extract parameters for new edge and call vis_network functions
-          function createEdge(){
-            try {
-              var name = getName()
-              var [fromNode, toNode] = getConnection()
-              AddEdge(name, fromNode, toNode)
-            }
-            catch(err) {
-              alert("Error creating the Edge")
-            }
-            
-          }
-
           function studentCreateEdge(){
             network.addEdgeMode();
           }
-
-          // function to extract parameters for the edge to delete and call vis_network functions
-          function removeEdge(){
-            try {
-              var name = getName()
-              var [fromNode, toNode] = getConnection()
-              DeleteEdgeByName(name, fromNode, toNode)
-            }
-            catch(err) {
-              alert("Error deleting the Edge")
-            }
-            
-          }
-
 
           // function to delete the selected object (node or edge) without the GUI
           function deleteSelectedObj(){
@@ -353,6 +326,7 @@
               removeEdgeById(selectedEdge);
             }
           } 
+
           // function to extract parameters for the node to delete and call vis_network functions
           function removeNodeById(nodeID){
             try {
@@ -364,6 +338,7 @@
             }
             
           }
+
           // function to extract parameters for the edge to delete and call vis_network functions
           function removeEdgeById(edgeID){
             try {
@@ -374,21 +349,6 @@
               alert("Error deleting the Edge")
             }
             
-          }
-
-
-
-          // function to return the name out of the text input
-          function getName(){
-            var name = document.getElementById("elementName").value;
-            return name
-          }
-
-          // function to return the connecting nodes for the edge
-          function getConnection(){
-            var fromNode = document.getElementById("fromNode").value;
-            var toNode = document.getElementById("toNode").value;
-            return [fromNode, toNode]
           }
 
           // function logging info for debugging purposes
