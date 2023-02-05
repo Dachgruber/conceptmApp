@@ -216,7 +216,7 @@ class ConceptMap {
    */
   addNodeBySelection(){
     var elem = document.getElementById(this.NODE_DROPDOWN_ID)
-    var name = elem.value.name;
+    var name = elem.value;
     this.addNodeByName(name);
   }
 
@@ -269,14 +269,22 @@ class ConceptMap {
     }
   }
 
+
   /**
    * adds a new Edge using the given selection menu
    * (useful for the student editor)
+   * @deprecated as currently there is no need.
    */
   addEdgeBySelection(){
     var elem = document.getElementById(this.EDGE_DROPDOWN_ID)
-    var name = elem.value.name
+    var name = elem.value
     this.addEdgeByName(name);
+  }
+  /**
+   * activates the vis.network.js addEdgeMode, so we can drag/drop new edges
+   */
+  activateAddEdgeMode(){
+   this.network.addEdgeMode();
   }
 
 
@@ -375,53 +383,59 @@ class ConceptMap {
   /**
    * asks the QRScanner to scan a QR-Code for us, to import a map for creating a new network
   */
-  importMapFromQr() {
+  async importMapFromQr() {
     // import from QR code
     // using a callback function to stop flow
-    QRScanner.importDataFromQR(this.#importMapHelper)
+    let jsonFileString 
+    QRScanner.importDataFromQR();
+           
+    var promise = new Promise((resolve) => {_wait = resolve }); //generates promise to wait for user input
+        
+    await promise.then(
+        (result) => {   //if promise fullfilled (no error), save the result
+          jsonFileString = result;
+          // set the network data to the contents of the json file
+          var jsonFile = JSON.parse(jsonFileString)
+          this.setData(jsonFile);
+          if (DEBUG){
+            console.log("[NETWORK] imported: ", jsonFile)
+          }
+          console.log("[QRSCAN] scan successfull")
+        },
+        (result) => {   //if promise rejected, (error), handle it and log it 
+          console.log("[QRSCAN] [ERROR] while promising: "+ result);
+        });
   }
 
   /**
    * asks the QRScanner to scan a QR-Code for us, to import a map that can be used to work on tasks 
    */
-  importTask() {
+  async importTaskFromQr() {
     // import from QR code
     // using a callback function to stop flow
-    QRScanner.importDataFromQR(this.#importTaskHelper)
-  }
-  /**
-   * helper function for importMAP function to stop programm flow
-   * If a jsonFile-String with the correct format gets provided, this can be used to
-   * set the data of the network directly (without qrscanner)
-   * @param {jsonFileString} String  json file to be used as data 
-  */
-  #importMapHelper(jsonFileString) {
-    var jsonFile = JSON.parse(jsonFileString)
-    // set the network data to the contents of the json file
-    this.setData(jsonFile);
-    if (DEBUG){
-      console.log("[NETWORK] imported: ", jsonFile)
-    }
-  }
-
-/**
- * helper function for importTask function to stop programm flow
- * If a jsonFile-String with the correct format gets provided, this can be used to
- * set the data of the network directly (without qrscanner)
- * @param {jsonFileString} String  json file to be used as data 
- */
-  #importTaskHelper(jsonFileString) {
-    SaveTask(jsonFileString);
-    PopulateLabels();
+    let jsonFileString 
+    QRScanner.importDataFromQR();
+           
+    var promise = new Promise((resolve) => {_wait = resolve }); //generates promise to wait for user input
+        
+    await promise.then(
+        (result) => {   //if promise fullfilled (no error), save the result
+          jsonFileString = result;
+          this.saveTask(jsonFileString);
+          this.populateLabels();
+          console.log("[QRSCAN] scan successfull")
+        },
+        (result) => {   //if promise rejected, (error), handle it and log it 
+          console.log("[QRSCAN] [ERROR] while promising: "+ result);
+        });
   }
    /**
    * skip the qrCodeScanner and only populate the task with the saved example
    * @deprecated
    */
    importTaskExample() {
-    PopulateLabels();
+    this.populateLabels();
   }
-
   /**
    * exports the current network to a json file and asks
    * the QRScanner to generate a QR-Code for us
@@ -483,8 +497,10 @@ class ConceptMap {
    * function to fill the labels for the dropdowns for student editor
    */
   populateLabels() {
-    var [nodeNames, edgeNames] = ExtractLabels()
-    console.log(nodeNames)
+    var [nodeNames, edgeNames] = this.extractLabels()
+    if(DEBUG) {
+      console.log("[NETWORK] the importet nodenames are: ",nodeNames)
+    }
     var nodeSelect = document.getElementById(this.NODE_DROPDOWN_ID)
     var edgeSelect = document.getElementById(this.EDGE_DROPDOWN_ID)
 
