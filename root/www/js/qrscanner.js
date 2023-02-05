@@ -2,26 +2,50 @@
  * the QRScanner class encapsulates the barcode phonegap plugin
  * with the necessary functionalty for scanning and creating QR Codes
  */
+
+let _wait; //variable for the promise
+async function editMyNode(node, callback) {
+  let inputresult;
+  openInputModal(); //opens the user prompt
+  
+  //await the user input
+ 
+
+  console.log("[EDIT] edit node: " + node.label + " with new: " + inputresult) ; 
+  //overwrite the label of the node and callback it to the network
+  node.label = inputresult;
+  
+  console.log("[EDIT] edited node: " + node.label + " with new: " + inputresult) ; 
+  callback(node);
+  
+
+}
+let _input;
 class QRScanner {
     
     // script for the qrcode scanner 
-    static #scanQR(returnFunction) {
+     static #scanQR() {
     // we use an cordova.plugins.barcodescanner object
     // that has one method: scan(result,failure) where result and failure
     // are callback methods that are called individually
+    let self = this;
+    let returnvalue;
     cordova.plugins.barcodeScanner.scan(
         function (result) {
             if(!result.cancelled){
                     // In this case we only want to process QR Codes
                     if(result.format == "QR_CODE"){
                         var value = result.text; // This is the retrieved content of the qr code
-                        //call returnFunction with the value
-                        returnFunction(value);
+                        //return the returnvalue
+                        console.log("[QRSCAN] QR_code detected")
+                        self.returnvalue = value;
+                        _wait(value);
                     }else{
                         //every other type (barcode). No cancel at this time as browsers
                         //only support barcode value input.
                         //alert("Sorry, only qr codes this time ;)");
-                        returnFunction(result.text);
+                        self.returnvalue = value;
+                        _wait(value);
                     }
             }else{
                 alert("The user has dismissed the scan");
@@ -66,10 +90,10 @@ class QRScanner {
     
     /**
      * starts the QRscanner, basically just a wrapper
-     * @param returnFunction function object which handles the scanned data
+     * 
      */
-    static importDataFromQR(returnFunction){
-        this.#scanQR(returnFunction);
+    static async importDataFromQR(){
+        this.#scanQR();
     }
     
     /**

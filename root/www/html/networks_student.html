@@ -36,9 +36,10 @@
         </div>
 
       <!-- Node and Edge Creation buttons -->
+      <!-- creation of Edges should not be done statically, but instead using the built-in edgeMode for drag and drop! -->
       <div id="buttonContainer">
         <button id="button" onclick = network.addNodeBySelection()> Create Node </button>
-        <button id="button" onclick = network.addEdgeBySelection()> Create Edge </button>
+        <button id="button" onclick = network.activateAddEdgeMode()> Create Edge </button>
       </div>
 
       <!-- Node and Edge Deletion button. One Button to rule them all! -->
@@ -84,9 +85,45 @@
         //...and save it to local storage, so we can access it later as task material
         network.saveMap("task");
          
-        //then, we create the ~actual~ empty network for the student editor
-        network = initEmptyNetwork(null)
-        // save the map to local storage
+        //then, we create the ~actual~ empty network for the student editor//then, we create the ~actual~ network with these options
+        var options = {
+          manipulation: {
+            enabled: false,        // remove the edit button
+            addEdge: function(edgeData,callback) {
+              
+                var e = document.getElementById("edge-labels")
+                var value = e.value
+                var name = value
+
+              if (edgeData.from === edgeData.to) {
+                var r = confirm("Do you want to connect the node to itself?");
+                if (r === true) {
+                  edgeData.label = name;
+                  callback(edgeData);
+                }
+              }
+              else {
+                edgeData.label = name;
+                callback(edgeData);
+              }
+            },
+          },
+          layout: {
+            hierarchical: false,  // this makes two edges on same way visible, but lessens visibility
+          },
+          edges: {                // options set for all edges
+            arrows: 'to',         // arrows on the "to" end of the edge
+            physics: false,
+            smooth: true,
+          },
+          nodes: {
+            shape: "box",
+            fixed: false,
+            physics: false,
+          }
+        };
+
+        network = new ConceptMap(options,false)
         network.saveMap("student")
         //LoadMap("student");
       </script>
