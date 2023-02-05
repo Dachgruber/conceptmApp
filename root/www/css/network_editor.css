@@ -1,0 +1,31 @@
+#title{
+    text-align: center;
+    color: blueviolet;
+  }
+
+.network_container{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2.5em;
+    width: 95%;
+    height: 400px;
+    border: 1px solid lightgray;
+  }
+
+  #button {
+    text-align: center;
+    font-size: 20px;
+    margin-right: 0.1em;
+  }
+
+  #buttonContainer {
+    text-align: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+
+  #textfield {
+    text-align: center;
+    margin-bottom: 1.0em;
+  }

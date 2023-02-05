@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <!-- //Header mit Metadaten-->
+    <!-- this html is a demo of the backend teacher editor. Use together with the networks_student.html -->
     <head> 
         <meta charset="utf-8">
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
@@ -12,51 +12,16 @@
           src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"
         ></script>
 
-        <!-- //create a new canvas -->
-        <style type="text/css">
-
-          #title{
-            text-align: center;
-            color: blueviolet;
-          }
-
-          #mynetwork {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 2.5em;
-            width: 95%;
-            height: 400px;
-            border: 1px solid lightgray;
-          }
-
-          #button {
-            text-align: center;
-            font-size: 20px;
-            margin-right: 0.1em;
-          }
-
-          #buttonContainer {
-            text-align: center;
-            margin-top: 1em;
-            margin-bottom: 1em;
-          }
-
-          #textfield {
-            text-align: center;
-            margin-bottom: 1.0em;
-          }
-
-        </style>
-
     </head>
 
     <body style="background-color:rgb(67, 67, 208); height:100%;">
+      <!-- import for the canvas stylisation -->
+      <link rel="stylesheet" href="../css/network_editor.css" media="screen"/>
       
-      <h2 id="title"> Network Container </h2>
+      <h2 id="title"> Teacher Editor Demonstration</h2>
 
-      <!-- get the network created in the header -->
-      <div id="mynetwork"></div>
+      <!-- the network will be placed here. class is for the css script, ID for the js script -->
+      <div class= "network_container" id="network_editor_container"></div>
 
       <!-- input text field for values -->
       <fieldset style="text-align: center;">
@@ -75,35 +40,35 @@
 
       <!-- Node buttons -->
       <div id="buttonContainer">
-        <button id="button" onclick = createNode()> Create Node </button>
-        <button id="button" onclick = createBlankNode()> Create Blank Node </button>
-        <button id="button" onclick = removeNodeByName()> Delete Node </button>
+        <button id="button" onclick = network.addNodeByName(getName())> Create Node </button>
+        <button id="button" onclick = network.createBlankNode()> Create Blank Node </button>
+        <button id="button" onclick = network.deleteNodeByName(getName())> Delete Node </button>
       </div>
 
       <!-- Edge buttons -->
       <div id="buttonContainer">
-        <button id="button" onclick = createEdge()> Create Edge </button>
-        <button id="button" onclick = createBlankEdge()> Create Blank Edge </button>
-        <button id="button" onclick = removeEdgeByName()> Delete Edge </button>
+        <button id="button" onclick = network.addEdgeByName(getName(),getConnection())> Create Edge </button>
+        <button id="button" onclick = network.createBlankEdge()> Create Blank Edge </button>
+        <button id="button" onclick = network.deleteEdgeByName(getName(),getConnection())> Delete Edge </button>
       </div>
 
       <!-- Import/Export buttons -->
       <!-- use string "student" to identify correct save and load positions -->
       <div id="buttonContainer">
-        <button id="button" onclick = "LoadMap('teacher');"> Load Map </button>
-        <button id="button" onclick = "SaveMap('teacher');"> Save Map </button>
+        <button id="button" onclick = "network.loadMap('teacher');"> Load Map </button>
+        <button id="button" onclick = "network.saveMap('teacher');"> Save Map </button>
       </div>
 
       <!-- Import/Export buttons -->
       <div id="buttonContainer">
-        <button id="button" onclick = ImportMap()> Import Map </button>
-        <button id="button" onclick = ExportMap()> Export Map </button>
+        <button id="button" onclick = network.importMapFromQr()> Import Map </button>
+        <button id="button" onclick = network.exportMapToQr()> Export Map </button>
       </div>
 
       <!-- Info Button, for debugging purposes and the new deleteSelected -->
       <div id="buttonContainer">
-        <button id="button" onclick = showInfo()> Info </button>
-        <button id="button" onclick = deleteSelectedObj()> DeleteSelected </button>
+        <button id="button" onclick = network.showInfo()> Info </button>
+        <button id="button" onclick = network.deleteSelectedObj()> DeleteSelected </button>
       </div>
 
       <div id="buttonContainer">
@@ -112,261 +77,33 @@
 
 
       <script source = "jquery-3.6.1.min.js"></script>
-      <script type='text/javascript' src = "vis_network.js">  // network implementation </script>
-      <script type='text/javascript' src = "qrscanner.js">    // qr code implementation </script>
+      <script type='text/javascript' src = "../js/vis_network.js">  // network implementation </script>
+      <script type='text/javascript' src = "../js/qrscanner.js">    // qr code implementation </script>
 
 
-      <!-- the script creating the network starts here -->
+      <!-- create an example teacher network -->
       <script type="text/javascript">
-
-        // create an array with nodes
-        // nodes have positive unique ids (excluding 0)
-        var nodes = new vis.DataSet([
-          { id: 1, label: "saure Lösung", x: -354, y: 1 },
-          { id: 2, label: "Oxonium-Ionen", x: -215, y: 147 },
-          { id: 3, label: "Säure", x: -159, y: 55 },
-          { id: 4, label: "Protonendonator", x: -187, y: -37 },
-          { id: 5, label: "Säure-Base-Paar", x: -8, y: 144 },
-          { id: 6, label: "Säure-Base-Reaktion", x: 14, y: -40},
-          { id: 7, label: "Base", x: 153, y: 64},
-          { id: 8, label: "Protonenakzeptor", x: 215, y: -65},
-          { id: 9, label: "basische Lösung", x: 390, y: -13},
-          { id: 10, label: "Hydroxid-Ionen", x: 256, y: 152},
-        ]);
-  
-        // create an array with edges
-        // edges have negative unique ids (excluding 0)
-        var edges = new vis.DataSet([
-          { id: -1, from: 1, to: 2, label: "enthält" },      // , arrows:'to,from' possible individually
-          { id: -2, from: 3, to: 1, label: "bildet mit Wasser" },
-          { id: -3, from: 3, to: 4, label: "ist definiert als" },
-          { id: -4, from: 3, to: 5, label: "ist Teil eines" },
-          { id: -5, from: 5, to: 6, label: "ist Teil der" },
-          { id: -6, from: 7, to: 5, label: "ist Teil eines" },
-          { id: -7, from: 7, to: 8, label: "ist definiert als" },
-          { id: -8, from: 7, to: 9, label: "bildet mit Wasser" },
-          { id: -9, from: 9, to: 10, label: "enthält" },
-        ]);
-
-        //two counters for the IDs to ensure unique IDs
-        let nextNodeID = 11
-        let nextEdgeID = -10
-
-        var options = {
-          manipulation: {
-            enabled: false,        // hide the edit button
-            addNode: function(nodeData,callback) {
-              nodeData.label = prompt("Please enter node name", "");
-              callback(nodeData);
-            },
-            editNode: function(nodeData,callback) {
-              nodeData.label = prompt("Please enter node name", ""); 
-              callback(nodeData); 
-            },
-            addEdge: function(edgeData,callback) {
-              if (edgeData.from === edgeData.to) {
-                var r = confirm("Do you want to connect the node to itself?");
-                if (r === true) {
-                  edgeData.label = prompt("Please enter edge name", "");
-                  callback(edgeData);
-                }
-              }
-              else {
-                edgeData.label = prompt("Please enter edge name", "");
-                callback(edgeData);
-              }
-            },
-            editEdge: function(nodeData,callback) {
-              nodeData.label = prompt("Please enter edge name", ""); 
-              callback(nodeData); 
-            },
-          },
-          layout: {
-            hierarchical: false,  // this makes two edges on same way visible, but lessens visibility
-          },
-          edges: {                // options set for all edges
-            arrows: 'to',         // arrows on the "to" end of the edge
-            physics: false,
-            smooth: true,
-          },
-          nodes: {
-            shape: "box",
-            fixed: false,
-            physics: false,
-          }
-        };
-
-        var container = document.getElementById("mynetwork");
-
-        var data = {
-          nodes: nodes,
-          edges: edges,
-        };
-
-
-        // build the network together
-        var network = new vis.Network(container, data, options);
-
-        //add the required event listeners
-
-        //this updates the current selected node and edges for easier manipulation
-        let selectedNode;
-        let selectedEdge;
-        network.on("click", function(params) {
-            console.log("Selected NodeID: " + this.getNodeAt(params.pointer.DOM) + "\n" + 
-                      + "Selected EdgeID: " + this.getEdgeAt(params.pointer.DOM));
-                      selectedNode = this.getNodeAt(params.pointer.DOM);
-                      selectedEdge = this.getEdgeAt(params.pointer.DOM);
-            })
-
-          
-        //we define double click as an prompt to add a edge
-        network.on("doubleClick",function(params) {
-          console.log("DoubleClicked on NodeID: " + this.getNodeAt(params.pointer.DOM) + "\n" + 
-                      + "DoubleClicked on EdgeID: " + this.getEdgeAt(params.pointer.DOM));
-                      //nodes.get( this.getNodeAt(params.pointer.DOM) )
-                      
-                      if (selectedNode) {network.editNode(); }
-                      if (selectedEdge) {network.editEdgeMode();}
-            })
-
-        // save the map to local storage
-        SaveMap("teacher")
+        //generates a new example network without given options
+        let network = new ConceptMap(null, true);
 
       </script>
 
 
-      <!-- currently the script part with the functions, this is going to be outsourced to vis_network.js -->
+      <!-- here lays some extra stuff for the demo html to work -->
       <script>
 
+        // function to return the name out of the text input
+        function getName() {
+          var name = document.getElementById("elementName").value;
+          return name
+        }
 
-          // function to extract parameters for new node and call vis_network functions
-          function createNode() {
-
-            var name = getName()
-            try {
-              AddNode(name)
-            }
-            catch(err) {
-              alert("Error creating the Node")
-            }
-           }
-
-          // function to extract parameters for the node to delete and call vis_network functions
-          function removeNodeByName(){
-            try {
-              var name = getName()
-              DeleteNode(name)
-            }
-            catch(err) {
-              alert("Error removing the Node")
-            }
-            
-          }
-
-          // function to extract parameters for new edge and call vis_network functions
-          function createEdge(){
-            try {
-              var name = getName()
-              var [fromNode, toNode] = getConnection()
-              AddEdge(name, fromNode, toNode)
-            }
-            catch(err) {
-              alert("Error creating the Edge")
-            }
-            
-          }
-
-          
-          function createBlankNode(){
-            var updatedIds = nodes.add([{
-              label:'new',
-              //changed so that the node starts in the middle
-              x:0,//x:params.pointer.canvas.x,
-              y:0//y:params.pointer.canvas.y
-            }]);
-            network.selectNodes([updatedIds[0]]);
-            network.editNode();
-            
-          }
-
-          function createBlankEdge(){
-            network.addEdgeMode();
-          }
-          
-          // function to return the name out of the text input
-          function getName(){
-            var name = document.getElementById("elementName").value;
-            return name
-          }
-
-          // function to extract parameters for the edge to delete and call vis_network functions
-          function removeEdgeByName(){
-            try {
-              var name = getName()
-              var [fromNode, toNode] = getConnection()
-              DeleteEdge(name, fromNode, toNode)
-            }
-            catch(err) {
-              alert("Error deleting the Edge")
-            }
-            
-          }
-
-          // function to delete the selected object (node or edge) without the GUI
-          function deleteSelectedObj(){
-            //console.log("deleteFunc fired"); //Debug log
-            if(selectedNode) { //check if selected Object is undefined. If not, remove
-              removeNodeById(selectedNode);
-            }
-            if(selectedEdge){
-              removeEdgeById(selectedEdge);
-            }
-          } 
-          // function to extract parameters for the node to delete and call vis_network functions
-          function removeNodeById(nodeID){
-            try {
-              console.log("[NETWORK] removing Node: " + nodeID);
-              DeleteNodeById(nodeID)
-            }
-            catch(err) {
-              alert("Error removing the Node")
-            }
-            
-          }
-          // function to extract parameters for the edge to delete and call vis_network functions
-          function removeEdgeById(edgeID){
-            try {
-              console.log("[NETWORK] removing Edge: " + edgeID);
-              DeleteEdgeById(edgeID)
-            }
-            catch(err) {
-              alert("Error deleting the Edge")
-            }
-            
-          }
-
-
-          // function to return the name out of the text input
-          function getName(){
-            var name = document.getElementById("elementName").value;
-            return name
-          }
-
-          // function to return the connecting nodes for the edge
-          function getConnection(){
-            var fromNode = document.getElementById("fromNode").value;
-            var toNode = document.getElementById("toNode").value;
-            return [fromNode, toNode]
-          }
-
-          // function logging info for debugging purposes
-          function showInfo(){
-            console.log("Next Node ID: ", nextNodeID)
-            console.log("Next Edge ID: ", nextEdgeID)
-            // console.log(data.nodes)
-            // console.log(data.edges)
-          }
+        // function to return the connecting nodes for the edge
+        function getConnection() {
+          var fromNode = document.getElementById("fromNode").value;
+          var toNode = document.getElementById("toNode").value;
+          return [fromNode, toNode]
+        }
 
       </script>
 
