@@ -292,11 +292,10 @@ class ConceptMap {
    * deletes an edge by its label from the network
    * If more than one edge with this name exits, only delete the first found
    * @param {name} String - The name of the edge
-   * @param {fromNode} String - The name of the origin node
-   * @param {toNode} String - The name of the destination node 
+   * @param {connection} Array - Array containg origin and destination node names
    */
-  deleteEdgeByName(name, fromNode, toNode) {
-
+  deleteEdgeByName(name, connection) {
+    let [fromNode, toNode] = connection;
     // find the nodes from the given names
     var fromNodeData =this.data.nodes.get({
       filter: function (item) {
