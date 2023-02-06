@@ -224,7 +224,6 @@ class ConceptMap {
    * deletes a node from the network using its name/label
    * if more than one nodes exist, delete the first found node
    * @param {name} String - The name of the node
-   * @param {nodeID} int - ID of the node to be deleted
    */
   deleteNodeByName(name) {
     // find the node based on the name
@@ -280,6 +279,7 @@ class ConceptMap {
     var name = elem.value
     this.addEdgeByName(name);
   }
+
   /**
    * activates the vis.network.js addEdgeMode, so we can drag/drop new edges
    */
@@ -292,7 +292,8 @@ class ConceptMap {
    * deletes an edge by its label from the network
    * If more than one edge with this name exits, only delete the first found
    * @param {name} String - The name of the edge
-   * @param {edgeID} int - ID of the edge to be deleted
+   * @param {fromNode} String - The name of the origin node
+   * @param {toNode} String - The name of the destination node 
    */
   deleteEdgeByName(name, fromNode, toNode) {
 
@@ -336,8 +337,7 @@ class ConceptMap {
 
   
   /**
-   * deletes a node from the network
-   * @param {name} String - The name of the node
+   * deletes a node from the network, referenced by its internal ID
    * @param {nodeID} int - ID of the node to be deleted
    */
   deleteNodeById(nodeID) {
@@ -351,7 +351,7 @@ class ConceptMap {
 
   /**
    * loads a json file from local storage to create a new network for the correct user
-   * @param user string of the user to identify
+   * @param {user} String - Type of the user to identify
    */
   loadMap(user) {
     // load the JSON file from the storage
@@ -367,7 +367,7 @@ class ConceptMap {
 
   /**
    * saves the current network to localStorage
-   * @param {string} user username to definde save-position
+   * @param {string} user username to define save-position
    */
   saveMap(user) {
     // create a json file withthis.network contents
@@ -460,8 +460,8 @@ class ConceptMap {
     // store the current positions in the nodes
    this.network.storePositions()
     // copy the data from the visthis.network DataSet
-    var nodesCopy =this.data.nodes.get()
-    var edgesCopy =this.data.edges.get()
+    var nodesCopy = this.data.nodes.get()
+    var edgesCopy = this.data.edges.get()
 
     // store the data in a JSON file
     var jsonFile = {
