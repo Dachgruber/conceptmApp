@@ -330,7 +330,7 @@ class ConceptMap {
   deleteEdgeById(edgeID) {
    this.data.edges.remove(edgeID);
    if (DEBUG){
-    console.log("[NETWORK] deleted edge: " + edgeID + " from: " + fromNode + " to:" + toNode );
+    console.log("[NETWORK] deleted edge: " + edgeID );
    }
   }
 
