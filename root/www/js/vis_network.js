@@ -4,9 +4,9 @@
  * and many functions used for creating, editing and deleting nodes and edges.
  * 
  * TO USE:
- *  -add a new div inside the html with id="network_editor_container"
+ *  -add a new div inside the html with id="network_editor_container" (or specified by CONTAINER_ID below)
  *  -import this js script
- *  -call one constructor to initate thethis.network
+ *  -call the constructor to initate the network
  * 
  * There is also added functionality for import/export to localStorage and import/export by the qrcodeScanner
  * 
@@ -17,8 +17,8 @@
 DEBUG = true; //specify if debug console output should be generated
 
 class ConceptMap {
-  CONTAINER_ID = "network_editor_container"; //the id the div container should have
-  NODE_DROPDOWN_ID = "node-labels";          //the ids the list-container (example: dropdownmenu) for
+  CONTAINER_ID = "network_editor_container"; // the id the div container should have
+  NODE_DROPDOWN_ID = "node-labels";          // the ids the list-container (example: dropdownmenu) for
   EDGE_DROPDOWN_ID = "edge-labels";          // both nodes and edges should have
   
   /**
@@ -103,6 +103,7 @@ class ConceptMap {
 
   /**
    * generates default options for a network (without assigning it)
+   * default options include prompts for the add/edit-functions, oval nodes and arrow edges
    * @returns options array
    */
   generateDefaultOptions() {
