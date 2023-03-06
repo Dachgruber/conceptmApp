@@ -567,8 +567,8 @@ class ConceptMap {
     var updatedIds =this.data.nodes.add([{
       label: 'new',
       //changed so that the node starts in the middle
-      x: 0,//x:params.pointer.canvas.x,
-      y: 0//y:params.pointer.canvas.y
+      x:0,//x:this.network.params.pointer.canvas.x, //x: 0,
+      y:0//y:this.network.params.pointer.canvas.y //y: 0
     }]);
    this.network.selectNodes([updatedIds[0]]);
    this.network.editNode();
@@ -589,8 +589,10 @@ class ConceptMap {
     if (DEBUG) {
       console.log("Next Node ID: ",this.nextNodeID)
       console.log("Next Edge ID: ",this.nextEdgeID)
-      // console.log(data.nodes)
-      // console.log(data.edges)
+      //console.log(this.network.data.nodes)
+      console.log(this.data.nodes.get())
+      //console.log(this.network.data.edges)
+      console.log(this.data.edges.get())
     }
     else {
       console.log("[INFO] Debug mode not activated");
