@@ -40,11 +40,10 @@
   cursor: pointer;
 }
 
+/* these are the circle shaped buttons under the icons  */
 .float{
   padding:0.5em;
-  margin: 2.6em;
-  width: 2.6em;
-  height: 2.6em;
+  margin: 1em;
   display: flex;
   cursor: pointer;
   position: relative;

@@ -2,11 +2,11 @@
 .addModal-content {
   background-color: #1d1d27;
   color:white;
-  margin: 15% auto; /* 15% from the top and centered */
+  margin: 50% auto; /* 50% from the top and centered */
   padding: 20px;
   /* border: 1px solid #888; */
-  height: 100px;
-  width: 40%; /* Could be more or less, depending on screen size */
+  height: 30%;
+  width: 60%; /* Could be more or less, depending on screen size */
   border-radius: 2em; /*rounded corners*/
 }
 
@@ -14,7 +14,7 @@
 .addEdge-float{
   padding:0;
   width: 80%;
-  margin: 0 auto;
+  margin: 0 0;
   margin-top:22px;
   animation: strok 1.5s reverse;
 }
@@ -22,7 +22,7 @@
 .addNode-float{
   padding:0;
   width: 80%;
-  margin: 0 auto;
+  margin: 0 0;
   margin-top:22px;
   animation: strok 1.5s reverse;
 }
