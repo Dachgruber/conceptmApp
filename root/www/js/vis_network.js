@@ -82,9 +82,9 @@ class ConceptMap {
       this.nextEdgeID = -1;
     }
 
-    //last, the options. If example or if no options are given, generate some default options. 
+    //last, the options. If no options are given, generate some default options. 
     //If not, take the parameter options
-    if (isExample || !options) {
+    if (!options) {
       this.options = this.generateDefaultOptions()
     } else{
       this.options = options;
