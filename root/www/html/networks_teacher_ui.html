@@ -21,7 +21,7 @@
     <body style="height:100%;">
 
       <!--div containing the network canvas-->
-      <div id="network_editor_container"></div>
+      <div id="network_editor_container"style="height:100%;"></div>
 
       <!-------------------START pie menu stuff ----------------------->
 
@@ -259,6 +259,32 @@
           return colours[random];
         }
 
+        //custom options for our network as we are needy bois
+        var options = {
+          manipulation: {
+            enabled: false,        // we do not want the edit button
+            editNode: editMyNode,  //we define an js-function that should handle the editNode action
+            editEdge: editMyNode,  //same story for the edges, the function works for both edges and nodes
+            addEdge: editMyNode    //this gets called everytime a new edge gets added
+
+          },
+          interaction: {
+            selectConnectedEdges: false //disables the edges getting selected when clicking on node
+          },
+          layout: {
+            hierarchical: false,  // this makes two edges on same way visible, but lessens visibility
+          },
+          edges: {                // options set for all edges
+            arrows: 'to',         // arrows on the "to" end of the edge
+            physics: false,
+            smooth: true,
+          },
+          nodes: {
+            shape: "box",
+            fixed: false,
+            physics: false,
+          }
+        };
           //create a example network...
           let network = new ConceptMap(null, true)
           //...and save it to local storage, so we can access it later as task material
