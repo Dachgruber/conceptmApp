@@ -29,7 +29,15 @@ body{
     transition: background-color var(--duration);
 
 }
+/* tabs are the embde-objects in the tabbar */
+.tab{
+    height:100vh; 
+    width:100vw;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
 
+}
 .menu{
 
     margin: 0;

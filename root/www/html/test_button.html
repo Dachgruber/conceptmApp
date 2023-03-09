@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <!-- //Header mit Metadaten-->
+    <head> 
+        <meta charset="utf-8" />
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width" />
+
+        <title>Network Student</title>
+      </head>
+
+      <body>
+    <!-- background style  -->
+    <body style="background-color:beige  ;height:100%;">
+
+
+        <button style = "color: orange; font-size: 30px" id="makeCode" onclick = QRScanner.sendDataToQR()> QR Generator</button>
+        <!-- jquery import -->
+        <script source = "jquery-3.6.1.min.js"></script>
+
+        <!-- black magic, very important, such danger -->
+        <script type="text/javascript" src="../cordova.js"></script>
+        <script type='application/javascript' src="../js/vis_network.js">  // network implementation </script>
+        <script type='application/javascript' src="../js/qrscanner.js">    // qr code implementation </script>
+    </body>
+</html>

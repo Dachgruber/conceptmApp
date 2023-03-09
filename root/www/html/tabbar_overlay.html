@@ -12,11 +12,6 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width" />
 
-        <!--get the required onsen UI packages from unpkg.com-->
-        <!-- <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
-        <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
-        <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script> -->
-
         <title>Network</title>
     </head>
 
@@ -25,16 +20,20 @@
 
         <!-- every tab gets its own div -->
         <div id="content">
-            <div id="tab0" class="tabcontent"></div>
-            <div id="tab1" class="tabcontent"></div>
-            <div id="tab2" class="tabcontent"></div>
-            <div id="tab3" class="tabcontent"></div>
-            <div id="tab4" class="tabcontent"></div>
+            <div id="tab0" class="tabcontent" style=" width:100%;height:100%"></div>
+            <div id="tab1" class="tabcontent" style="height:100%"></div>
+            <div id="tab2" class="tabcontent" style="height:100%"></div>
+            <div id="tab3" class="tabcontent" style="height:100%"></div>
+            <div id="tab4" class="tabcontent" style="height:100%"></div>
         </div>
 
-        <!-- <button style = "color: orange; font-size: 30px" id="makeCode" onclick = QRScanner.sendDataToQR()> QR Generator</button> -->
-
-        
+      <!-- <div>
+        <div>
+            <button style = "color: orange; font-size: 30px" id="makeCode" onclick = QRScanner.sendDataToQR()> QR Generator</button>
+      
+        </div> 
+      </div> -->
+       
       <script type='text/javascript' src = "../js/qrscanner.js">//implementation des QR-Code Scanners</script> 
         
         <!-- everything for the menubar stylisation. For more tabs on the tabbar: duplicate one button tag and edit the icon -->
@@ -105,6 +104,8 @@
         
         <!-- jquery import -->
         <script source = "../js/jquery-3.6.1.min.js"></script>
+        <script type='application/javascript' src="../js/vis_network.js">  // network implementation </script>
+        <script type='application/javascript' src="../js/qrscanner.js">    // qr code implementation </script>
 
         <!-- black magic, very important, such danger -->
         <script type="application/javascript" src="../cordova.js"></script>

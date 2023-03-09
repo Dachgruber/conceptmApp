@@ -15,11 +15,17 @@ let activeItem = menu.querySelector(".active");
 
 //we use this to load the HTML pages from the other pages
 function load_tabs() {
-    document.getElementById("tab0").innerHTML='<iframe src="networks_teacher_ui.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
-    document.getElementById("tab1").innerHTML='<iframe src="networks_student_ui.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
+
+    document.getElementById("tab0").innerHTML='<object class = "tab" data="networks_teacher_ui.html" type="text/html" "> Error: Embedded data could not be displayed.</embed>'
+    
+    //currently broken
+    //document.getElementById("tab1").innerHTML='<object class = "tab" data="networks_student_ui.html" type="text/html" "> Error: Embedded data could not be displayed.</embed>'
+    
+    document.getElementById("tab1").innerHTML='<iframe src="toller_button2.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
     document.getElementById("tab2").innerHTML='<iframe src="cat_example.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
-    document.getElementById("tab3").innerHTML='<button style = "color: orange; font-size: 30px" id="makeCode" onclick = QRScanner.sendDataToQR("katzenbilder")> QR Generator</button>';
-    document.getElementById("tab4").innerHTML='<iframe src="cat_example.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
+    document.getElementById("tab3").innerHTML='<object class = "tab" data="test_button.html" style"=overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"> <embed src="test_button.html" style"=overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;">> </embed> Error: Embedded data could not be displayed.</object>'
+
+    //document.getElementById("tab4").innerHTML='<iframe src="cat_example.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
     
     //last set the backgroundcolour accordingly
     body.style.backgroundColor = bgColorsBody[0];
@@ -102,7 +108,7 @@ function clickWrapper(item, index) {
 
     //no changeroos when we click on the active item
     if (activeItem == item) return;
-    
+
     clickItem(item, index); //every button gets the clickItem function, that handles the pretty stuff
     changeContent(index); //but we also need to change the displayed content
 }

@@ -3,7 +3,7 @@
  * with the necessary functionalty for scanning and creating QR Codes
  */
 
-let _wait; //variable for the promise
+//let _wait; //variable for the promise
 async function editMyNode(node, callback) {
   let inputresult;
   openInputModal(); //opens the user prompt
