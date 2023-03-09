@@ -17,7 +17,9 @@
  * @author Cornelius Brütt
  * @version 1.2
  */
-DEBUG = true; //specify if debug console output should be generated
+"use strict";
+
+let DEBUG = true; //specify if debug console output should be generated
 
 class ConceptMap {
   CONTAINER_ID = "network_editor_container"; // the id the div container should have
@@ -222,17 +224,19 @@ class ConceptMap {
       } 
       )
     }
-    /**
-     * takes every node of the current network and assigns a random colour to it
-     */
-    makeColourfull() {
-      var nodeIDs = this.data.nodes.getIds() 
-      //iterate over all IDs and update the node colour with the id respectivly
-      for(const entry of nodeIDs){
-        this.setNodeColour(entry, this.getRandomColour());
-      }
-      this.network.redraw();
+
+    
+  /**
+   * takes every node of the current network and assigns a random colour to it
+   */
+  makeColourfull() {
+    var nodeIDs = this.data.nodes.getIds() 
+    //iterate over all IDs and update the node colour with the id respectivly
+    for(const entry of nodeIDs){
+      this.setNodeColour(entry, this.getRandomColour());
     }
+    this.network.redraw();
+  }
 
   /**
    * deletes the current selected node or edge or both
@@ -254,7 +258,7 @@ class ConceptMap {
    * @param {name} String - The name for the node
    */
   addNodeByName(name) {
-    this.data.nodes.add({ id:this.nextNodeID, label: name });
+    this.data.nodes.add({ id:this.nextNodeID, label: name, color: this.getRandomColour()});
     this.nextNodeID++;
     if (DEBUG){
       console.log("[NETWORK] added node: ",name);
@@ -617,7 +621,8 @@ class ConceptMap {
       label: 'new',
       //changed so that the node starts in the middle
       x:0,//x:this.network.params.pointer.canvas.x, //x: 0,
-      y:0//y:this.network.params.pointer.canvas.y //y: 0
+      y:0,//y:this.network.params.pointer.canvas.y //y: 0
+      color: this.getRandomColour()
     }]);
    this.network.selectNodes([updatedIds[0]]);
    this.network.editNode();

@@ -21,13 +21,15 @@ function load_tabs() {
     document.getElementById("tab3").innerHTML='<button style = "color: orange; font-size: 30px" id="makeCode" onclick = QRScanner.sendDataToQR("katzenbilder")> QR Generator</button>';
     document.getElementById("tab4").innerHTML='<iframe src="cat_example.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
     
+    //last set the backgroundcolour accordingly
+    body.style.backgroundColor = bgColorsBody[0];
 }
 
 function clickItem(item, index) {
 
     menu.style.removeProperty("--timeOut");
 
-    if (activeItem == item) return;
+    
 
     if (activeItem) {
         activeItem.classList.remove("active");
@@ -97,6 +99,10 @@ function cleartabs(){
 }
 
 function clickWrapper(item, index) {
+
+    //no changeroos when we click on the active item
+    if (activeItem == item) return;
+    
     clickItem(item, index); //every button gets the clickItem function, that handles the pretty stuff
     changeContent(index); //but we also need to change the displayed content
 }
