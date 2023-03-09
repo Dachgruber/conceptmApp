@@ -10,6 +10,9 @@
  * 
  * There is also added functionality for import/export to localStorage and import/export by the qrcodeScanner
  * 
+ * NEW IN VERSION 1.3:
+ *    -added colour support (currently using hardcoded colour palette)
+ * 
  * @author André Berger 
  * @author Cornelius Brütt
  * @version 1.2
@@ -20,6 +23,10 @@ class ConceptMap {
   CONTAINER_ID = "network_editor_container"; // the id the div container should have
   NODE_DROPDOWN_ID = "node-labels";          // the ids the list-container (example: dropdownmenu) for
   EDGE_DROPDOWN_ID = "edge-labels";          // both nodes and edges should have
+
+  COLOURS = ['rgba(214, 40, 40,1)',          // hardcoded colour palette
+             'rgba(247, 127, 0,1)',
+             'rgba(252, 191, 73,1)']; 
   
   /**
    * generates a new ConceptMap and connects it to the <div> with the CONTAINER_ID 
@@ -184,6 +191,48 @@ class ConceptMap {
     }
   }
 
+
+    /**
+     * assign a random Colour from the colour palette
+     * @returns colour string from the palette
+    */
+    getRandomColour() {
+      
+      let random = Math.floor(Math.random() * (this.COLOURS.length)); 
+      var randomColour = this.COLOURS[random];
+      if (DEBUG) {
+        console.log("[NETWORK][COLOUR] rolled random colour %s",randomColour);
+      }
+      return randomColour
+    }
+
+    /**
+     * Changes the colour of the given NodeID
+     * @param {int} nodeID
+     * @param {String} colourString 
+     */
+    setNodeColour(nodeID, colourString) {
+      //var currentNode = this.network.nodes.get(nodeID);
+      if (DEBUG){
+        console.log('[NETWORK][COLOUR] setting %s to new colour %s',nodeID,colourString)
+      }
+      this.data.nodes.update({
+        id: nodeID,
+        color: colourString
+      } 
+      )
+    }
+    /**
+     * takes every node of the current network and assigns a random colour to it
+     */
+    makeColourfull() {
+      var nodeIDs = this.data.nodes.getIds() 
+      //iterate over all IDs and update the node colour with the id respectivly
+      for(const entry of nodeIDs){
+        this.setNodeColour(entry, this.getRandomColour());
+      }
+      this.network.redraw();
+    }
 
   /**
    * deletes the current selected node or edge or both
