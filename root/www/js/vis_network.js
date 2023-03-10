@@ -702,6 +702,7 @@ class ConceptMap {
         "nodesPercentage": nodesPercentage,
         "edgesUsed": edgesUsed,
         "edgesPossible": edgesPossible,
+        "edgesPercentage": edgesPercentage,
         "correctEdgesPercentage": correctEdgesPercentage,
       } 
       console.log(evaluationData)
