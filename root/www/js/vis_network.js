@@ -188,6 +188,55 @@ class ConceptMap {
         if (conceptMap.selectedNode) {console.log("edit this node"); this.editNode(); } //if a node is selected, fire editMode
         if (conceptMap.selectedEdge) {this.editEdgeMode(); }
     })
+
+    //dataset subscription to listen for _any_ changes in the current data
+    this.data.nodes.on('*', function (event, properties, senderId) {
+      if (DEBUG) {
+        //This results in unmeasurable amounts of console spam
+        //console.log('[NETWORK] [EVT] event:', event, ',properties:', properties, ',senderId:', senderId);
+      }
+      conceptMap.saveMap("backup");
+    });
+
+    this.data.edges.on('*', function (event, properties, senderId) {
+      if (DEBUG) {
+        //same story with this
+        //console.log('[NETWORK] [EVT] event:', event, ',properties:', properties, ',senderId:', senderId);
+      }
+      conceptMap.saveMap("backup");
+    });
+
+    //checks for cordova to be fully loaded
+    document.addEventListener("deviceready", () => {
+      if (DEBUG) {
+        console.log("[##############][##############][##############]")
+        console.log("[##############]  DEVICE READY  [##############]");
+        console.log("[##############][##############][##############]")
+      }
+    }
+    , false);
+
+    //these currently do not work at all
+    // //triggered when app gets paused/resumed to/from background
+    // document.addEventListener("pause", () => {
+    //   if (DEBUG) {
+    //     console.log("[NETWORK] [EVT] APPLICATION PAUSED")
+    //   }
+    // }
+    // , false);
+    // document.addEventListener("resume", () => {
+    //   if (DEBUG) {
+    //     console.log("[NETWORK] [EVT] APPLICATION RESUMED")
+    //   }
+    // }
+    // , false);
+    // document.addEventListener("backbutton", () => {
+    //   if (DEBUG) {
+    //     console.log("[NETWORK] [EVT] BACK BUTTON PRESSED")
+    //   }
+    // }
+    // , false);
+    
     if (DEBUG) {
       console.log("[NETWORK] [EVT] event listeners added")
     }
