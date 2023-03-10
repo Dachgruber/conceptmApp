@@ -73,7 +73,7 @@ class ConceptMap {
       ]);
       //set the counter
       this.nextEdgeID = -10;
-      //save the created arrays to thethis.data
+      //save the created arrays to the data
       this.data = {
         nodes: nodes,
         edges: edges,
@@ -390,7 +390,12 @@ class ConceptMap {
    this.network.addEdgeMode();
   }
 
-
+  /**
+   * deactivates the vis.network.js addEdgeMode
+   * */
+  deactivateAddEdgeMode(){
+    this.network.disableEditMode();
+   }
   /**
    * deletes an edge by its label from the network
    * If more than one edge with this name exits, only delete the first found
