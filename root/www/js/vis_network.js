@@ -476,6 +476,17 @@ class ConceptMap {
   }
 
   /**
+   * exports the current evaluation data
+   */
+  exportResultToQr() {
+    var evaluationData = JSON.parse(localStorage.getItem("evaluationData"))
+    if(DEBUG) {
+      console.log("[NETWORK] exporting to QR: ", evaluationData)
+    }
+    QRScanner.sendDataToQR(evaluationData)
+  }
+
+  /**
    * creates the network data as jsonFile
    * @return the json file containing networkthis.data 
    */
@@ -685,7 +696,16 @@ class ConceptMap {
 
       var correctEdgesPercentage = correctEdges.length / taskData.edges.get().length
       console.log("Correct Edges Percentage: " + correctEdgesPercentage)
-
+      var evaluationData = {
+        "nodesUsed": nodesUsed,
+        "nodesPossible": nodesPossible,
+        "nodesPercentage": nodesPercentage,
+        "edgesUsed": edgesUsed,
+        "edgesPossible": edgesPossible,
+        "correctEdgesPercentage": correctEdgesPercentage,
+      } 
+      console.log(evaluationData)
+      localStorage.setItem("evaluationData", JSON.stringify(evaluationData))
       alert("Evaluation Complete\n Node usage: "+nodesPercentage+" ("+nodesUsed+"/"+nodesPossible+")"+"\n Edge usage: "+edgesPercentage+" ("+edgesUsed+"/"+edgesPossible+")"+"\n Overall correctness: "+correctEdgesPercentage+" ("+correctEdges.length+"/"+taskData.edges.get().length+")"+"\n")
 
       /**
