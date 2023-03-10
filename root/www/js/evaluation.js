@@ -2,6 +2,12 @@
  * function to initialize html elements
  */
 function initialize() {
+
+    mapsScanned = 0;
+    nodesPercentage = 0;
+    edgesPercentage = 0;
+    correctEdgesPercentage = 0;
+
     document.getElementById("mapsScanned").innerHTML = 0;
     document.getElementById("nodesPercentage").innerHTML = 0;
     document.getElementById("edgesPercentage").innerHTML = 0;
