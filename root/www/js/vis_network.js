@@ -242,8 +242,11 @@ class ConceptMap {
         return (item.label == name);
       }
     })
+    var nodeID = possibleNodes[0]
+    console.log(nodeID)
+    this.deleteConnectedEdges(nodeID)
     // remove the (first) found node from the DataSet
-    this.data.nodes.remove(possibleNodes[0])
+    this.data.nodes.remove(nodeID)
     if (DEBUG){
       console.log("[NETWORK] removed node: ",name);
     }
@@ -351,10 +354,21 @@ class ConceptMap {
    */
   deleteNodeById(nodeID) {
     this.data.nodes.remove(nodeID);
-   
+    this.deleteConnectedEdges(nodeID);
+
     if (DEBUG){
       console.log("[NETWORK] deleted node: " + nodeID);
      }
+  }
+
+  /**
+   * 
+   */
+  deleteConnectedEdges(nodeID) {
+    var relevantIDs = this.data.edges.getIds({filter: function (item){
+      return (item.from == nodeID || item.to == nodeID)
+    }})
+    this.data.edges.remove(relevantIDs)
   }
 
 
