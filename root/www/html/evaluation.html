@@ -38,7 +38,12 @@
       <!-- Import/Export buttons -->
       <div id="buttonContainer">
         <button id="button" onclick = importResultFromQr()> Import Student Result </button>
+        <button id="button" onclick = importTestResult()> Import Test Result </button>
         <button id="button" onclick = exportResultsToQr()> Export Results </button>
+      </div>
+
+      <div id="buttonContainer">
+        <button id="button" onclick = evaluateResults()> Evaluate Results </button>
       </div>
 
       <!-- Info Button and the switch editor buttons, for debugging purposes-->
@@ -63,6 +68,8 @@
         var nodesPercentage = 0;
         var edgesPercentage = 0;
         var correctEdgesPercentage = 0;
+
+        initialize()
 
       </script>
 
