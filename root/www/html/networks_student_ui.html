@@ -167,7 +167,7 @@
       <p>Wähle den Namen der neuen Node</p>
       <!-- <label for="node-labels"> Possible Nodes:</label> -->
       <select name="node-labels" id="node-labels"></select>
-      <button type="submit" class="btn" onclick="closeinputModal();enterNodeInputPressed()">Enter</button>
+      <button type="submit" class="btn" onclick="closeNodeInputModal();enterNodeInputPressed()">Enter</button>
 
     </div>
   </div>
@@ -183,7 +183,7 @@
       <p>Wähle den Namen der neuen Edge</p>
       <!-- <label for="node-labels"> Possible Nodes:</label> -->
       <select name="edge-labels" id="edge-labels"></select>
-      <button type="submit" class="btn" onclick="closeinputModal();enterEdgeInputPressed()">Enter</button>
+      <button type="submit" class="btn" onclick="closeEdgeInputModal();enterEdgeInputPressed()">Enter</button>
 
     </div>
   </div>
@@ -249,14 +249,14 @@
     }
 
     function enterEdgeInputPressed() {
-      let value = document.getElementById("inputText").value;
+      let value = document.getElementById(network.EDGE_DROPDOWN_ID).value;
       //document.getElementById("inputText").value = ""; //flush the text field
       console.log("[MODAL] [INPUT] enterEdgeButton pressed, got value: " + value + "TYPE: " + typeof value);
       _input(value); /* resolve promotion-promise */
     }
     function enterNodeInputPressed() {
-      let value = document.getElementById("inputText").value;
-      document.getElementById("inputText").value = ""; //flush the text field
+      let value = document.getElementById(network.NODE_DROPDOWN_ID).value;
+      //document.getElementById("inputText").value = ""; //flush the text field
       console.log("[MODAL] [INPUT] enterButton pressed, got value: " + value + "TYPE: " + typeof value);
       _input(value); /* resolve promotion-promise */
     }
@@ -311,6 +311,7 @@
     let network = new ConceptMap(options, false)
     //...and save it to local storage
     network.saveMap("student");
+    network.importTaskExample()
 
     //here lays some extra code for the funtionality of the ui
 
