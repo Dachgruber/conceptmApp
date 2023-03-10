@@ -308,6 +308,7 @@ class ConceptMap {
    */
   addNodeByName(name) {
     this.data.nodes.add({ id:this.nextNodeID, label: name, color: this.getRandomColour()});
+    this.network.focus(this.nextNodeID,{animation: true});
     this.nextNodeID++;
     if (DEBUG){
       console.log("[NETWORK] added node: ",name);
@@ -667,17 +668,37 @@ class ConceptMap {
   }
 
   /**
+   * generates a random pos coordinate inside the current viewport
+   * @param {char} axis, either x or y
+   * @returns 
+   */
+  generateRandomPosition(axis){
+    var positionInfo = document.getElementById(this.CONTAINER_ID).getBoundingClientRect();
+    let maxValue = 0;
+    let BUFFER = 0.5; //sets a multiplicator so that we do not reach the edge 
+    if(axis=='y'){
+      maxValue = positionInfo.height * BUFFER;
+    }else if (axis == 'x'){
+      maxValue = positionInfo.width * BUFFER;
+    }else return 0;
+  
+    let random = Math.floor(Math.random() * (maxValue)); 
+    return random;  
+}
+  /**
    * creates a new blank node using the network intern naming function 
    * (default: prompt)
    */
   createBlankNode() {
     var updatedIds =this.data.nodes.add([{
       label: 'new',
-      //changed so that the node starts in the middle
-      x:0,//x:this.network.params.pointer.canvas.x, //x: 0,
-      y:0,//y:this.network.params.pointer.canvas.y //y: 0
+      //changed so that node starts at random pos inside viewport
+      //absolutly destroys performance tho
+      x:this.generateRandomPosition("x"),//x:this.network.params.pointer.canvas.x, //x: 0,
+      y:this.generateRandomPosition("y"),//y:this.network.params.pointer.canvas.y //y: 0
       color: this.getRandomColour()
     }]);
+   this.network.focus([updatedIds[0]],{animation: true});
    this.network.selectNodes([updatedIds[0]]);
    this.network.editNode();
   }
