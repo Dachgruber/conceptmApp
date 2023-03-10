@@ -62,10 +62,9 @@ async function importResultFromQr() {
     var evaluationData = JSON.parse(localStorage.getItem("evaluationData"))
     mapsScanned += 1;
     document.getElementById("mapsScanned").innerHTML = mapsScanned;
-    correctEdgesPercentage += evaluationData.correctEdgesPercentage;
+    correctEdgesPercentage += evaluationData.correctEdgesPercentage
     edgesPercentage += evaluationData.edgesPercentage
     nodesPercentage += evaluationData.nodesPercentage
-  
   }
 
   /**
