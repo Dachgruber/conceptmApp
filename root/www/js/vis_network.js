@@ -648,15 +648,77 @@ class ConceptMap {
       console.log("[NETWORK] entered evaluation")
       this.saveMap("student")
       
-      var [nodesPercentage, edgesPercentage] = this.evaluatePercentages()
+      var [nodesUsed, nodesPossible, nodesPercentage, edgesUsed, edgesPossible, edgesPercentage] = this.evaluatePercentages()
       console.log("nodesPercentage: " + nodesPercentage)
       console.log("edgesPercentage: " + edgesPercentage)
+
+      var jsonFileObject = localStorage.getItem("taskjsonFile")
+      var taskNetwork = JSON.parse(jsonFileObject)
+      // create temporary dataSets for working with the data
+      var taskNodes = new vis.DataSet(taskNetwork.nodes[0]);
+      var taskEdges = new vis.DataSet(taskNetwork.edges[0])
+      let taskData = {
+        nodes: taskNodes,
+        edges: taskEdges,
+      }
+      
+      var jsonFileObject = localStorage.getItem("studentJsonFile")
+      var studentNetwork = JSON.parse(jsonFileObject)
+      // create temporary dataSets for working with the data
+      var studentNodes = new vis.DataSet(studentNetwork.nodes[0])
+      var studentEdges = new vis.DataSet(studentNetwork.edges[0])
+      let studentData = {
+        nodes: studentNodes,
+        edges: studentEdges,
+      }
+
+      // correct the edges of the dataSets
+      let correctEdges = []
+      taskNetwork.edges[0].forEach(evaluateEdge)
+
+      // colour every correct edge green
+      for (let i = 0; i < correctEdges.length; i++) {
+        var edgeID = correctEdges[i].id
+        this.setEdgeColour(edgeID, "green")
+      }
+      
+
+      var correctEdgesPercentage = correctEdges.length / taskData.edges.get().length
+      console.log("Correct Edges Percentage: " + correctEdgesPercentage)
+
+      alert("Evaluation Complete\n Node usage: "+nodesPercentage+" ("+nodesUsed+"/"+nodesPossible+")"+"\n Edge usage: "+edgesPercentage+" ("+edgesUsed+"/"+edgesPossible+")"+"\n Overall correctness: "+correctEdgesPercentage+" ("+correctEdges.length+"/"+taskData.edges.get().length+")"+"\n")
+
+      /**
+        * subfunction to compare task edges with the student's edges
+        * @param {edgeObject} edge the task edge that is being compared
+        */
+      function evaluateEdge(edge) {
+        // console.log(edge)
+        var edgeFrom = taskData.nodes.get(edge.from).label
+        var edgeTo = taskData.nodes.get(edge.to).label
+        // console.log(edgeFrom, edgeTo)
+    
+        // compare the current edge with every edge that the student created
+        studentNetwork.edges[0].forEach(function(i) {
+          var iFrom = studentData.nodes.get(i.from).label 
+          var iTo = studentData.nodes.get(i.to).label 
+          if (i.label == edge.label && iFrom == edgeFrom && iTo == edgeTo) {
+            console.log(i)
+            correctEdges.push(i)
+          }
+        })
+      }
 
     } else {
       console.log("[NETWORK] cancelled evaluation")
     }
   }
 
+
+  /**
+   * 
+   * @returns the percentages of edges and nodes used by the student
+   */
   evaluatePercentages() {
     // extract all labels from Task and Student work
     var [taskNodeLabels, taskEdgeLabels] = this.extractTaskLabels()
@@ -691,6 +753,21 @@ class ConceptMap {
     var nodesPercentage = nodesUsed / nodesPossible
     var edgesPercentage = edgesUsed / edgesPossible
 
-    return [nodesPercentage, edgesPercentage]
+    return [nodesUsed, nodesPossible, nodesPercentage, edgesUsed, edgesPossible, edgesPercentage]
+  }
+
+  /**
+   * Changes the colour of the given EdgeID
+   * @param {int} edgeID
+   * @param {string} colourString
+   */
+  setEdgeColour(edgeID, colourString) {
+    if (DEBUG) {
+      console.log('[NETWORK][COLOUR] setting %s to new colour %s',edgeID,colourString)
+    }
+    this.data.edges.update({
+      id: edgeID,
+      color: colourString
+    })
   }
 }
