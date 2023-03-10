@@ -205,14 +205,10 @@ class ConceptMap {
    * @param {name} String - The name for the node
    */
   addNodeByName(name) {
-    // create current label array from current data 
-    let currentNodes = this.data.nodes.get();
-    let currentLabels = currentNodes.map(function(i) {
-      return i.label;
-    })
-    console.log(currentLabels)
+    
+    let [currentNodeLabels, currentEdgeLabels] = this.extractStudentLabels()
     // if the label does not already exists, add the node to the data
-    if (!(currentLabels.includes(name))) {
+    if (!(currentNodeLabels.includes(name))) {
       this.data.nodes.add({ id:this.nextNodeID, label: name });
       this.nextNodeID++;
       if (DEBUG){
@@ -551,15 +547,33 @@ class ConceptMap {
     var jsonFileObject = localStorage.getItem("taskjsonFile")
     var jsonFile = JSON.parse(jsonFileObject)
     var nodeNames = []
-    var labelNames = []
+    var edgeNames = []
     for (let i = 0; i < jsonFile.nodes[0].length; i++) {
       nodeNames.push(jsonFile.nodes[0][i].label)
     }
     for (let i = 0; i < jsonFile.edges[0].length; i++) {
-      labelNames.push(jsonFile.edges[0][i].label)
+      edgeNames.push(jsonFile.edges[0][i].label)
     }
-    console.log("Extracted: ", "Nodes: ", nodeNames, "Edges: ", labelNames)
-    return [nodeNames, labelNames]
+    if (DEBUG) {
+      console.log("[NETWORK] Extracted: ", "Nodes: ", nodeNames, "Edges: ", edgeNames)
+    }
+    return [nodeNames, edgeNames]
+  }
+
+  /**
+   * extract the current labels from the stored student network data 
+   */
+  extractStudentLabels() {
+    // create current label array from current data 
+    let currentNodes = this.data.nodes.get();
+    let currentNodeLabels = currentNodes.map(function(i) {
+      return i.label;
+    })
+    let currentEdges = this.data.edges.get();
+    let currentEdgeLabels = currentEdges.map(function(i) {
+      return i.label;
+    })
+    return [currentNodeLabels, currentEdgeLabels]
   }
 
   /**
@@ -595,9 +609,9 @@ class ConceptMap {
    this.network.addEdgeMode();
   }
 
-/**
- * log some information in the console. Only generates output if DEBUG mode is activated
- */
+  /**
+  * log some information in the console. Only generates output if DEBUG mode is activated
+  */
   showInfo() {
     if (DEBUG) {
       console.log("Next Node ID: ",this.nextNodeID)
@@ -610,5 +624,59 @@ class ConceptMap {
     else {
       console.log("[INFO] Debug mode not activated");
     }
+  }
+
+  /**
+   * evaluate the current student network with the saved taskJsonFile
+   */
+  evaluate() {
+    if (confirm("Are you sure you want to evaluate and finish working for now?")) {
+      console.log("[NETWORK] entered evaluation")
+      this.saveMap("student")
+      
+      var [nodesPercentage, edgesPercentage] = this.evaluatePercentages()
+      console.log("nodesPercentage: " + nodesPercentage)
+      console.log("edgesPercentage: " + edgesPercentage)
+
+    } else {
+      console.log("[NETWORK] cancelled evaluation")
+    }
+  }
+
+  evaluatePercentages() {
+    // extract all labels from Task and Student work
+    var [taskNodeLabels, taskEdgeLabels] = this.extractTaskLabels()
+    var [studentNodeLabels, studentEdgeLabels] = this.extractStudentLabels()
+    //console.log(taskNodeLabels, taskEdgeLabels)
+    //console.log(studentNodeLabels, studentEdgeLabels)
+
+    // create value for percentage of labels used
+    let nodesPossible = taskNodeLabels.length
+    let edgesPossible = taskEdgeLabels.length
+    var nodesUsed = 0
+    var edgesUsed = 0
+    // iterate over task labels and compare if they are being used
+    taskNodeLabels.forEach(compareStudentNodes)
+    taskEdgeLabels.forEach(compareStudentEdges)
+    
+    function compareStudentNodes(item) {
+      if (studentNodeLabels.includes(item)) {
+        nodesUsed += 1;
+      }
+    }
+
+    function compareStudentEdges(item) {
+      if (studentEdgeLabels.includes(item)) {
+        edgesUsed += 1;
+        // remove the edge from the array so that they cannot be counted twice
+        var index = studentEdgeLabels.indexOf(item)
+        studentEdgeLabels.splice(index, 1)
+      }
+    }
+
+    var nodesPercentage = nodesUsed / nodesPossible
+    var edgesPercentage = edgesUsed / edgesPossible
+
+    return [nodesPercentage, edgesPercentage]
   }
 }
