@@ -163,7 +163,7 @@
     <!-- this is the small box that pops up -->
     <div class="inputModal-content">
       <!-- close button -->
-      <span class="nodeInputclose close">&times;</span>
+      <span class="nodeInputclose close"onclick="closeNodeInputModal()">&times;</span>
       <p>Wähle den Namen der neuen Node</p>
       <!-- <label for="node-labels"> Possible Nodes:</label> -->
       <select name="node-labels" id="node-labels"></select>
@@ -178,10 +178,9 @@
 
     <!-- this is the small box that pops up -->
     <div class="inputModal-content">
-      <!-- close button -->
-      <span class="edgeInputclose close">&times;</span>
+      <!-- close button  - when closing we also want to abort the drag&drop edge mode-->
+      <span class="edgeInputclose close" onclick="closeEdgeInputModal(); network.deactivateAddEdgeMode()">&times;</span>
       <p>Wähle den Namen der neuen Edge</p>
-      <!-- <label for="node-labels"> Possible Nodes:</label> -->
       <select name="edge-labels" id="edge-labels"></select>
       <button type="submit" class="btn" onclick="closeEdgeInputModal();enterEdgeInputPressed()">Enter</button>
 
@@ -248,15 +247,16 @@
       network.createBlankEdge();
     }
 
+    //we do not use the vis_network.js functions for addNodeBySelection() etc
+    //as we handled the creation of new nodes by first creating a blank node which
+    //then fires the async editNode() func specified below
     function enterEdgeInputPressed() {
       let value = document.getElementById(network.EDGE_DROPDOWN_ID).value;
-      //document.getElementById("inputText").value = ""; //flush the text field
       console.log("[MODAL] [INPUT] enterEdgeButton pressed, got value: " + value + "TYPE: " + typeof value);
       _input(value); /* resolve promotion-promise */
     }
     function enterNodeInputPressed() {
       let value = document.getElementById(network.NODE_DROPDOWN_ID).value;
-      //document.getElementById("inputText").value = ""; //flush the text field
       console.log("[MODAL] [INPUT] enterButton pressed, got value: " + value + "TYPE: " + typeof value);
       _input(value); /* resolve promotion-promise */
     }
