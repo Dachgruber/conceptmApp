@@ -510,7 +510,7 @@ class ConceptMap {
    * function to fill the labels for the dropdowns for student editor
    */
   populateLabels() {
-    var [nodeNames, edgeNames] = this.extractLabels()
+    var [nodeNames, edgeNames] = this.extractTaskLabels()
     if(DEBUG) {
       console.log("[NETWORK] the importet nodenames are: ",nodeNames)
     }
@@ -546,7 +546,7 @@ class ConceptMap {
    * Use the loaded teacher map to find out all possible node labels
    * @returns an array with all node labels from saved teacher map in localStorage
    */
-  extractLabels() {
+  extractTaskLabels() {
 
     var jsonFileObject = localStorage.getItem("taskjsonFile")
     var jsonFile = JSON.parse(jsonFileObject)
