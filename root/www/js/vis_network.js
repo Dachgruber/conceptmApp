@@ -201,14 +201,27 @@ class ConceptMap {
   }
 
   /**
-   * adds a node to the network with a name/label
+   * adds a node to the network with a name/label if node not already present
    * @param {name} String - The name for the node
    */
   addNodeByName(name) {
-    this.data.nodes.add({ id:this.nextNodeID, label: name });
-    this.nextNodeID++;
-    if (DEBUG){
-      console.log("[NETWORK] added node: ",name);
+    // create current label array from current data 
+    let currentNodes = this.data.nodes.get();
+    let currentLabels = currentNodes.map(function(i) {
+      return i.label;
+    })
+    console.log(currentLabels)
+    // if the label does not already exists, add the node to the data
+    if (!(currentLabels.includes(name))) {
+      this.data.nodes.add({ id:this.nextNodeID, label: name });
+      this.nextNodeID++;
+      if (DEBUG){
+        console.log("[NETWORK] added node: ",name);
+      }
+    } else {
+      if (DEBUG) {
+        console.log("[NETWORK] node " + name + " already in network")
+      }
     }
   }
 
