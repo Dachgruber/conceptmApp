@@ -17,11 +17,9 @@ let activeItem = menu.querySelector(".active");
 function load_tabs() {
 
     document.getElementById("tab0").innerHTML='<object class = "tab" data="networks_teacher_ui.html" type="text/html" "> Error: Embedded data could not be displayed.</embed>'
+    document.getElementById("tab1").innerHTML='<object class = "tab" data="networks_student_ui.html" type="text/html" "> Error: Embedded data could not be displayed.</embed>'
     
-    //currently broken
-    //document.getElementById("tab1").innerHTML='<object class = "tab" data="networks_student_ui.html" type="text/html" "> Error: Embedded data could not be displayed.</embed>'
-    
-    document.getElementById("tab1").innerHTML='<iframe src="toller_button2.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
+    //document.getElementById("tab1").innerHTML='<iframe src="toller_button2.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
     document.getElementById("tab2").innerHTML='<iframe src="cat_example.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
     document.getElementById("tab3").innerHTML='<object class = "tab" data="test_button.html" style"=overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"> <embed src="test_button.html" style"=overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;">> </embed> Error: Embedded data could not be displayed.</object>'
 

@@ -1,460 +1,371 @@
 <!DOCTYPE html>
 <html>
-    <!-- //Header mit Metadaten-->
-    <head> 
-        <meta charset="utf-8">
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-        <title>Concept Map</title>
+<!-- //Header mit Metadaten-->
 
-       <!-- Download the necessary resources for the network from unpkg-->
-        <script
-          type="text/javascript"
-          src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"
-        ></script>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <title>Concept Map</title>
 
-    </head>
+  <!-- Download the necessary resources for the network from unpkg-->
+  <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 
-    <body style="height:100%;">
+  <!-- download the awsome-font-->
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+          integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+</head>
 
-      <!--div containing the network canvas-->
-      <div id="mynetwork"></div>
+<body style="height:100%;">
 
-      <!-------------------START pie menu stuff ----------------------->
+  <!--div containing the network canvas-->
+  <div id="network_editor_container" style="height:100%;"></div>
 
-      <!--import for css stylesheet-->
-      <link rel="stylesheet" href="../css/networks.css" media="screen" /> 
+  <!-------------------START pie menu stuff ----------------------->
 
-      <!--for the add menu we use some form of pie-popup-menu in the upper left corner-->
+  <!--import for css stylesheet-->
+  <link rel="stylesheet" href="../css/networks.css" media="screen" />
 
-      <!-- pie1-3 are the three pi parts of the menu, from bottom left to top right -->
-      <div class="pie pie1" onclick="document.body.classList.remove('active'); addButtonPressed()">
-        <div class="pie-color pie-color1">
-              <!-- first, the add node button -->
-              <svg class= "addIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="100" height="100">
-                <g data-name="addIcon">
-                  <path d="M16 31a15 15 0 1 1 15-15 15 15 0 0 1-15 15zm0-28a13 13 0 1 0 13 13A13 13 0 0 0 16 3z"
-                  fill="#fff"/>
-                  <path d="M17 24h-2a2 2 0 0 1-2-2v-3h-3a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h3v-3a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-3v3a2 2 0 0 1-2 2zm-7-9v2h4a1 1 0 0 1 1 1v4h2v-4a1 1 0 0 1 1-1h4v-2h-4a1 1 0 0 1-1-1v-4h-2v4a1 1 0 0 1-1 1z"
-                  fill="#fff"/>
-                </g>
-              </svg>
-        </div>
-      </div>
+  <!--for the add menu we use some form of pie-popup-menu in the upper left corner-->
 
-      <div class="pie pie2" onclick="document.body.classList.remove('active'); cameraButtonPressed()">
-        <div class="pie-color pie-color2">
-          <!-- then, the camera button -->
-              <!-- <svg class="cameraIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" xml:space="preserve">
+  <!-- pie1-3 are the three pi parts of the menu, from bottom left to top right -->
+  <div class="pie pie1" onclick="document.body.classList.remove('active'); addButtonPressed()">
+    <div class="pie-color pie-color1">
+      <!-- first, the add node button -->
+      <svg class="addIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="100" height="100">
+        <g data-name="addIcon">
+          <path d="M16 31a15 15 0 1 1 15-15 15 15 0 0 1-15 15zm0-28a13 13 0 1 0 13 13A13 13 0 0 0 16 3z" fill="#fff" />
+          <path
+            d="M17 24h-2a2 2 0 0 1-2-2v-3h-3a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h3v-3a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-3v3a2 2 0 0 1-2 2zm-7-9v2h4a1 1 0 0 1 1 1v4h2v-4a1 1 0 0 1 1-1h4v-2h-4a1 1 0 0 1-1-1v-4h-2v4a1 1 0 0 1-1 1z"
+            fill="#fff" />
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="pie pie2" onclick="document.body.classList.remove('active'); cameraButtonPressed()">
+    <div class="pie-color pie-color2">
+      <!-- then, the camera button -->
+      <!-- <svg class="cameraIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" xml:space="preserve">
                 <path d="M76.095 23.905c-5.208-5.208-13.649-5.208-18.854 0L50 31.145c-4.388 4.385-5.032 11.055-2.024 16.166l-.664.667c-5.111-3.011-11.781-2.366-16.169 2.021l-7.236 7.24c-5.208 5.209-5.208 13.649 0 18.857 5.202 5.205 13.649 5.209 18.854.004L50 68.859c4.388-4.388 5.03-11.055 2.025-16.168l.668-.668c5.11 3.008 11.777 2.363 16.162-2.021l7.239-7.236c5.209-5.212 5.206-13.656.001-18.861zM45.287 64.146l-7.239 7.239c-2.601 2.598-6.829 2.598-9.427-.003a6.671 6.671 0 0 1-.004-9.428l7.243-7.239a6.61 6.61 0 0 1 4.714-1.953c.586 0 1.152.101 1.705.247l-5.24 5.241a3.344 3.344 0 0 0 0 4.714 3.344 3.344 0 0 0 4.713 0l5.234-5.234c.586 2.22.036 4.678-1.699 6.416zm26.094-26.097-7.239 7.24c-1.735 1.738-4.192 2.285-6.413 1.699l5.238-5.238a3.344 3.344 0 0 0 0-4.713 3.347 3.347 0 0 0-4.717 0l-5.234 5.237c-.586-2.22-.039-4.678 1.695-6.413l7.243-7.243a6.62 6.62 0 0 1 4.714-1.953 6.62 6.62 0 0 1 4.713 1.953 6.675 6.675 0 0 1 0 9.431z"
                 fill="#fff"/>
               </svg> -->
-              <svg class="cameraIcon" xmlns="http://www.w3.org/2000/svg" viewBox="-10 -30 36 56">
-                <path d="M21.65 3c-1.45 0-1.86.91-3.73 3.24A4 4 0 0 0 14 3H4a4 4 0 0 0-4 4v10a4 4 0 0 0 4 4h10a4 4 0 0 0 3.92-3.24l1.89 2.36A2.36 2.36 0 0 0 24 18.65V5.35A2.35 2.35 0 0 0 21.65 3zM16 17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2zm6 1.65a.36.36 0 0 1-.62.22L18 14.65v-5.3l3.38-4.22a.36.36 0 0 1 .62.22z"
-                fill="#fff"/>
-        
-              </svg>
-        </div>
+      <svg class="cameraIcon" xmlns="http://www.w3.org/2000/svg" viewBox="-10 -30 36 56">
+        <path
+          d="M21.65 3c-1.45 0-1.86.91-3.73 3.24A4 4 0 0 0 14 3H4a4 4 0 0 0-4 4v10a4 4 0 0 0 4 4h10a4 4 0 0 0 3.92-3.24l1.89 2.36A2.36 2.36 0 0 0 24 18.65V5.35A2.35 2.35 0 0 0 21.65 3zM16 17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2zm6 1.65a.36.36 0 0 1-.62.22L18 14.65v-5.3l3.38-4.22a.36.36 0 0 1 .62.22z"
+          fill="#fff" />
+
+      </svg>
+    </div>
+  </div>
+  <div class="pie pie3" onclick="document.body.classList.remove('active'); deleteButtonPressed()">
+    <div class="pie-color pie-color3">
+      <!-- last, the delete button -->
+      <svg class="deleteIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="100" height="100">
+        <path
+          d="M6 7a1 1 0 0 1 1 1v11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V8a1 1 0 1 1 2 0v11a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8a1 1 0 0 1 1-1z"
+          fill="#fff" />
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M10 8a1 1 0 0 1 1 1v8a1 1 0 1 1-2 0V9a1 1 0 0 1 1-1zM14 8a1 1 0 0 1 1 1v8a1 1 0 1 1-2 0V9a1 1 0 0 1 1-1zM4 5a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1zM8 3a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1z"
+          fill="#fff" />
+      </svg>
+    </div>
+  </div>
+  <!-- main menu icon -->
+  <div class="menu" onclick="document.body.classList.toggle('active')">
+    <svg class="hamburger" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+      <g fill="none" stroke="#fff" stroke-width="7.999" stroke-linecap="round">
+        <path d="M 55,26.000284 L 24.056276,25.999716" />
+        <path d="M 24.056276,49.999716 L 75.943724,50.000284" />
+        <path d="M 45,73.999716 L 75.943724,74.000284" />
+        <path d="M 75.943724,26.000284 L 45,25.999716" />
+        <path d="M 24.056276,73.999716 L 55,74.000284" />
+      </g>
+    </svg>
+  </div>
+  <!------------------- Interface functions for the pie menu ----------------------->
+
+  <script> //write here what should happen when one of the pie-menu button are getting pressed
+    function addButtonPressed() {
+      console.log("[UI] [EDITOR] addButton pressed")
+      openAddModal();
+    }
+
+    function cameraButtonPressed() {
+      console.log("[UI] [EDITOR] cameraButton pressed")
+      openExportModal();
+    }
+
+    function deleteButtonPressed() {
+      console.log("[UI] [EDITOR] deleteButton pressed")
+      network.deleteSelectedObj();
+    }
+
+  </script>
+
+  <!---------------------------- END ui menu stuff -------------------------------->
+
+  <!---------------------------- START modal popups -------------------------------->
+  <!--this css stylesheet acts as a base for every other modal-->
+  <link rel='stylesheet' type='text/css' href="../css/baseModal.css" media="screen" />
+
+  <!--import for css stylesheet specific for addModals-->
+  <link rel='stylesheet' type='text/css' href="../css/addModal.css" media="screen" />
+
+  <!-- this is the whole page-wide modal -->
+  <div id="addModal" class="modal">
+
+    <!-- this is the small box that pops up -->
+    <div class="addModal-content">
+
+      <!-- close button -->
+      <span class="addclose close">&times;</span>
+      <p>Hinzufügen eines neuen Elements</p>
+
+      <!-- one float container for each button -->
+      <div class="float">
+
+        <i class="addNode-float" onclick="closeAddModal();addNodeModalPressed()">
+
+          <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
+            <g data-name="38-Speech Bubble">
+              <path d="M13 32a1 1 0 0 1-1-1v-5h-1A11 11 0 0 1 0 15v-4A11 11 0 0 1 11 0h10a11 11 0 0 1 11 11v4a11 11 0 0 1-11 11h-1.59l-5.71 
+                  5.71a1 1 0 0 1-.7.29zM11 2a9 9 0 0 0-9 9v4a9 9 0 0 0 9 9h2a1 1 0 0 1 1 1v3.59l4.29-4.29A1 1 0 0 1 19 24h2a9 9 0 0 0 9-9v-4a9 
+                  9 0 0 0-9-9z" />
+              <path
+                d="M16 15a2 2 0 1 1 2-2 2 2 0 0 1-2 2zm0-2zM23 15a2 2 0 1 1 2-2 2 2 0 0 1-2 2zm0-2zM9 15a2 2 0 1 1 2-2 2 2 0 0 1-2 2zm0-2z" />
+            </g>
+          </svg>
+        </i>
       </div>
-      <div class="pie pie3" onclick="document.body.classList.remove('active'); deleteButtonPressed()">
-        <div class="pie-color pie-color3">
-          <!-- last, the delete button -->
-              <svg class="deleteIcon" xmlns="http://www.w3.org/2000/svg" viewBox = "0 0 30 30" width="100" height="100">
-                <path d="M6 7a1 1 0 0 1 1 1v11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V8a1 1 0 1 1 2 0v11a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8a1 1 0 0 1 1-1z" 
-                fill="#fff"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M10 8a1 1 0 0 1 1 1v8a1 1 0 1 1-2 0V9a1 1 0 0 1 1-1zM14 8a1 1 0 0 1 1 1v8a1 1 0 1 1-2 0V9a1 1 0 0 1 1-1zM4 5a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1zM8 3a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1z" 
-                fill="#fff"/>
-              </svg>
-        </div>
+      <div class="float">
+
+        <i class="addEdge-float" onclick="closeAddModal();addEdgeModalPressed()">
+
+          <svg class="icon" version="1.0" xmlns="http://www.w3.org/2000/svg" height=100% viewBox="0 0 60 60"
+            xml:space="preserve">
+            <path
+              d="M 74.923 0 v 6.564 C 37.459 7.098 7.098 37.459 6.564 74.923 H 0 V 90 h 15.078 V 74.923 H 8.564 C 9.098 38.562 38.562 9.098 74.923 8.564 v 6.514 H 90 V 0 H 74.923 z M 13.078 88 H 2 V 76.923 h 11.078 V 88 z M 88 13.078 H 76.923 V 2 H 88 V 13.078 z" />
+          </svg>
+        </i>
       </div>
-      <!-- main menu icon -->
-      <div class="menu" onclick="document.body.classList.toggle('active')">
-        <svg class="hamburger" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
-              <g
-                fill="none"
-                stroke="#fff"
-                stroke-width="7.999"
-                stroke-linecap="round"
-              >
-                <path d="M 55,26.000284 L 24.056276,25.999716" />
-                <path d="M 24.056276,49.999716 L 75.943724,50.000284" />
-                <path d="M 45,73.999716 L 75.943724,74.000284" />
-                <path d="M 75.943724,26.000284 L 45,25.999716" />
-                <path d="M 24.056276,73.999716 L 55,74.000284" />
-              </g>
-            </svg>
-      </div>
-      <!------------------- Interface functions for the pie menu ----------------------->
+    </div>
 
-      <script> //write here what should happen when one of the pie-menu button are getting pressed
-        function addButtonPressed() { 
-          console.log("[UI] [EDITOR] addButton pressed")
-          openAddModal();
-        }
+  </div>
+  <!-- end of addmodal -->
 
-        function cameraButtonPressed(){
-          console.log("[UI] [EDITOR] cameraButton pressed")
-          openExportModal();
-        }
+  <!--import for css stylesheet specific for the input Modals-->
+  <link type='text/css' rel="stylesheet" href="../css/inputModal.css" media="screen" />
 
-        function deleteButtonPressed() {
-          console.log("[UI] [EDITOR] deleteButton pressed")
-          deleteSelectedObj();
-        }
+  <!-- this is the input modal for nodes -->
+  <div id="nodeInputModal" class="modal">
 
-      </script>
+    <!-- this is the small box that pops up -->
+    <div class="inputModal-content">
+      <!-- close button -->
+      <span class="nodeInputclose close">&times;</span>
+      <p>Wähle den Namen der neuen Node</p>
+      <!-- <label for="node-labels"> Possible Nodes:</label> -->
+      <select name="node-labels" id="node-labels"></select>
+      <button type="submit" class="btn" onclick="closeinputModal();enterNodeInputPressed()">Enter</button>
 
-      <!---------------------------- END ui menu stuff -------------------------------->
-
-      <!---------------------------- START modal popups -------------------------------->
-      <!--this css stylesheet acts as a base for every other modal-->
-      <link rel='stylesheet' type='text/css'  href="../css/baseModal.css" media="screen" /> 
-
-      <!--import for css stylesheet specific for addModals-->
-      <link rel='stylesheet' type='text/css'  href="../css/addModal.css" media="screen" /> 
-
-      <!-- this is the whole page-wide modal -->
-      <div id="addModal" class="modal">
-
-        <!-- this is the small box that pops up -->
-        <div class="addModal-content">
-
-          <!-- close button -->
-          <span class="addclose close">&times;</span>
-          <p> Ich bin der weltbeste modal</p>
-
-          <!-- one float container for each button -->
-          <div class="float">
-
-            <i class="addNode-float" onclick="closeAddModal();addNodeModalPressed()">
-              <svg class ="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
-                <g data-name="38-Speech Bubble">
-                  <path d="M13 32a1 1 0 0 1-1-1v-5h-1A11 11 0 0 1 0 15v-4A11 11 0 0 1 11 0h10a11 11 0 0 1 11 11v4a11 11 0 0 1-11 11h-1.59l-5.71 5.71a1 1 0 0 1-.7.29zM11 2a9 9 0 0 0-9 9v4a9 9 0 0 0 9 9h2a1 1 0 0 1 1 1v3.59l4.29-4.29A1 1 0 0 1 19 24h2a9 9 0 0 0 9-9v-4a9 9 0 0 0-9-9z"/><path d="M16 15a2 2 0 1 1 2-2 2 2 0 0 1-2 2zm0-2zM23 15a2 2 0 1 1 2-2 2 2 0 0 1-2 2zm0-2zM9 15a2 2 0 1 1 2-2 2 2 0 0 1-2 2zm0-2z"/>
-                </g>
-              </svg>
-            </i>
-          </div>
-          <div class="float">
-            
-            <i class="addEdge-float" onclick="closeAddModal();addEdgeModalPressed()">
-              <svg  class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 48">
-              <path d="M44.922 5.5 42.5 3.078a10.536 10.536 0 0 0-14.884 0l-5.179 5.176a.728.728 0 0 0 .286 1.205l6.148 2.035a.723.723 0 0 0 .742-.176l2.8-2.8a3.839 3.839 0 0 1 5.279 0l1.791 1.791a3.745 3.745 0 0 1 0 5.278L29.1 25.969a3.712 3.712 0 0 1-1.665.955 3.751 3.751 0 0 1-3.614-.955L22.8 24.942a3.128 3.128 0 0 0-.078-.09.73.73 0 0 0-.519-.23.659.659 0 0 0-.525.215l-4.1 4.1a.729.729 0 0 0 0 1.03l1.443 1.441a10.4 10.4 0 0 0 3.713 2.387 10.618 10.618 0 0 0 3.734.68 10.511 10.511 0 0 0 5.966-1.852 10.349 10.349 0 0 0 1.472-1.215L44.921 20.39a10.556 10.556 0 0 0 0-14.886zM43.9 19.36 32.879 30.378a9.113 9.113 0 0 1-12.829 0l-.929-.93 3.064-3.063.615.615a5.208 5.208 0 0 0 7.334 0l10.38-10.387a5.192 5.192 0 0 0 0-7.334l-1.791-1.793a5.2 5.2 0 0 0-7.335 0L28.9 9.972l-4.6-1.523 4.342-4.342a9.08 9.08 0 0 1 12.828 0l2.425 2.424a9.1 9.1 0 0 1 0 12.829z"/>
-              <path d="m25.278 38.543-6.148-2.035a.724.724 0 0 0-.742.176l-2.8 2.8a3.839 3.839 0 0 1-5.279 0L8.516 37.7a3.747 3.747 0 0 1 0-5.28L18.9 22.035a3.7 3.7 0 0 1 1.664-.957 3.749 3.749 0 0 1 3.615.955l1.029 1.033.07.08a.729.729 0 0 0 .519.234.8.8 0 0 0 .528-.215l4.1-4.1a.725.725 0 0 0 0-1.027L28.98 16.6a10.381 10.381 0 0 0-3.712-2.387 10.559 10.559 0 0 0-9.7 1.17A10.27 10.27 0 0 0 14.1 16.6L3.078 27.613a10.537 10.537 0 0 0 0 14.885L5.5 44.924a10.542 10.542 0 0 0 14.885 0l5.175-5.178a.727.727 0 0 0-.284-1.2zM19.36 43.9a9.082 9.082 0 0 1-12.829 0l-2.424-2.429a9.08 9.08 0 0 1 0-12.828l11.017-11.018a8.89 8.89 0 0 1 1.269-1.047 9.119 9.119 0 0 1 8.364-1.006 8.937 8.937 0 0 1 3.2 2.053l.928.928-3.063 3.064-.612-.611a5.2 5.2 0 0 0-7.335 0L7.489 31.389a5.192 5.192 0 0 0 0 7.334l1.791 1.791a5.191 5.191 0 0 0 7.335 0L19.1 38.03l4.6 1.523z"/>
-            </svg>
-            </i>
-          </div>
-        </div>
-
-      </div> 
-      <!-- end of addmodal -->
-
-      <!--import for css stylesheet specific for the input Modals-->
-      <link type='text/css' rel="stylesheet" href="../css/inputModal.css" media="screen" /> 
-
-      <!-- this is the whole page-wide modal -->
-      <div id="inputModal" class="modal">
-
-
-        <!-- this is the small box that pops up -->
-        <div class="inputModal-content">
-          <!-- close button -->
-          <span class="inputclose close">&times;</span>
-          <p>textinput lol</p>
-          <label for="input"><b>Email</b></label>
-          <input id= "inputText" type="text" placeholder="Enter name" name="input" required>
-          <button type="submit" class="btn" onclick="closeinputModal();enterTextInputPressed()">Enter</button>
-
-        </div>
-      </div>
-      <!-- end of input modal -->
-
-      
-      <!--import for css stylesheet specific for the input Modals-->
-      <link type='text/css' rel="stylesheet" href="../css/exportModal.css" media="screen" /> 
-
-      <!-- this is the whole page-wide modal -->
-      <div id="exportModal" class="modal">
-
-        <!-- this is the small box that pops up -->
-        <div class="exportModal-content">
-
-          <!-- close button -->
-          <span class="exportclose close">&times;</span>
-          <p> Ich bin der zweitweltbeste modal</p>
-
-          <!-- one float container for each button -->
-          <div class="float">
-
-            <i class="exportIcon-float" onclick="closeExportModal();exportMapModalPressed()">
-              <svg class ="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
-                <g data-name="38-Speech Bubble">
-                  <path d="M13 32a1 1 0 0 1-1-1v-5h-1A11 11 0 0 1 0 15v-4A11 11 0 0 1 11 0h10a11 11 0 0 1 11 11v4a11 11 0 0 1-11 11h-1.59l-5.71 5.71a1 1 0 0 1-.7.29zM11 2a9 9 0 0 0-9 9v4a9 9 0 0 0 9 9h2a1 1 0 0 1 1 1v3.59l4.29-4.29A1 1 0 0 1 19 24h2a9 9 0 0 0 9-9v-4a9 9 0 0 0-9-9z"/><path d="M16 15a2 2 0 1 1 2-2 2 2 0 0 1-2 2zm0-2zM23 15a2 2 0 1 1 2-2 2 2 0 0 1-2 2zm0-2zM9 15a2 2 0 1 1 2-2 2 2 0 0 1-2 2zm0-2z"/>
-                </g>
-              </svg>
-            </i>
-          </div>
-          <div class="float">
-            
-            <i class="importIcon-float" onclick="closeExportModal();importMapModalPressed()">
-              <svg  class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 48">
-              <path d="M44.922 5.5 42.5 3.078a10.536 10.536 0 0 0-14.884 0l-5.179 5.176a.728.728 0 0 0 .286 1.205l6.148 2.035a.723.723 0 0 0 .742-.176l2.8-2.8a3.839 3.839 0 0 1 5.279 0l1.791 1.791a3.745 3.745 0 0 1 0 5.278L29.1 25.969a3.712 3.712 0 0 1-1.665.955 3.751 3.751 0 0 1-3.614-.955L22.8 24.942a3.128 3.128 0 0 0-.078-.09.73.73 0 0 0-.519-.23.659.659 0 0 0-.525.215l-4.1 4.1a.729.729 0 0 0 0 1.03l1.443 1.441a10.4 10.4 0 0 0 3.713 2.387 10.618 10.618 0 0 0 3.734.68 10.511 10.511 0 0 0 5.966-1.852 10.349 10.349 0 0 0 1.472-1.215L44.921 20.39a10.556 10.556 0 0 0 0-14.886zM43.9 19.36 32.879 30.378a9.113 9.113 0 0 1-12.829 0l-.929-.93 3.064-3.063.615.615a5.208 5.208 0 0 0 7.334 0l10.38-10.387a5.192 5.192 0 0 0 0-7.334l-1.791-1.793a5.2 5.2 0 0 0-7.335 0L28.9 9.972l-4.6-1.523 4.342-4.342a9.08 9.08 0 0 1 12.828 0l2.425 2.424a9.1 9.1 0 0 1 0 12.829z"/>
-              <path d="m25.278 38.543-6.148-2.035a.724.724 0 0 0-.742.176l-2.8 2.8a3.839 3.839 0 0 1-5.279 0L8.516 37.7a3.747 3.747 0 0 1 0-5.28L18.9 22.035a3.7 3.7 0 0 1 1.664-.957 3.749 3.749 0 0 1 3.615.955l1.029 1.033.07.08a.729.729 0 0 0 .519.234.8.8 0 0 0 .528-.215l4.1-4.1a.725.725 0 0 0 0-1.027L28.98 16.6a10.381 10.381 0 0 0-3.712-2.387 10.559 10.559 0 0 0-9.7 1.17A10.27 10.27 0 0 0 14.1 16.6L3.078 27.613a10.537 10.537 0 0 0 0 14.885L5.5 44.924a10.542 10.542 0 0 0 14.885 0l5.175-5.178a.727.727 0 0 0-.284-1.2zM19.36 43.9a9.082 9.082 0 0 1-12.829 0l-2.424-2.429a9.08 9.08 0 0 1 0-12.828l11.017-11.018a8.89 8.89 0 0 1 1.269-1.047 9.119 9.119 0 0 1 8.364-1.006 8.937 8.937 0 0 1 3.2 2.053l.928.928-3.063 3.064-.612-.611a5.2 5.2 0 0 0-7.335 0L7.489 31.389a5.192 5.192 0 0 0 0 7.334l1.791 1.791a5.191 5.191 0 0 0 7.335 0L19.1 38.03l4.6 1.523z"/>
-            </svg>
-            </i>
-          </div>
-        </div>
-
-      </div> 
-      <!-- end of exportmodal -->
-
-
-
-      <script type='text/javascript' src = "../js/modals.js"> </script>
-
-      <!---------------------------- Interface for modal buttons--------------------------->
-      <script>
-        function addNodeModalPressed(){
-          console.log("[MODAL] [EDITOR] addNodeButton pressed");
-          createBlankNode();
-        }
-        function addEdgeModalPressed(){
-          console.log("[MODAL] [EDITOR] addEdgeButton pressed");
-          createBlankEdge();
-        }
-        function enterTextInputPressed(){
-          let value = document.getElementById("inputText").value;
-          document.getElementById("inputText").value = ""; //flush the text field
-          console.log("[MODAL] [INPUT] enterButton pressed, got value: " + value + "TYPE: " + typeof value);
-          _input(value); /* resolve promotion-promise */
-        }
-
-        function exportMapModalPressed(){
-          console.log("[MODAL] [EDITOR] exportMapButton pressed");
-          ExportMap();
-        }
-        function importMapModalPressed(){
-          console.log("[MODAL] [EDITOR] importMapButton pressed");
-          ImportMap();
-        }
-      </script>
-      <!---------------------------- END modal popup stuff -------------------------------->
-
-      <script source = "../js/jquery-3.6.1.min.js"></script>
-      <script type='application/javascript' src = "../js/vis_network.js">  // network implementation </script>
-      <script type='application/javascript' src = "../js/qrscanner.js">    // qr code implementation </script>
-
-
-      <!-- the script creating the network starts here -->
-      <script type="text/javascript">
-
-        /**
-         * assign a random Colour from the colour palette
-        */
-        function assignRandomColour() {
-          const colours = ['rgba(214, 40, 40,1)','rgba(247, 127, 0,1)','rgba(252, 191, 73,1)'];
-          let random = Math.floor(Math.random() * (colours.length)) + 1; 
-          console.log(random);
-          return colours[random];
-        }
-
-        // create an array with nodes
-        // nodes have positive unique ids (excluding 0)
-        var nodes = new vis.DataSet([
-          { id: 1, label: "saure Lösung", x: -354, y: 1, color: assignRandomColour()},
-          { id: 2, label: "Oxonium-Ionen", x: -215, y: 147, color: assignRandomColour()},
-          { id: 3, label: "Säure", x: -159, y: 55, color: assignRandomColour()},
-          { id: 4, label: "Protonendonator", x: -187, y: -37 , color: assignRandomColour()},
-          { id: 5, label: "Säure-Base-Paar", x: -8, y: 144 , color: assignRandomColour()},
-          { id: 6, label: "Säure-Base-Reaktion", x: 14, y: -40, color: assignRandomColour()},
-          { id: 7, label: "Base", x: 153, y: 64, color: assignRandomColour()},
-          { id: 8, label: "Protonenakzeptor", x: 215, y: -65, color: assignRandomColour()},
-          { id: 9, label: "basische Lösung", x: 390, y: -13, color: assignRandomColour()},
-          { id: 10, label: "Hydroxid-Ionen", x: 256, y: 152, color: assignRandomColour()},
-        ]);
+    </div>
+  </div>
+  <!-- end of input modal -->
   
-        // create an array with edges
-        // edges have negative unique ids (excluding 0)
-        var edges = new vis.DataSet([
-          { id: -1, from: 1, to: 2, label: "enthält" },      // , arrows:'to,from' possible individually
-          { id: -2, from: 3, to: 1, label: "bildet mit Wasser" },
-          { id: -3, from: 3, to: 4, label: "ist definiert als" },
-          { id: -4, from: 3, to: 5, label: "ist Teil eines" },
-          { id: -5, from: 5, to: 6, label: "ist Teil der" },
-          { id: -6, from: 7, to: 5, label: "ist Teil eines" },
-          { id: -7, from: 7, to: 8, label: "ist definiert als" },
-          { id: -8, from: 7, to: 9, label: "bildet mit Wasser" },
-          { id: -9, from: 9, to: 10, label: "enthält" },
-        ]);
+  <!-- and this is the input modal for edges -->
+  <div id="edgeInputModal" class="modal">
 
-        //two counters for the IDs to ensure unique IDs
-        let nextNodeID = 11
-        let nextEdgeID = -10
+    <!-- this is the small box that pops up -->
+    <div class="inputModal-content">
+      <!-- close button -->
+      <span class="edgeInputclose close">&times;</span>
+      <p>Wähle den Namen der neuen Edge</p>
+      <!-- <label for="node-labels"> Possible Nodes:</label> -->
+      <select name="edge-labels" id="edge-labels"></select>
+      <button type="submit" class="btn" onclick="closeinputModal();enterEdgeInputPressed()">Enter</button>
 
-        var options = {
-          manipulation: {
-            enabled: false,        // add an edit button // we do not want the edit button
-            editNode: editMyNode,  //we define an js-function that should handle the editNode action
-            editEdge: editMyNode,  //same story for the edges, the function works for both edges and nodes
-            addEdge: editMyNode    //this gets called everytime a new edge gets added
-
-          },
-          interaction: {
-            selectConnectedEdges: false //disables the edges getting selected when clicking on node
-          },
-          layout: {
-            hierarchical: false,  // this makes two edges on same way visible, but lessens visibility
-          },
-          edges: {                // options set for all edges
-            arrows: 'to',         // arrows on the "to" end of the edge
-            physics: false,
-            smooth: true,
-          },
-          nodes: {
-            shape: "box",
-            fixed: false,
-            physics: false,
-          }
-        };
-
-        var container = document.getElementById("mynetwork");
-
-        var data = {
-          nodes: nodes,
-          edges: edges,
-        };
+    </div>
+  </div>
+  <!-- end of input modal -->
 
 
-        // build the network together
-        var network = new vis.Network(container, data, options);
+  <!--import for css stylesheet specific for the export Modals-->
+  <link type='text/css' rel="stylesheet" href="../css/exportModal.css" media="screen" />
 
-        // save the map to local storage
-        SaveMap()
+  <!-- this is the whole page-wide modal -->
+  <div id="exportModal" class="modal">
 
-        //add the required event listeners
+    <!-- this is the small box that pops up -->
+    <div class="exportModal-content">
 
-        //this updates the current selected node and edges for easier manipulation
-        let selectedNode;
-        let selectedEdge;
-        network.on("click", function(params) {
-            console.log("Selected NodeID: " + this.getNodeAt(params.pointer.DOM) + "\n" + 
-                      + "Selected EdgeID: " + this.getEdgeAt(params.pointer.DOM));
-                      selectedNode = this.getNodeAt(params.pointer.DOM);
-                      selectedEdge = this.getEdgeAt(params.pointer.DOM);
-            })
+      <!-- close button -->
+      <span class="exportclose close">&times;</span>
+      <p> Importieren/Exportieren der ConceptMap mittels QRScanner</p>
 
-        //we define double click as an prompt to edit the object
-        network.on("doubleClick",function(params) {
-          console.log("DoubleClicked on NodeID: " + this.getNodeAt(params.pointer.DOM) + "\n" + 
-                      + "DoubleClicked on EdgeID: " + this.getEdgeAt(params.pointer.DOM));
-                      //nodes.get( this.getNodeAt(params.pointer.DOM) )
-                      
-                      network.editNode();
-                      network.editEdgeMode();
-            })
-      </script>
+      <!-- one float container for each button -->
+      <div class="float">
 
+        <i class="exportIcon-float" onclick="closeExportModal();exportMapModalPressed()">
+          <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
+            <g data-name="38-Speech Bubble">
+              <path
+                d="M13 32a1 1 0 0 1-1-1v-5h-1A11 11 0 0 1 0 15v-4A11 11 0 0 1 11 0h10a11 11 0 0 1 11 11v4a11 11 0 0 1-11 11h-1.59l-5.71 5.71a1 1 0 0 1-.7.29zM11 2a9 9 0 0 0-9 9v4a9 9 0 0 0 9 9h2a1 1 0 0 1 1 1v3.59l4.29-4.29A1 1 0 0 1 19 24h2a9 9 0 0 0 9-9v-4a9 9 0 0 0-9-9z" />
+              <path
+                d="M16 15a2 2 0 1 1 2-2 2 2 0 0 1-2 2zm0-2zM23 15a2 2 0 1 1 2-2 2 2 0 0 1-2 2zm0-2zM9 15a2 2 0 1 1 2-2 2 2 0 0 1-2 2zm0-2z" />
+            </g>
+          </svg>
+        </i>
+      </div>
+      <div class="float">
 
-      <!-- currently the script part with the functions, this is going to be outsourced to vis_network.js -->
-      <script>
+        <i class="importIcon-float" onclick="closeExportModal();importMapModalPressed()">
+          <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 48">
+            <path
+              d="M44.922 5.5 42.5 3.078a10.536 10.536 0 0 0-14.884 0l-5.179 5.176a.728.728 0 0 0 .286 1.205l6.148 2.035a.723.723 0 0 0 .742-.176l2.8-2.8a3.839 3.839 0 0 1 5.279 0l1.791 1.791a3.745 3.745 0 0 1 0 5.278L29.1 25.969a3.712 3.712 0 0 1-1.665.955 3.751 3.751 0 0 1-3.614-.955L22.8 24.942a3.128 3.128 0 0 0-.078-.09.73.73 0 0 0-.519-.23.659.659 0 0 0-.525.215l-4.1 4.1a.729.729 0 0 0 0 1.03l1.443 1.441a10.4 10.4 0 0 0 3.713 2.387 10.618 10.618 0 0 0 3.734.68 10.511 10.511 0 0 0 5.966-1.852 10.349 10.349 0 0 0 1.472-1.215L44.921 20.39a10.556 10.556 0 0 0 0-14.886zM43.9 19.36 32.879 30.378a9.113 9.113 0 0 1-12.829 0l-.929-.93 3.064-3.063.615.615a5.208 5.208 0 0 0 7.334 0l10.38-10.387a5.192 5.192 0 0 0 0-7.334l-1.791-1.793a5.2 5.2 0 0 0-7.335 0L28.9 9.972l-4.6-1.523 4.342-4.342a9.08 9.08 0 0 1 12.828 0l2.425 2.424a9.1 9.1 0 0 1 0 12.829z" />
+            <path
+              d="m25.278 38.543-6.148-2.035a.724.724 0 0 0-.742.176l-2.8 2.8a3.839 3.839 0 0 1-5.279 0L8.516 37.7a3.747 3.747 0 0 1 0-5.28L18.9 22.035a3.7 3.7 0 0 1 1.664-.957 3.749 3.749 0 0 1 3.615.955l1.029 1.033.07.08a.729.729 0 0 0 .519.234.8.8 0 0 0 .528-.215l4.1-4.1a.725.725 0 0 0 0-1.027L28.98 16.6a10.381 10.381 0 0 0-3.712-2.387 10.559 10.559 0 0 0-9.7 1.17A10.27 10.27 0 0 0 14.1 16.6L3.078 27.613a10.537 10.537 0 0 0 0 14.885L5.5 44.924a10.542 10.542 0 0 0 14.885 0l5.175-5.178a.727.727 0 0 0-.284-1.2zM19.36 43.9a9.082 9.082 0 0 1-12.829 0l-2.424-2.429a9.08 9.08 0 0 1 0-12.828l11.017-11.018a8.89 8.89 0 0 1 1.269-1.047 9.119 9.119 0 0 1 8.364-1.006 8.937 8.937 0 0 1 3.2 2.053l.928.928-3.063 3.064-.612-.611a5.2 5.2 0 0 0-7.335 0L7.489 31.389a5.192 5.192 0 0 0 0 7.334l1.791 1.791a5.191 5.191 0 0 0 7.335 0L19.1 38.03l4.6 1.523z" />
+          </svg>
+        </i>
+      </div>
+    </div>
 
-          // function to extract parameters for new node and call vis_network functions
-          function createNode() {
-            var name = getName()
-            try {
-              AddNode(name)
-            }
-            catch(err) {
-              alert("Error creating the Node")
-            }
-          }
-
-          // function to extract parameters for the node to delete and call vis_network functions
-          function removeNode(nodeID){
-            try {
-              console.log("[NETWORK] removing Node: " + nodeID);
-              DeleteNode(nodeID)
-            }
-            catch(err) {
-              alert("Error removing the Node")
-            }
-            
-          }
-
-          // function to extract parameters for new edge and call vis_network functions
-          function createEdge(){
-            try {
-              var name = getName()
-              var [fromNode, toNode] = getConnection()
-              AddEdge(name, fromNode, toNode)
-            }
-            catch(err) {
-              alert("Error creating the Edge")
-            }
-            
-          }
-
-          // function to extract parameters for the edge to delete and call vis_network functions
-          function removeEdge(edgeID){
-            try {
-              console.log("[NETWORK] removing Edge: " + edgeID);
-              DeleteEdge(edgeID)
-            }
-            catch(err) {
-              alert("Error deleting the Edge")
-            }
-            
-          }
-
-          // function to delete the selected object (node or edge) without the GUI
-          function deleteSelectedObj(){
-            console.log("deleteFunc fired"); //Debug log
-            if(selectedNode) { //check if selected Object is undefined. If not, remove
-              removeNode(selectedNode);
-            }
-            if(selectedEdge){
-              removeEdge(selectedEdge);
-            }
-          } 
-
-          function createBlankNode(){
-            var updatedIds = nodes.add([{
-              label:'new',
-              x:0,//x:params.pointer.canvas.x,
-              y:0//y:params.pointer.canvas.y
-            }]);
-            network.selectNodes([updatedIds[0]]);
-            network.editNode();
-            
-          }
-
-          function createBlankEdge(){
-            network.addEdgeMode();
-          }
-          // function to return the name out of the text input
-          function getName(){
-            var name = document.getElementById("elementName").value;
-            return name
-          }
-
-          // function to return the connecting nodes for the edge
-          function getConnection(){
-            var fromNode = document.getElementById("fromNode").value;
-            var toNode = document.getElementById("toNode").value;
-            return [fromNode, toNode]
-          }
-
-          // function logging info for debugging purposes
-          function showInfo(){
-            console.log("Next Node ID: ", nextNodeID)
-            console.log("Next Edge ID: ", nextEdgeID)
-            // console.log(data.nodes)
-            // console.log(data.edges)
-          }
-
-      </script>
+  </div>
+  <!-- end of exportmodal -->
 
 
-      <!-- black magic, very important, such danger -->
-        <script type="text/javascript" src="../cordova.js"></script>
 
-    </body>
+  <script type='text/javascript' src="../js/modals.js"> </script>
+
+  <!---------------------------- Interface for modal buttons--------------------------->
+  <script>
+    function addNodeModalPressed() {
+      console.log("[MODAL] [EDITOR] addNodeButton pressed");
+      network.createBlankNode();
+    }
+    function addEdgeModalPressed() {
+      console.log("[MODAL] [EDITOR] addEdgeButton pressed");
+      network.createBlankEdge();
+    }
+
+    function enterEdgeInputPressed() {
+      let value = document.getElementById("inputText").value;
+      //document.getElementById("inputText").value = ""; //flush the text field
+      console.log("[MODAL] [INPUT] enterEdgeButton pressed, got value: " + value + "TYPE: " + typeof value);
+      _input(value); /* resolve promotion-promise */
+    }
+    function enterNodeInputPressed() {
+      let value = document.getElementById("inputText").value;
+      document.getElementById("inputText").value = ""; //flush the text field
+      console.log("[MODAL] [INPUT] enterButton pressed, got value: " + value + "TYPE: " + typeof value);
+      _input(value); /* resolve promotion-promise */
+    }
+
+    function exportMapModalPressed() {
+      console.log("[MODAL] [EDITOR] exportMapButton pressed");
+      network.exportMaptoQr();
+    }
+    function importMapModalPressed() {
+      console.log("[MODAL] [EDITOR] importMapButton pressed");
+      network.importMapfromQr();
+    }
+  </script>
+  <!---------------------------- END modal popup stuff -------------------------------->
+
+  <script source="../js/jquery-3.6.1.min.js"></script>
+  <script type='application/javascript' src="../js/vis_network.js">  // network implementation </script>
+  <script type='application/javascript' src="../js/qrscanner.js">    // qr code implementation </script>
+
+
+  <!-- the script creating the network starts here -->
+  <script type="text/javascript">
+
+
+    //custom options for our network as we are needy bois
+    var options = {
+      manipulation: {
+        enabled: false,        // we do not want the edit button
+        editNode: editStudentNode,  //we define an js-function that should handle the editNode action
+        editEdge: editStudentEdge,  //same story for the edges, the function works for both edges and nodes
+        addEdge: editStudentEdge    //this gets called everytime a new edge gets added
+
+      },
+      interaction: {
+        selectConnectedEdges: false //disables the edges getting selected when clicking on node
+      },
+      layout: {
+        hierarchical: false,  // this makes two edges on same way visible, but lessens visibility
+      },
+      edges: {                // options set for all edges
+        arrows: 'to',         // arrows on the "to" end of the edge
+        physics: false,
+        smooth: true,
+      },
+      nodes: {
+        shape: "box",
+        fixed: false,
+        physics: false,
+      }
+    };
+    //create a new empty network
+    let network = new ConceptMap(options, false)
+    //...and save it to local storage
+    network.saveMap("student");
+
+    //here lays some extra code for the funtionality of the ui
+
+    // custom edit function that opens a modal popup and waits for the user to finish entering
+    // used in the network manipulation options 
+
+    async function editStudentNode(node, callback) {
+      let inputresult;
+      openNodeInputModal(); //opens the user prompt
+      var promise = new Promise((resolve) => { _input = resolve }); //generates promise to wait for user input
+
+      //await the user input
+      await promise.then(
+        (result) => {   //if promise fullfilled (no error), save the result
+          inputresult = result
+        },
+        (result) => {   //if promise rejected, (error), handle it and log it 
+          console.log("[ERROR] while promising: " + result)
+        });
+
+      console.log("[EDIT] edit node: " + node.label + " with new: " + inputresult);
+      //overwrite the label of the node and callback it to the network
+      node.label = inputresult;
+
+      console.log("[EDIT] edited node: " + node.label + " with new: " + inputresult);
+      callback(node);
+
+    }
+    async function editStudentEdge(node, callback) {
+      let inputresult;
+      openEdgeInputModal(); //opens the user prompt
+      var promise = new Promise((resolve) => { _input = resolve }); //generates promise to wait for user input
+
+      //await the user input
+      await promise.then(
+        (result) => {   //if promise fullfilled (no error), save the result
+          inputresult = result
+        },
+        (result) => {   //if promise rejected, (error), handle it and log it 
+          console.log("[ERROR] while promising: " + result)
+        });
+
+      console.log("[EDIT] edit node: " + node.label + " with new: " + inputresult);
+      //overwrite the label of the node and callback it to the network
+      node.label = inputresult;
+
+      console.log("[EDIT] edited node: " + node.label + " with new: " + inputresult);
+      callback(node);
+
+    }
+  </script>
+
+  <!-- black magic, very important, such danger -->
+  <script type="text/javascript" src="../cordova.js"></script>
+
+</body>
+
 </html>
