@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <!-- this html is a demo of the backend student editor. Use together with the networks_teacher.html -->
+    <head> 
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <title>Evaluation</title>
+
+       <!-- //Download the necessary resources from unpkg  nicer comment-->
+        <script
+          type="text/javascript"
+          src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"
+        ></script>
+
+    </head>
+
+    <body style="background-color:rgb(60, 245, 66); height:100%;">
+      <!-- import for the canvas stylisation -->
+      <link rel="stylesheet" href="../css/network_editor.css" media="screen"/>
+      
+      <h2 id="title"> Evaluation </h2>
+
+      <fieldset style="text-align: center;">
+      <label for= "taskName"> Task Name </label>
+      <input type="text" id="taskName" placeholder="Name"/> <br><br>
+
+
+      <h2>Maps scanned: <span id="mapsScanned"></span></h2>
+
+      <h2>nodesPercentage: <span id="nodesPercentage"></span></h2>
+
+      <h2>edgesPercentage: <span id="edgesPercentage"></span></h2>
+
+      <h2>correctEdgesPercentage: <span id="correctEdgesPercentage"></span></h2>
+
+      </fieldset>
+
+      <!-- Import/Export buttons -->
+      <div id="buttonContainer">
+        <button id="button" onclick = importResultFromQr()> Import Student Result </button>
+        <button id="button" onclick = importTestResult()> Import Test Result </button>
+        <button id="button" onclick = exportResultsToQr()> Export Results </button>
+      </div>
+
+      <div id="buttonContainer">
+        <button id="button" onclick = evaluateResults()> Evaluate Results </button>
+        <button id="button" onclick = initialize()> Reset Results </button>
+      </div>
+
+      <!-- Info Button and the switch editor buttons, for debugging purposes-->
+      <div id="buttonContainer">
+        <button id="button" onclick = network.showInfo()> Info </button>
+      </div>
+
+      <!-- Info Button and the switch editor buttons, for debugging purposes-->
+      <div id="buttonContainer">
+        <button type=“button”><a href="networks_teacher.html"> Teacher </a></button>
+      </div>
+
+      <script source = "jquery-3.6.1.min.js"></script>
+      <script type='text/javascript' src = "../js/vis_network.js">  // network implementation </script>
+      <script type='text/javascript' src = "../js/qrscanner.js">    // qr code implementation </script>
+      <script type='text/javascript' src = "../js/evaluation.js">  // evaluation implementation </script>
+
+
+      <!-- here the evaluation methods -->
+      <script>
+
+        var mapsScanned = 0;
+        var nodesPercentage = 0;
+        var edgesPercentage = 0;
+        var correctEdgesPercentage = 0;
+
+        initialize()
+
+      </script>
+
+        <!-- black magic, very important, such danger -->
+        <script type="text/javascript" src="../cordova.js"></script>
+
+    </body>
+</html>

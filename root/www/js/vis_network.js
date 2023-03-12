@@ -303,15 +303,25 @@ class ConceptMap {
   }
 
   /**
-   * adds a node to the network with a name/label
+   * adds a node to the network with a name/label if node not already present
    * @param {name} String - The name for the node
    */
   addNodeByName(name) {
-    this.data.nodes.add({ id:this.nextNodeID, label: name, color: this.getRandomColour()});
-    this.network.focus(this.nextNodeID,{animation: true});
-    this.nextNodeID++;
-    if (DEBUG){
-      console.log("[NETWORK] added node: ",name);
+    
+    let [currentNodeLabels, currentEdgeLabels] = this.extractStudentLabels()
+    // if the label does not already exists, add the node to the data
+    if (!(currentNodeLabels.includes(name))) {
+      this.data.nodes.add({ id:this.nextNodeID, label: name });
+      //play fancy animation so that we do not get lost
+      this.network.focus(this.nextNodeID,{animation: true});  
+      this.nextNodeID++;
+      if (DEBUG){
+        console.log("[NETWORK] added node: ",name);
+      }
+    } else {
+      if (DEBUG) {
+        console.log("[NETWORK] node " + name + " already in network")
+      }
     }
   }
 
@@ -336,8 +346,11 @@ class ConceptMap {
         return (item.label == name);
       }
     })
+    var nodeID = possibleNodes[0]
+    console.log(nodeID)
+    this.deleteConnectedEdges(nodeID)
     // remove the (first) found node from the DataSet
-    this.data.nodes.remove(possibleNodes[0])
+    this.data.nodes.remove(nodeID)
     if (DEBUG){
       console.log("[NETWORK] removed node: ",name);
     }
@@ -450,10 +463,21 @@ class ConceptMap {
    */
   deleteNodeById(nodeID) {
     this.data.nodes.remove(nodeID);
-   
+    this.deleteConnectedEdges(nodeID);
+
     if (DEBUG){
       console.log("[NETWORK] deleted node: " + nodeID);
      }
+  }
+
+  /**
+   * 
+   */
+  deleteConnectedEdges(nodeID) {
+    var relevantIDs = this.data.edges.getIds({filter: function (item){
+      return (item.from == nodeID || item.to == nodeID)
+    }})
+    this.data.edges.remove(relevantIDs)
   }
 
 
@@ -561,6 +585,17 @@ class ConceptMap {
   }
 
   /**
+   * exports the current evaluation data
+   */
+  exportResultToQr() {
+    var evaluationData = JSON.parse(localStorage.getItem("evaluationData"))
+    if(DEBUG) {
+      console.log("[NETWORK] exporting to QR: ", evaluationData)
+    }
+    QRScanner.sendDataToQR(evaluationData)
+  }
+
+  /**
    * creates the network data as jsonFile
    * @return the json file containing networkthis.data 
    */
@@ -605,7 +640,7 @@ class ConceptMap {
    * function to fill the labels for the dropdowns for student editor
    */
   populateLabels() {
-    var [nodeNames, edgeNames] = this.extractLabels()
+    var [nodeNames, edgeNames] = this.extractTaskLabels()
     if(DEBUG) {
       console.log("[NETWORK] the importet nodenames are: ",nodeNames)
     }
@@ -641,20 +676,38 @@ class ConceptMap {
    * Use the loaded teacher map to find out all possible node labels
    * @returns an array with all node labels from saved teacher map in localStorage
    */
-  extractLabels() {
+  extractTaskLabels() {
 
     var jsonFileObject = localStorage.getItem("taskjsonFile")
     var jsonFile = JSON.parse(jsonFileObject)
     var nodeNames = []
-    var labelNames = []
+    var edgeNames = []
     for (let i = 0; i < jsonFile.nodes[0].length; i++) {
       nodeNames.push(jsonFile.nodes[0][i].label)
     }
     for (let i = 0; i < jsonFile.edges[0].length; i++) {
-      labelNames.push(jsonFile.edges[0][i].label)
+      edgeNames.push(jsonFile.edges[0][i].label)
     }
-    console.log("Extracted: ", "Nodes: ", nodeNames, "Edges: ", labelNames)
-    return [nodeNames, labelNames]
+    if (DEBUG) {
+      console.log("[NETWORK] Extracted: ", "Nodes: ", nodeNames, "Edges: ", edgeNames)
+    }
+    return [nodeNames, edgeNames]
+  }
+
+  /**
+   * extract the current labels from the stored student network data 
+   */
+  extractStudentLabels() {
+    // create current label array from current data 
+    let currentNodes = this.data.nodes.get();
+    let currentNodeLabels = currentNodes.map(function(i) {
+      return i.label;
+    })
+    let currentEdges = this.data.edges.get();
+    let currentEdgeLabels = currentEdges.map(function(i) {
+      return i.label;
+    })
+    return [currentNodeLabels, currentEdgeLabels]
   }
 
   /**
@@ -711,9 +764,9 @@ class ConceptMap {
    this.network.addEdgeMode();
   }
 
-/**
- * log some information in the console. Only generates output if DEBUG mode is activated
- */
+  /**
+  * log some information in the console. Only generates output if DEBUG mode is activated
+  */
   showInfo() {
     if (DEBUG) {
       console.log("Next Node ID: ",this.nextNodeID)
@@ -726,5 +779,146 @@ class ConceptMap {
     else {
       console.log("[INFO] Debug mode not activated");
     }
+  }
+
+  /**
+   * evaluate the current student network with the saved taskJsonFile
+   */
+  evaluate() {
+    if (confirm("Are you sure you want to evaluate and finish working for now?")) {
+      console.log("[NETWORK] entered evaluation")
+      this.saveMap("student")
+      
+      var [nodesUsed, nodesPossible, nodesPercentage, edgesUsed, edgesPossible, edgesPercentage] = this.evaluatePercentages()
+      console.log("nodesPercentage: " + nodesPercentage)
+      console.log("edgesPercentage: " + edgesPercentage)
+
+      var jsonFileObject = localStorage.getItem("taskjsonFile")
+      var taskNetwork = JSON.parse(jsonFileObject)
+      // create temporary dataSets for working with the data
+      var taskNodes = new vis.DataSet(taskNetwork.nodes[0]);
+      var taskEdges = new vis.DataSet(taskNetwork.edges[0])
+      let taskData = {
+        nodes: taskNodes,
+        edges: taskEdges,
+      }
+      
+      var jsonFileObject = localStorage.getItem("studentJsonFile")
+      var studentNetwork = JSON.parse(jsonFileObject)
+      // create temporary dataSets for working with the data
+      var studentNodes = new vis.DataSet(studentNetwork.nodes[0])
+      var studentEdges = new vis.DataSet(studentNetwork.edges[0])
+      let studentData = {
+        nodes: studentNodes,
+        edges: studentEdges,
+      }
+
+      // correct the edges of the dataSets
+      let correctEdges = []
+      taskNetwork.edges[0].forEach(evaluateEdge)
+
+      // colour every correct edge green
+      for (let i = 0; i < correctEdges.length; i++) {
+        var edgeID = correctEdges[i].id
+        this.setEdgeColour(edgeID, "green")
+      }
+      
+
+      var correctEdgesPercentage = correctEdges.length / taskData.edges.get().length
+      console.log("Correct Edges Percentage: " + correctEdgesPercentage)
+      var evaluationData = {
+        "nodesUsed": nodesUsed,
+        "nodesPossible": nodesPossible,
+        "nodesPercentage": nodesPercentage,
+        "edgesUsed": edgesUsed,
+        "edgesPossible": edgesPossible,
+        "edgesPercentage": edgesPercentage,
+        "correctEdgesPercentage": correctEdgesPercentage,
+      } 
+      console.log(evaluationData)
+      localStorage.setItem("evaluationData", JSON.stringify(evaluationData))
+      alert("Evaluation Complete\n Node usage: "+nodesPercentage+" ("+nodesUsed+"/"+nodesPossible+")"+"\n Edge usage: "+edgesPercentage+" ("+edgesUsed+"/"+edgesPossible+")"+"\n Overall correctness: "+correctEdgesPercentage+" ("+correctEdges.length+"/"+taskData.edges.get().length+")"+"\n")
+
+      /**
+        * subfunction to compare task edges with the student's edges
+        * @param {edgeObject} edge the task edge that is being compared
+        */
+      function evaluateEdge(edge) {
+        // console.log(edge)
+        var edgeFrom = taskData.nodes.get(edge.from).label
+        var edgeTo = taskData.nodes.get(edge.to).label
+        // console.log(edgeFrom, edgeTo)
+    
+        // compare the current edge with every edge that the student created
+        studentNetwork.edges[0].forEach(function(i) {
+          var iFrom = studentData.nodes.get(i.from).label 
+          var iTo = studentData.nodes.get(i.to).label 
+          if (i.label == edge.label && iFrom == edgeFrom && iTo == edgeTo) {
+            console.log(i)
+            correctEdges.push(i)
+          }
+        })
+      }
+
+    } else {
+      console.log("[NETWORK] cancelled evaluation")
+    }
+  }
+
+
+  /**
+   * 
+   * @returns the percentages of edges and nodes used by the student
+   */
+  evaluatePercentages() {
+    // extract all labels from Task and Student work
+    var [taskNodeLabels, taskEdgeLabels] = this.extractTaskLabels()
+    var [studentNodeLabels, studentEdgeLabels] = this.extractStudentLabels()
+    //console.log(taskNodeLabels, taskEdgeLabels)
+    //console.log(studentNodeLabels, studentEdgeLabels)
+
+    // create value for percentage of labels used
+    let nodesPossible = taskNodeLabels.length
+    let edgesPossible = taskEdgeLabels.length
+    var nodesUsed = 0
+    var edgesUsed = 0
+    // iterate over task labels and compare if they are being used
+    taskNodeLabels.forEach(compareStudentNodes)
+    taskEdgeLabels.forEach(compareStudentEdges)
+    
+    function compareStudentNodes(item) {
+      if (studentNodeLabels.includes(item)) {
+        nodesUsed += 1;
+      }
+    }
+
+    function compareStudentEdges(item) {
+      if (studentEdgeLabels.includes(item)) {
+        edgesUsed += 1;
+        // remove the edge from the array so that they cannot be counted twice
+        var index = studentEdgeLabels.indexOf(item)
+        studentEdgeLabels.splice(index, 1)
+      }
+    }
+
+    var nodesPercentage = nodesUsed / nodesPossible
+    var edgesPercentage = edgesUsed / edgesPossible
+
+    return [nodesUsed, nodesPossible, nodesPercentage, edgesUsed, edgesPossible, edgesPercentage]
+  }
+
+  /**
+   * Changes the colour of the given EdgeID
+   * @param {int} edgeID
+   * @param {string} colourString
+   */
+  setEdgeColour(edgeID, colourString) {
+    if (DEBUG) {
+      console.log('[NETWORK][COLOUR] setting %s to new colour %s',edgeID,colourString)
+    }
+    this.data.edges.update({
+      id: edgeID,
+      color: colourString
+    })
   }
 }
