@@ -10,16 +10,25 @@
  * 
  * There is also added functionality for import/export to localStorage and import/export by the qrcodeScanner
  * 
+ * NEW IN VERSION 1.3:
+ *    -added colour support (currently using hardcoded colour palette)
+ * 
  * @author André Berger 
  * @author Cornelius Brütt
  * @version 1.2
  */
-DEBUG = true; //specify if debug console output should be generated
+"use strict";
+
+let DEBUG = true; //specify if debug console output should be generated
 
 class ConceptMap {
   CONTAINER_ID = "network_editor_container"; // the id the div container should have
   NODE_DROPDOWN_ID = "node-labels";          // the ids the list-container (example: dropdownmenu) for
   EDGE_DROPDOWN_ID = "edge-labels";          // both nodes and edges should have
+
+  COLOURS = ['rgba(214, 40, 40,1)',          // hardcoded colour palette
+             'rgba(247, 127, 0,1)',
+             'rgba(252, 191, 73,1)']; 
   
   /**
    * generates a new ConceptMap and connects it to the <div> with the CONTAINER_ID 
@@ -64,7 +73,7 @@ class ConceptMap {
       ]);
       //set the counter
       this.nextEdgeID = -10;
-      //save the created arrays to thethis.data
+      //save the created arrays to the data
       this.data = {
         nodes: nodes,
         edges: edges,
@@ -82,9 +91,9 @@ class ConceptMap {
       this.nextEdgeID = -1;
     }
 
-    //last, the options. If example or if no options are given, generate some default options. 
+    //last, the options. If no options are given, generate some default options. 
     //If not, take the parameter options
-    if (isExample || !options) {
+    if (!options) {
       this.options = this.generateDefaultOptions()
     } else{
       this.options = options;
@@ -179,11 +188,104 @@ class ConceptMap {
         if (conceptMap.selectedNode) {console.log("edit this node"); this.editNode(); } //if a node is selected, fire editMode
         if (conceptMap.selectedEdge) {this.editEdgeMode(); }
     })
+
+    //dataset subscription to listen for _any_ changes in the current data
+    this.data.nodes.on('*', function (event, properties, senderId) {
+      if (DEBUG) {
+        //This results in unmeasurable amounts of console spam
+        //console.log('[NETWORK] [EVT] event:', event, ',properties:', properties, ',senderId:', senderId);
+      }
+      conceptMap.saveMap("backup");
+    });
+
+    this.data.edges.on('*', function (event, properties, senderId) {
+      if (DEBUG) {
+        //same story with this
+        //console.log('[NETWORK] [EVT] event:', event, ',properties:', properties, ',senderId:', senderId);
+      }
+      conceptMap.saveMap("backup");
+    });
+
+    //checks for cordova to be fully loaded
+    document.addEventListener("deviceready", () => {
+      if (DEBUG) {
+        console.log("[##############][##############][##############]")
+        console.log("[##############]  DEVICE READY  [##############]");
+        console.log("[##############][##############][##############]")
+      }
+    }
+    , false);
+
+    //these currently do not work at all
+    // //triggered when app gets paused/resumed to/from background
+    // document.addEventListener("pause", () => {
+    //   if (DEBUG) {
+    //     console.log("[NETWORK] [EVT] APPLICATION PAUSED")
+    //   }
+    // }
+    // , false);
+    // document.addEventListener("resume", () => {
+    //   if (DEBUG) {
+    //     console.log("[NETWORK] [EVT] APPLICATION RESUMED")
+    //   }
+    // }
+    // , false);
+    // document.addEventListener("backbutton", () => {
+    //   if (DEBUG) {
+    //     console.log("[NETWORK] [EVT] BACK BUTTON PRESSED")
+    //   }
+    // }
+    // , false);
+    
     if (DEBUG) {
       console.log("[NETWORK] [EVT] event listeners added")
     }
   }
 
+
+    /**
+     * assign a random Colour from the colour palette
+     * @returns colour string from the palette
+    */
+    getRandomColour() {
+      
+      let random = Math.floor(Math.random() * (this.COLOURS.length)); 
+      var randomColour = this.COLOURS[random];
+      if (DEBUG) {
+        console.log("[NETWORK][COLOUR] rolled random colour %s",randomColour);
+      }
+      return randomColour
+    }
+
+    /**
+     * Changes the colour of the given NodeID
+     * @param {int} nodeID
+     * @param {String} colourString 
+     */
+    setNodeColour(nodeID, colourString) {
+      //var currentNode = this.network.nodes.get(nodeID);
+      if (DEBUG){
+        console.log('[NETWORK][COLOUR] setting %s to new colour %s',nodeID,colourString)
+      }
+      this.data.nodes.update({
+        id: nodeID,
+        color: colourString
+      } 
+      )
+    }
+
+    
+  /**
+   * takes every node of the current network and assigns a random colour to it
+   */
+  makeColourfull() {
+    var nodeIDs = this.data.nodes.getIds() 
+    //iterate over all IDs and update the node colour with the id respectivly
+    for(const entry of nodeIDs){
+      this.setNodeColour(entry, this.getRandomColour());
+    }
+    this.network.redraw();
+  }
 
   /**
    * deletes the current selected node or edge or both
@@ -210,6 +312,8 @@ class ConceptMap {
     // if the label does not already exists, add the node to the data
     if (!(currentNodeLabels.includes(name))) {
       this.data.nodes.add({ id:this.nextNodeID, label: name });
+      //play fancy animation so that we do not get lost
+      this.network.focus(this.nextNodeID,{animation: true});  
       this.nextNodeID++;
       if (DEBUG){
         console.log("[NETWORK] added node: ",name);
@@ -300,7 +404,12 @@ class ConceptMap {
    this.network.addEdgeMode();
   }
 
-
+  /**
+   * deactivates the vis.network.js addEdgeMode
+   * */
+  deactivateAddEdgeMode(){
+    this.network.disableEditMode();
+   }
   /**
    * deletes an edge by its label from the network
    * If more than one edge with this name exits, only delete the first found
@@ -612,16 +721,37 @@ class ConceptMap {
   }
 
   /**
+   * generates a random pos coordinate inside the current viewport
+   * @param {char} axis, either x or y
+   * @returns 
+   */
+  generateRandomPosition(axis){
+    var positionInfo = document.getElementById(this.CONTAINER_ID).getBoundingClientRect();
+    let maxValue = 0;
+    let BUFFER = 0.5; //sets a multiplicator so that we do not reach the edge 
+    if(axis=='y'){
+      maxValue = positionInfo.height * BUFFER;
+    }else if (axis == 'x'){
+      maxValue = positionInfo.width * BUFFER;
+    }else return 0;
+  
+    let random = Math.floor(Math.random() * (maxValue)); 
+    return random;  
+}
+  /**
    * creates a new blank node using the network intern naming function 
    * (default: prompt)
    */
   createBlankNode() {
     var updatedIds =this.data.nodes.add([{
       label: 'new',
-      //changed so that the node starts in the middle
-      x:0,//x:this.network.params.pointer.canvas.x, //x: 0,
-      y:0//y:this.network.params.pointer.canvas.y //y: 0
+      //changed so that node starts at random pos inside viewport
+      //absolutly destroys performance tho
+      x:this.generateRandomPosition("x"),//x:this.network.params.pointer.canvas.x, //x: 0,
+      y:this.generateRandomPosition("y"),//y:this.network.params.pointer.canvas.y //y: 0
+      color: this.getRandomColour()
     }]);
+   this.network.focus([updatedIds[0]],{animation: true});
    this.network.selectNodes([updatedIds[0]]);
    this.network.editNode();
   }

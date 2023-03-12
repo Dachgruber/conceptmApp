@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<!-- Instructions for the tabbar to add a new tab:
+-add a new tab-div inside the content div below
+-add a new button in the menubar div and edit the icon 
+-head to the tabbar.js and add a new tab inside the loadtabs() and change_content() functions-->
+
+
+<html>
+    <!-- //Header mit Metadaten-->
+    <head> 
+        <meta charset="utf-8" />
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width" />
+
+        <title>Network</title>
+    </head>
+
+    <!-- background style, later modified by the tabbar -->
+    <body style="background-color:beige  ;height:100%;">
+
+        <!-- every tab gets its own div -->
+        <div id="content">
+            <div id="tab0" class="tabcontent" style=" width:100%;height:100%"></div>
+            <div id="tab1" class="tabcontent" style="height:100%"></div>
+            <div id="tab2" class="tabcontent" style="height:100%"></div>
+            <div id="tab3" class="tabcontent" style="height:100%"></div>
+            <div id="tab4" class="tabcontent" style="height:100%"></div>
+        </div>
+
+      <!-- <div>
+        <div>
+            <button style = "color: orange; font-size: 30px" id="makeCode" onclick = QRScanner.sendDataToQR()> QR Generator</button>
+      
+        </div> 
+      </div> -->
+       
+      <script type='text/javascript' src = "../js/qrscanner.js">//implementation des QR-Code Scanners</script> 
+        
+        <!-- everything for the menubar stylisation. For more tabs on the tabbar: duplicate one button tag and edit the icon -->
+        <div id="menubar">
+            <menu class="menu">
+        
+                <button class="menu__item active" style="--bgColorItem: #ff8c00;" >
+                    <!-- teacher icon -->
+                <svg class="icon" viewBox="0 0 24 24" >
+                    <path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-4.5a1 1 0 1 1 0-2H20V6H4v3a1 1 0 1 1-2 0V6z"/>
+                    <path d="M13.555 12.168a1 1 0 0 1 .277 1.387l-3 4.5a1 1 0 0 1-1.538.153l-.007-.006a6.155 
+                    6.155 0 0 0-.78-.62C7.996 17.24 7.45 17 7 17c-1.027 0-1.611.296-2.01.735-.442.486-.771 1.271-1.01 2.461a1 
+                    1 0 1 1-1.96-.392c.262-1.31.682-2.525 1.49-3.414C4.361 15.454 5.528 15 7 15c1.05 0 2.005.51 
+                    2.617.918l.162.11 2.389-3.583a1 1 0 0 1 1.387-.277zM9 12a2 2 0 1 0-4 0 2 2 0 0 0 4 0z"/>
+                </svg>
+                
+                </button>
+            
+                <button class="menu__item" style="--bgColorItem: #f54888;">
+                <!-- student icon -->
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M6 12.5c1-1 2.5-2.5 6-2.5s4.5 1 6 2.5"/>
+                    <circle cx="12" cy="6" r="3"/>
+                    <path d="M12 21v-4l-8-2v4M12 21v-4l8-2v4"/>
+                </svg>
+                </button>
+            
+                <button class="menu__item" style="--bgColorItem: #4343f5;" >
+                    <!-- medal icon -->
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M8 14.5V21l4-2 4 2v-6.5" />
+                    <ellipse cx="12" cy="9" rx="7" ry="6" />
+                    <path d="M14 11h-4s.995-.213 2-1c.679-.531 1.5-1.597 1.5-2 0-1-1-1.5-1.5-1.5s-1.5 0-2 1" />
+                </svg>
+                </button>
+            
+                <button class="menu__item" style="--bgColorItem: #e0b115;" > 
+                    <!-- chart icon -->
+                <svg class="icon" viewBox="0 0 24 24" >
+                    <path  d="M5.1,3.9h13.9c0.6,0,1.2,0.5,1.2,1.2v13.9c0,0.6-0.5,1.2-1.2,1.2H5.1c-0.6,0-1.2-0.5-1.2-1.2V5.1
+                    C3.9,4.4,4.4,3.9,5.1,3.9z"/>
+                    <path  d="M4.2,9.3h15.6"/>
+                    <path  d="M9.1,9.5v10.3"/>
+                </svg>
+                </button>
+            
+                <div class="menu__border"></div>
+            
+            </menu>
+            
+            <!-- black container surrounding the tab icons. Dont edit this! -->
+            <div class="svg-container">
+                <svg viewBox="0 0 202.9 45.5" >
+                <clipPath id="menu" clipPathUnits="objectBoundingBox" transform="scale(0.0049285362247413 0.021978021978022)">
+                    <path  d="M6.7,45.5c5.7,0.1,14.1-0.4,23.3-4c5.7-2.3,9.9-5,18.1-10.5c10.7-7.1,11.8-9.2,20.6-14.3c5-2.9,9.2-5.2,15.2-7
+                    c7.1-2.1,13.3-2.3,17.6-2.1c4.2-0.2,10.5,0.1,17.6,2.1c6.1,1.8,10.2,4.1,15.2,7c8.8,5,9.9,7.1,20.6,14.3c8.3,5.5,12.4,8.2,18.1,10.5
+                    c9.2,3.6,17.6,4.2,23.3,4H6.7z"/>
+                </clipPath>
+                </svg>
+            </div> 
+
+        </div> 
+
+        <!--import for css stylesheet-->
+        <link rel="stylesheet" href="../css/tabbar.css" media="screen" /> 
+        <!--import for js functionality-->
+        <script type = "text/javascript" src ="../js/tabbar.js"></script> 
+        
+        <!-- jquery import -->
+        <script source = "../js/jquery-3.6.1.min.js"></script>
+        <script type='application/javascript' src="../js/vis_network.js">  // network implementation </script>
+        <script type='application/javascript' src="../js/qrscanner.js">    // qr code implementation </script>
+
+        <!-- black magic, very important, such danger -->
+        <script type="application/javascript" src="../cordova.js"></script>
+    </body>
+</html>
