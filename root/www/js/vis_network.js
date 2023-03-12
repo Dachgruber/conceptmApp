@@ -15,7 +15,7 @@
  * 
  * @author André Berger 
  * @author Cornelius Brütt
- * @version 1.2
+ * @version 1.3
  */
 "use strict";
 
