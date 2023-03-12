@@ -56,14 +56,14 @@
         <div  class="row footer" id="button_container">
           <!-- Import/Export buttons -->
           <div id="buttonContainer">
-            <button id="button" onclick = importResultFromQr()> Import Student Result </button>
-            <button id="button" onclick = importTestResult()> Import Test Result </button>
-            <button id="button" onclick = exportResultsToQr()> Export Results </button>
+            <button id="button" onclick = eval.importResultFromQr()> Import Student Result </button>
+            <button id="button" onclick = eval.importTestResult()> Import Test Result </button>
+            <button id="button" onclick = eval.exportResultsToQr()> Export Results </button>
           </div>
 
           <div id="buttonContainer">
-            <button id="button" onclick = evaluateResults()> Evaluate Results </button>
-            <button id="button" onclick = "initialize(); graph.resetGraph();"> Reset Results </button>
+            <button id="button" onclick = eval.evaluateResults()> Evaluate Results </button>
+            <button id="button" onclick = "eval.initialize(); graph.resetGraph();"> Reset Results </button>
           </div>
 
           <!-- Info Button and the switch editor buttons, for debugging purposes-->
@@ -87,7 +87,9 @@
 
       <!-- here lays some extra js code for the .html, that does not handle the core evaluation functionality -->
       <script>
+
         function changeContent() {
+          
           let nodesContent = document.getElementById("nodesPercentageDiv");
           let edgesContent = document.getElementById("edgesPercentageDiv");
           let correctEdgesContent = document.getElementById("correctEdgesPercentageDiv");
@@ -117,23 +119,19 @@
             correctEdgesContent.style.display = "none";
           }
         }
-        
-        let graph = new EvaluationGraph(false);
-
-        function updateGraph(evaluationData) {
-          graph.addBar(evaluationData.nodesPercentage);
-        }
 
       </script>
       <!-- here the evaluation methods -->
       <script>
-
+        let graph = new EvaluationGraph(false);
+        let eval = new Evaluation(graph);
+        console.log("INIT SUCCESS")
         var mapsScanned = 0;
         var nodesPercentage = 0;
         var edgesPercentage = 0;
         var correctEdgesPercentage = 0;
 
-        initialize()
+        //initialize(graph)
 
       </script>
 

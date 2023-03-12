@@ -1,19 +1,19 @@
 /**
  * function to initialize html elements
  */
-function initialize() {
+class Evaluation {
+ constructor(graph) {
 
-    mapsScanned = 0;
-    nodesPercentage = 0;
-    edgesPercentage = 0;
-    correctEdgesPercentage = 0;
+    this.graph = graph;
 
-    document.getElementById("mapsScanned").innerHTML = 0;
-    document.getElementById("nodesPercentage").innerHTML = 0;
-    document.getElementById("edgesPercentage").innerHTML = 0;
-    document.getElementById("correctEdgesPercentage").innerHTML = 0;
+    this.mapsScanned = 0;
+    this.nodesPercentage = 0;
+    this.edgesPercentage = 0;
+    this.correctEdgesPercentage = 0;
 
-    var evaluationData = {
+    this.initialize();
+
+    this.evaluationData = {
         //"nodesUsed": nodesUsed,
         //"nodesPossible": nodesPossible,
         "nodesPercentage": 0.3,
@@ -22,14 +22,22 @@ function initialize() {
         "edgesPercentage": 0.6,
         "correctEdgesPercentage": 0.4,
       } 
-      console.log(evaluationData)
-      localStorage.setItem("evaluationData", JSON.stringify(evaluationData))
+      //console.log(evaluationData)
+      localStorage.setItem("evaluationData", JSON.stringify(this.evaluationData))
 }
+
+  initialize() {
+
+    document.getElementById("mapsScanned").innerHTML = 0;
+    document.getElementById("nodesPercentage").innerHTML = 0;
+    document.getElementById("edgesPercentage").innerHTML = 0;
+    document.getElementById("correctEdgesPercentage").innerHTML = 0;
+  }
 
 /**
    * import the result of a student to the teacher evaluation page
    */
-async function importResultFromQr() {
+async importResultFromQr() {
     // import from QR code
     // using a callback function to stop flow
     let jsonFileString 
@@ -48,7 +56,7 @@ async function importResultFromQr() {
           edgesPercentage += evaluationData.edgesPercentage
           nodesPercentage += evaluationData.nodesPercentage
 
-          updateGraph(evaluationData);
+          this.graph.addBar(evaluationData.nodesPercentage);
 
           console.log("[QRSCAN] scan successfull")
         },
@@ -60,21 +68,22 @@ async function importResultFromQr() {
   /**
    * function for testing the result accumulation
    */
-  function importTestResult() {
+   importTestResult() {
     var evaluationData = JSON.parse(localStorage.getItem("evaluationData"))
     mapsScanned += 1;
     document.getElementById("mapsScanned").innerHTML = mapsScanned;
     correctEdgesPercentage += evaluationData.correctEdgesPercentage
     edgesPercentage += evaluationData.edgesPercentage
     nodesPercentage += evaluationData.nodesPercentage
-    updateGraph(evaluationData);
-    evaluateResults();
+
+    this.graph.addBar(evaluationData.nodesPercentage);
+   this.evaluateResults();
   }
 
   /**
    * function to evaluate overall results after scanning data
    */
-  function evaluateResults() {
+   evaluateResults() {
     eval_correctEdgesPercentage = correctEdgesPercentage / mapsScanned
     eval_edgesPercentage = edgesPercentage / mapsScanned
     eval_nodesPercentage = nodesPercentage / mapsScanned
@@ -86,7 +95,7 @@ async function importResultFromQr() {
   /**
    * export the results to a QR code
    */
-  function exportResultsToQr() {
+   exportResultsToQr() {
     var taskName = document.getElementById('taskName').value
     var evaluationData = {
         "taskName": taskName,
@@ -100,3 +109,6 @@ async function importResultFromQr() {
     }
     QRScanner.sendDataToQR(evaluationData)
   }
+
+
+}
