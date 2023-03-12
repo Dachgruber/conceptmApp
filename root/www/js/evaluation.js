@@ -48,6 +48,8 @@ async function importResultFromQr() {
           edgesPercentage += evaluationData.edgesPercentage
           nodesPercentage += evaluationData.nodesPercentage
 
+          updateGraph(evaluationData);
+
           console.log("[QRSCAN] scan successfull")
         },
         (result) => {   //if promise rejected, (error), handle it and log it 
@@ -65,18 +67,20 @@ async function importResultFromQr() {
     correctEdgesPercentage += evaluationData.correctEdgesPercentage
     edgesPercentage += evaluationData.edgesPercentage
     nodesPercentage += evaluationData.nodesPercentage
+    updateGraph(evaluationData);
+    evaluateResults();
   }
 
   /**
    * function to evaluate overall results after scanning data
    */
   function evaluateResults() {
-    correctEdgesPercentage = correctEdgesPercentage / mapsScanned
-    edgesPercentage = edgesPercentage / mapsScanned
-    nodesPercentage = nodesPercentage / mapsScanned
-    document.getElementById("correctEdgesPercentage").innerHTML = correctEdgesPercentage.toFixed(2)
-    document.getElementById("edgesPercentage").innerHTML = edgesPercentage.toFixed(2)
-    document.getElementById("nodesPercentage").innerHTML = nodesPercentage.toFixed(2)
+    eval_correctEdgesPercentage = correctEdgesPercentage / mapsScanned
+    eval_edgesPercentage = edgesPercentage / mapsScanned
+    eval_nodesPercentage = nodesPercentage / mapsScanned
+    document.getElementById("correctEdgesPercentage").innerHTML = eval_correctEdgesPercentage.toFixed(2)
+    document.getElementById("edgesPercentage").innerHTML = eval_edgesPercentage.toFixed(2)
+    document.getElementById("nodesPercentage").innerHTML = eval_nodesPercentage.toFixed(2)
   }
 
   /**
