@@ -45,9 +45,11 @@ class EvaluationGraph{
 
         //starting data should always be empty
         this.data = new vis.DataSet([]);
+        console.log("BEFORE GRAPH INITIALISED")
 
         //finally, create the graph
         this.graph = new vis.Graph2d(this.container, this.data, this.options)
+        console.log("GRAPH INITIALISED")
     }
 
     /**

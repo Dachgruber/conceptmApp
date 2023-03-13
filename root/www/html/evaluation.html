@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html>
-    <!-- this html is a demo of the backend student editor. Use together with the networks_teacher.html -->
     <head> 
         <meta charset="utf-8">
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
         <title>Evaluation</title>
 
-       <!-- //Download the necessary resources from unpkg  nicer comment-->
-        <script
+       <!-- //Download the necessary resources from unpkg-->
+        <!-- <script
           type="text/javascript"
           src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"
-        ></script>
-        <script 
+        ></script> -->
+        <!-- <script 
           type="text/javascript" 
             src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js">
         </script>
-        <link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" /> -->
 
     </head>
 
@@ -37,21 +36,27 @@
 
         </fieldset>
 
-
-        <div id="nodesPercentageDiv" style="display: none">
-          nodesPercentage: <span id="nodesPercentage"></span>
-        </div>
-
-        <div id="edgesPercentageDiv" style="display: none">
-          edgesPercentage: <span id="edgesPercentage"></span>
-        </div>
-
-        <div id="correctEdgesPercentageDiv" style="display: none">
-          correctEdgesPercentage: <span id="correctEdgesPercentage"></span>
-        </div>
       </div>
 
-        <div class="row content" id="visualization" style="height: 50%; width: 100%"></div>
+        <div class="row content" style="height: 50%; width: 100%">
+          <!-- here would sit the barchart with the visualized content -->
+          <!-- <canvas id="myChart"></canvas> -->
+
+          <!-- instead we have some simple indicators for the values -->
+
+          <div id="nodesPercentageDiv" style="display: none">
+            nodesPercentage: <span id="nodesPercentage"></span>
+          </div>
+
+          <div id="edgesPercentageDiv" style="display: none">
+            edgesPercentage: <span id="edgesPercentage"></span>
+          </div>
+
+          <div id="correctEdgesPercentageDiv" style="display: none">
+            correctEdgesPercentage: <span id="correctEdgesPercentage"></span>
+          </div>
+
+        </div>
 
         <div  class="row footer" id="button_container">
           <!-- Import/Export buttons -->
@@ -82,8 +87,27 @@
       <script type='text/javascript' src = "../js/vis_network.js">  // network implementation </script>
       <script type='text/javascript' src = "../js/qrscanner.js">    // qr code implementation </script>
       <script type='text/javascript' src = "../js/evaluation.js">  // evaluation implementation </script>
+      
+      <!-- Here lays some script for the graph implementation -->
+      <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+      <!-- <script type='text/javascript' src="chartjs/dist/chart.umd.js"></script> -->
 
-      <script type='text/javascript' src = "../js/evaluation_graph.js">  // graph implementation </script>
+      <script type='module' src = "../js/evaluation_graph.js">  // graph implementation </script>
+      
+      <!-- here the evaluation methods -->
+      <script>
+        //var graph = new EvaluationGraph(false);
+        var eval = new Evaluation(false);
+        console.log("-----------------------INIT SUCCESS------------------------------")
+        var mapsScanned = 0;
+        var nodesPercentage = 0;
+        var edgesPercentage = 0;
+        var correctEdgesPercentage = 0;
+
+
+        //initialize(graph)
+
+      </script>
 
       <!-- here lays some extra js code for the .html, that does not handle the core evaluation functionality -->
       <script>
@@ -119,19 +143,6 @@
             correctEdgesContent.style.display = "none";
           }
         }
-
-      </script>
-      <!-- here the evaluation methods -->
-      <script>
-        let graph = new EvaluationGraph(false);
-        let eval = new Evaluation(graph);
-        console.log("INIT SUCCESS")
-        var mapsScanned = 0;
-        var nodesPercentage = 0;
-        var edgesPercentage = 0;
-        var correctEdgesPercentage = 0;
-
-        //initialize(graph)
 
       </script>
 

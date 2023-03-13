@@ -3,8 +3,15 @@
  */
 class Evaluation {
  constructor(graph) {
-
+  
+  //check if optional graph is given.
+  //if not, set to undefined
+  if(graph) {
     this.graph = graph;
+  } else {
+    this.graph = null;
+    console.log("[EVAL][INFO] No graph given to evaluation")
+  }
 
     this.mapsScanned = 0;
     this.nodesPercentage = 0;
@@ -24,6 +31,7 @@ class Evaluation {
       } 
       //console.log(evaluationData)
       localStorage.setItem("evaluationData", JSON.stringify(this.evaluationData))
+     // console.log("EVALUATION INITIALISED")
 }
 
   initialize() {
@@ -56,7 +64,9 @@ async importResultFromQr() {
           edgesPercentage += evaluationData.edgesPercentage
           nodesPercentage += evaluationData.nodesPercentage
 
-          this.graph.addBar(evaluationData.nodesPercentage);
+          if(this.graph){
+            this.graph.addBar(evaluationData.nodesPercentage);
+          }
 
           console.log("[QRSCAN] scan successfull")
         },
@@ -75,8 +85,10 @@ async importResultFromQr() {
     correctEdgesPercentage += evaluationData.correctEdgesPercentage
     edgesPercentage += evaluationData.edgesPercentage
     nodesPercentage += evaluationData.nodesPercentage
+    if (this.graph){
+      this.graph.addBar(evaluationData.nodesPercentage);
 
-    this.graph.addBar(evaluationData.nodesPercentage);
+    }
    this.evaluateResults();
   }
 
@@ -84,9 +96,9 @@ async importResultFromQr() {
    * function to evaluate overall results after scanning data
    */
    evaluateResults() {
-    eval_correctEdgesPercentage = correctEdgesPercentage / mapsScanned
-    eval_edgesPercentage = edgesPercentage / mapsScanned
-    eval_nodesPercentage = nodesPercentage / mapsScanned
+    let eval_correctEdgesPercentage = correctEdgesPercentage / mapsScanned
+    let eval_edgesPercentage = edgesPercentage / mapsScanned
+    let eval_nodesPercentage = nodesPercentage / mapsScanned
     document.getElementById("correctEdgesPercentage").innerHTML = eval_correctEdgesPercentage.toFixed(2)
     document.getElementById("edgesPercentage").innerHTML = eval_edgesPercentage.toFixed(2)
     document.getElementById("nodesPercentage").innerHTML = eval_nodesPercentage.toFixed(2)
