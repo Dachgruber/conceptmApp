@@ -19,7 +19,7 @@ function load_tabs() {
     document.getElementById("tab0").innerHTML='<object class = "tab" data="networks_teacher_ui.html" type="text/html" "> Error: Embedded data could not be displayed.</embed>'
     document.getElementById("tab1").innerHTML='<object class = "tab" data="networks_student_ui.html" type="text/html" "> Error: Embedded data could not be displayed.</embed>'
     document.getElementById("tab2").innerHTML='<object class = "tab" data="evaluation.html" style"=overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"> <embed src="test_button.html" style"=overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;">> </embed> Error: Embedded data could not be displayed.</object>'
-    document.getElementById("tab3").innerHTML='<object class = "tab" data="test_button.html" style"=overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"> <embed src="test_button.html" style"=overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;">> </embed> Error: Embedded data could not be displayed.</object>'
+    document.getElementById("tab3").innerHTML='<object class = "tab" data="settings.html" style"=overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"> <embed src="test_button.html" style"=overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;">> </embed> Error: Embedded data could not be displayed.</object>'
 
     //document.getElementById("tab4").innerHTML='<iframe src="cat_example.html" frameborder="0" style="overflow: hidden; height: 100%; width: 100%; position: absolute;left: 50%; margin-left: -50%;"></iframe>';
     
