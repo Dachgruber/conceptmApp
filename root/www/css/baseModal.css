@@ -14,8 +14,8 @@
 }
 
 .icon{
-
-  margin: 0 auto;
+  display: block;
+  margin: auto;
   stroke: white;
   fill: transparent;
   stroke-width: 1pt;
