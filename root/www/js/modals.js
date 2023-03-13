@@ -6,12 +6,12 @@ var exportmodal = document.getElementById("exportModal")
 var edgeInputModal = document.getElementById("edgeInputModal")
 var nodeInputModal = document.getElementById("nodeInputModal")
 
-// Get the <span> element that closes the modal
-var addspan = document.getElementsByClassName("addclose")[0];
-var inputspan = document.getElementsByClassName("inputclose")[0];
-var exportspan = document.getElementsByClassName("exportclose")[0];
-var edgeInputspan = document.getElementsByClassName("edgeInputclose")[0];
-var nodeInputspan = document.getElementsByClassName("nodeInputclose")[0];
+// Get every <span> element that closes the modal
+var addspans = Array.from(document.getElementsByClassName("addclose"));
+var inputspans = Array.from(document.getElementsByClassName("inputclose"));
+var exportspans = Array.from(document.getElementsByClassName("exportclose"));
+var edgeInputspans = Array.from(document.getElementsByClassName("edgeInputclose"));
+var nodeInputspans = Array.from(document.getElementsByClassName("nodeInputclose"));
 
 // When the user clicks on the button, open the modal
 function openAddModal() {
@@ -50,12 +50,13 @@ function closeEdgeInputModal() {
 function closeNodeInputModal() {
  nodeInputModal.style.display = "none";
 }
+
 // When the user clicks on <span> (x), close the modal
-addspan.onclick = closeAddModal;
-inputspan.onclick = closeinputModal;
-exportspan.onclick = closeExportModal;
-edgeInputspan.onclick = closeEdgeInputModal;
-nodeInputspan.onclick = closeNodeInputModal;
+addspans.forEach(element => { element.onclick = closeAddModal;});
+inputspans.forEach(element =>{ element.onclick = closeinputModal;})
+exportspans.forEach(element =>{ element.onclick = closeExportModal;})
+edgeInputspans.forEach(element =>{ element.onclick = closeEdgeInputModal;})
+nodeInputspans.forEach(element =>{ element.onclick = closeNodeInputModal;})
 
 
 // When the user clicks anywhere outside of the modal, close it
