@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="a.b.c" android-packageName="com.caukiel.conceptmAPP" version="1.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>conceptmAPP</name>
+    <description>
+        Eine tolle ConceptMap Application
+    </description>
+    <author email="stu231310@mail.uni-kiel.de" href="https://git.informatik.uni-kiel.de/mba/sp_grp1_22_23">
+        CoMapApp Development team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <platform name="android">
+        <icon src = "resources/img/icon.png" density = "hdpi"/>
+    </platform>
+</widget>

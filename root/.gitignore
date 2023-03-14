@@ -16,3 +16,6 @@ plugins/
 !*.css
 !resources/**
 !www/**
+#include the config files
+!config.xml
+!package.json

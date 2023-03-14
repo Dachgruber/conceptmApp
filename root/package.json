@@ -1,0 +1,36 @@
+{
+  "name": "a.b.c",
+  "version": "1.1.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "none specified",
+  "license": "none specified",
+  "displayName": "conceptmAPP",
+  "devDependencies": {
+    "cordova-android": "^10.1.2",
+    "cordova-browser": "^6.0.0",
+    "cordova-plugin-browsersync-gen2": "^1.1.7",
+    "cordova-plugin-qr-barcode-scanner": "^8.0.3"
+  },
+  "cordova": {
+    "platforms": [
+      "browser",
+      "android"
+    ],
+    "plugins": {
+      "cordova-plugin-browsersync-gen2": {},
+      "cordova-plugin-qr-barcode-scanner": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      }
+    }
+  },
+  "dependencies": {
+    "chart.js": "^4.2.1",
+    "qr-scanner": "^1.4.2",
+    "qrcode-reader": "^1.0.4",
+    "vis-network": "^9.1.2",
+    "vis-timeline": "^7.7.0"
+  }
+}
