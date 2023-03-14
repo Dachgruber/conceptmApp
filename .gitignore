@@ -15,5 +15,6 @@ plugins/
 !*.html
 !resources/**
 !www/
-
-!root/platforms/android/app/build/outputs/apk/debug/app-debug.apk
+#include the config files
+!config.xml
+!package.json
