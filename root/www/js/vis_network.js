@@ -325,6 +325,7 @@ class ConceptMap {
         console.log("[NETWORK] added node: ",name);
       }
     } else {
+      alert("Node already in network!")
       if (DEBUG) {
         console.log("[NETWORK] node " + name + " already in network")
       }

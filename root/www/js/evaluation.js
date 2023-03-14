@@ -20,7 +20,7 @@ class Evaluation {
     this.correctEdgesPercentage = 0;
 
   //and these are the computed totals
-    this.eval_mapsScanned = 0;
+
     this.eval_nodesPercentage = 0;
     this.eval_edgesPercentage = 0;
     this.eval_correctEdgesPercentage = 0;
@@ -42,7 +42,17 @@ class Evaluation {
 }
 
   resetOutput() {
+    //reset every variable
+    this.mapsScanned = 0;
+    this.nodesPercentage = 0;
+    this.edgesPercentage = 0;
+    this.correctEdgesPercentage = 0;
 
+    this.eval_nodesPercentage = 0;
+    this.eval_edgesPercentage = 0;
+    this.eval_correctEdgesPercentage = 0;
+
+    //reset the html output as well
     document.getElementById("mapsScanned").innerHTML = 0;
     document.getElementById("nodesPercentage").innerHTML = 0;
     document.getElementById("edgesPercentage").innerHTML = 0;
@@ -121,7 +131,7 @@ async importResultFromQr() {
         "nodesPercentage": this.eval_nodesPercentage,
         "edgesPercentage": this.eval_edgesPercentage,
         "correctEdgesPercentage": this.eval_correctEdgesPercentage,
-        "mapsScanned": this.eval_mapsScanned,
+        "mapsScanned": this.mapsScanned,
       } 
     if(DEBUG) {
     console.log("[NETWORK] exporting to QR: ", evaluationData)
