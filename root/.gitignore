@@ -19,3 +19,5 @@ plugins/
 #include the config files
 !config.xml
 !package.json
+
+!platforms/android/app/build/outputs/apk/debug/app-debug.apk
