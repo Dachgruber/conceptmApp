@@ -1,0 +1,43 @@
+/* input modal content */
+.inputModal-content {
+  background-color: #1d1d27;
+  color:white;
+  margin: 50% auto; /* 50% from the top and centered */
+  padding: 20px;
+  /* border: 1px solid #888; */
+  height: 30%;
+  width: 60%; /* Could be more or less, depending on screen size */
+  border-radius: 2em; /*rounded corners*/
+}
+
+/* w  i  d  e  confirmation button*/
+.inputModal-content .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* w  i  d  e  input field, used for teacher editor*/
+.inputModal-content input[type=text]{
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0;
+  border: none;
+  box-sizing: border-box;
+  background: #f1f1f1;
+}
+
+/* w  i  d  e  dropdown field, used for student editor*/
+.inputModal-content select{
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0;
+  border: none;
+  box-sizing: border-box;
+  background: #f1f1f1;
+}
