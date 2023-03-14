@@ -239,7 +239,8 @@
   <script>
     function addNodeModalPressed() {
       console.log("[MODAL] [EDITOR] addNodeButton pressed");
-      network.createBlankNode();
+      openNodeInputModal(); //opens the user prompt
+      //network.createBlankNode();
     }
     function addEdgeModalPressed() {
       console.log("[MODAL] [EDITOR] addEdgeButton pressed");
