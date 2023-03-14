@@ -311,7 +311,13 @@ class ConceptMap {
     let [currentNodeLabels, currentEdgeLabels] = this.extractStudentLabels()
     // if the label does not already exists, add the node to the data
     if (!(currentNodeLabels.includes(name))) {
-      this.data.nodes.add({ id:this.nextNodeID, label: name });
+      this.data.nodes.add({ 
+        id:this.nextNodeID, 
+        label: name,
+        x:this.generateRandomPosition("x"),      
+        y:this.generateRandomPosition("y"),
+        color: this.getRandomColour()
+    });
       //play fancy animation so that we do not get lost
       this.network.focus(this.nextNodeID,{animation: true});  
       this.nextNodeID++;

@@ -13,12 +13,19 @@ class Evaluation {
     console.log("[EVAL][INFO] No graph given to evaluation")
   }
 
+  //these are the live changing numbers
     this.mapsScanned = 0;
     this.nodesPercentage = 0;
     this.edgesPercentage = 0;
     this.correctEdgesPercentage = 0;
 
-    this.initialize();
+  //and these are the computed totals
+    this.eval_mapsScanned = 0;
+    this.eval_nodesPercentage = 0;
+    this.eval_edgesPercentage = 0;
+    this.eval_correctEdgesPercentage = 0;
+
+    this.resetOutput();
 
     this.evaluationData = {
         //"nodesUsed": nodesUsed,
@@ -34,7 +41,7 @@ class Evaluation {
      // console.log("EVALUATION INITIALISED")
 }
 
-  initialize() {
+  resetOutput() {
 
     document.getElementById("mapsScanned").innerHTML = 0;
     document.getElementById("nodesPercentage").innerHTML = 0;
@@ -52,20 +59,20 @@ async importResultFromQr() {
     QRScanner.importDataFromQR();
            
     var promise = new Promise((resolve) => {_wait = resolve }); //generates promise to wait for user input
-        
+    let self = this;
     await promise.then(
         (result) => {   //if promise fullfilled (no error), save the result
           jsonFileString = result;
           // set the network data to the contents of the json file
           var evaluationData = JSON.parse(jsonFileString)
-          mapsScanned += 1;
-          document.getElementById("mapsScanned").innerHTML = mapsScanned;
-          correctEdgesPercentage += evaluationData.correctEdgesPercentage
-          edgesPercentage += evaluationData.edgesPercentage
-          nodesPercentage += evaluationData.nodesPercentage
+          self.mapsScanned += 1;
+          document.getElementById("mapsScanned").innerHTML = self.mapsScanned;
+          self.correctEdgesPercentage += evaluationData.correctEdgesPercentage
+          self.edgesPercentage += evaluationData.edgesPercentage
+          self.nodesPercentage += evaluationData.nodesPercentage
 
-          if(this.graph){
-            this.graph.addBar(evaluationData.nodesPercentage);
+          if(self.graph){
+            self.graph.addBar(evaluationData.nodesPercentage);
           }
 
           console.log("[QRSCAN] scan successfull")
@@ -80,11 +87,11 @@ async importResultFromQr() {
    */
    importTestResult() {
     var evaluationData = JSON.parse(localStorage.getItem("evaluationData"))
-    mapsScanned += 1;
-    document.getElementById("mapsScanned").innerHTML = mapsScanned;
-    correctEdgesPercentage += evaluationData.correctEdgesPercentage
-    edgesPercentage += evaluationData.edgesPercentage
-    nodesPercentage += evaluationData.nodesPercentage
+    this.mapsScanned += 1;
+    document.getElementById("mapsScanned").innerHTML = this.mapsScanned;
+    this.correctEdgesPercentage += evaluationData.correctEdgesPercentage
+    this.edgesPercentage += evaluationData.edgesPercentage
+    this.nodesPercentage += evaluationData.nodesPercentage
     if (this.graph){
       this.graph.addBar(evaluationData.nodesPercentage);
 
@@ -96,12 +103,12 @@ async importResultFromQr() {
    * function to evaluate overall results after scanning data
    */
    evaluateResults() {
-    let eval_correctEdgesPercentage = correctEdgesPercentage / mapsScanned
-    let eval_edgesPercentage = edgesPercentage / mapsScanned
-    let eval_nodesPercentage = nodesPercentage / mapsScanned
-    document.getElementById("correctEdgesPercentage").innerHTML = eval_correctEdgesPercentage.toFixed(2)
-    document.getElementById("edgesPercentage").innerHTML = eval_edgesPercentage.toFixed(2)
-    document.getElementById("nodesPercentage").innerHTML = eval_nodesPercentage.toFixed(2)
+    this.eval_correctEdgesPercentage = this.correctEdgesPercentage / this.mapsScanned
+    this.eval_edgesPercentage = this.edgesPercentage / this.mapsScanned
+    this.eval_nodesPercentage = this.nodesPercentage / this.mapsScanned
+    document.getElementById("correctEdgesPercentage").innerHTML = this.eval_correctEdgesPercentage.toFixed(2)
+    document.getElementById("edgesPercentage").innerHTML = this.eval_edgesPercentage.toFixed(2)
+    document.getElementById("nodesPercentage").innerHTML = this.eval_nodesPercentage.toFixed(2)
   }
 
   /**
@@ -111,10 +118,10 @@ async importResultFromQr() {
     var taskName = document.getElementById('taskName').value
     var evaluationData = {
         "taskName": taskName,
-        "nodesPercentage": nodesPercentage,
-        "edgesPercentage": edgesPercentage,
-        "correctEdgesPercentage": correctEdgesPercentage,
-        "mapsScanned": mapsScanned,
+        "nodesPercentage": this.eval_nodesPercentage,
+        "edgesPercentage": this.eval_edgesPercentage,
+        "correctEdgesPercentage": this.eval_correctEdgesPercentage,
+        "mapsScanned": this.eval_mapsScanned,
       } 
     if(DEBUG) {
     console.log("[NETWORK] exporting to QR: ", evaluationData)

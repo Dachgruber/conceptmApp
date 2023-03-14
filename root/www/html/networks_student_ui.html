@@ -256,8 +256,10 @@
     }
     function enterNodeInputPressed() {
       let value = document.getElementById(network.NODE_DROPDOWN_ID).value;
+      //CHANGED
+      network.addNodeByName(value);
       console.log("[MODAL] [INPUT] enterButton pressed, got value: " + value + "TYPE: " + typeof value);
-      _input(value); /* resolve promotion-promise */
+      //_input(value); /* resolve promotion-promise */
     }
 
     function exportMapModalPressed() {
